@@ -6,6 +6,7 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <cstring>
 #include <fstream>
 
 namespace s21 {
@@ -14,6 +15,8 @@ namespace s21 {
       model() {}
       ~model() {}
       
+      int get_count_f() const noexcept;
+      int get_count_v() const noexcept;
       std::vector<int> get_facet() const noexcept;
       std::vector<double> get_vertex() const noexcept;
 
@@ -27,7 +30,7 @@ namespace s21 {
       std::vector<int> facets_;
       std::vector<double> vertexes_;
 
-      // int facet_count_ = 0;
+      int facet_count_ = 0;
       int vertex_count_ = 0;
   };
 }
