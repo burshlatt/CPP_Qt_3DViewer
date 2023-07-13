@@ -33,12 +33,22 @@ void s21::model::ParseVertex(std::string &line_) noexcept {
 }
 
 void s21::model::ParseFacet(std::string &line_) noexcept {
+  std::vector<int> buffer_;
   DelSpace(line_);
-  // while (!line_.empty()) {
-  //   vertexes_.push_back(atof(line_.c_str()));
-  //   DelNum(line_);
-  //   DelSpace(line_);
-  // }
+  while (!line_.empty()) {
+    buffer_.push_back(atoi(line_.c_str()));
+    DelNum(line_);
+    DelSpace(line_);
+  }
+  for (size_t i = 0; i < buffer_.size(); i++) {
+    if(i != buffer_.size() - 1) {
+      facets_.push_back(buffer_[i]);
+      facets_.push_back(buffer_[i + 1]);
+    } else {
+      facets_.push_back(buffer_[i]);
+      facets_.push_back(buffer_[0]);
+    }
+  }
 }
 
 void s21::model::DelSpace(std::string &line_) const noexcept {
@@ -56,7 +66,7 @@ void s21::model::DelNum(std::string &line_) const noexcept {
 int main() {
   s21::model par_;
   par_.Parser("shuttle.obj");
-  std::vector<double> res_ = par_.get_vertex();
+  std::vector<int> res_ = par_.get_facet();
   for (size_t i = 0; i < res_.size(); i++) {
     std::cout << res_[i] << " ";
   }
