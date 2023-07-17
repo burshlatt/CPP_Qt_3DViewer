@@ -47,29 +47,28 @@ std::vector<double> s21::model::get_vertex() const noexcept { return vertexes_; 
 void s21::model::Parser(std::string filename) noexcept {
   FILE* file_ = fopen(filename.c_str(), "r");
   if (file_ != NULL) {
-    char *buffer_ = new char[65000 * 2]{};
+    fseek(file_, 0, SEEK_END);
+    long int size_ = ftell(file_);
+    char *buffer_ = new char[size_ * 2]{};
     char line_buffer_[1000]{};
     int j = 0;
-    for (int i = 0; ; i++) {
-      int success_read_ = fread(buffer_, sizeof(char), 65000, file_);
-      if (!success_read_) break;
-      for (int i = 0; buffer_[i] != '\0'; i++) {
-        if (buffer_[i] != '\n') {
-          line_buffer_[j] = buffer_[i];
-          j++;
-        } else {
-          j = 0;
-          std::string line_ = std::string(line_buffer_);
-          memset(line_buffer_, 0, sizeof(line_buffer_));
-          if (!line_.empty() && isspace(line_[0]))
-            DelSpace(line_);
-          if (line_[0] == 'v') {
-            line_.erase(line_.begin());
-            ParseVertex(line_);
-          } else if (line_[0] == 'f') {
-            line_.erase(line_.begin());
-            ParseFacet(line_);
-          }
+    fread(buffer_, sizeof(char), size_, file_);
+    for (long int i = 0; i < size_; i++) {
+      if (buffer_[i] != '\n') {
+        line_buffer_[j] = buffer_[i];
+        j++;
+      } else {
+        j = 0;
+        std::string line_ = std::string(line_buffer_);
+        memset(line_buffer_, 0, sizeof(line_buffer_));
+        if (!line_.empty() && isspace(line_[0]))
+          DelSpace(line_);
+        if (line_[0] == 'v') {
+          line_.erase(line_.begin());
+          ParseVertex(line_);
+        } else if (line_[0] == 'f') {
+          line_.erase(line_.begin());
+          ParseFacet(line_);
         }
       }
     }
