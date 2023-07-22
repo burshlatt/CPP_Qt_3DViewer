@@ -4,6 +4,7 @@ MyOpenGL::MyOpenGL(QWidget *parent) : QOpenGLWidget(parent) {}
 
 void MyOpenGL::set_f_count(const int &count) noexcept { f_count_ = count; }
 void MyOpenGL::set_v_count(const int &count) noexcept { v_count_ = count; }
+void MyOpenGL::set_max_coord(const double &cord) noexcept { max_coord_ = cord; }
 void MyOpenGL::set_v_array(const std::vector<double> &arr) noexcept { v_array_ = arr; }
 void MyOpenGL::set_f_array(const std::vector<unsigned int> &arr) noexcept { f_array_ = arr; }
 
@@ -24,8 +25,6 @@ void MyOpenGL::initializeGL() {
 
 void MyOpenGL::resizeGL(int w, int h) {
     glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
 }
 
 void MyOpenGL::paintGL() {
@@ -33,12 +32,12 @@ void MyOpenGL::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glEnable(GL_DEPTH_TEST);
 
-//    float fov = 60.0 * M_PI / 180;
-//    float heapHeight = 600 / (2 * tan(fov / 2));
-//    glFrustum(-800, 800, -600, 600, heapHeight, 100);
+    GLdouble far_ = (max_coord_ + 5) * 5;
+    glOrtho(-max_coord_, max_coord_, -max_coord_, max_coord_, -max_coord_, far_);
+    glTranslated(0, 0, -3);
+
+    update();
 
     DrawObject();
 }
@@ -46,8 +45,13 @@ void MyOpenGL::paintGL() {
 void MyOpenGL::DrawObject() const noexcept {
     glVertexPointer(3, GL_DOUBLE, 0, v_array_.data());
     glEnableClientState(GL_VERTEX_ARRAY);
-    glColor3d(1.0, 0.0, 0.0);
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(10);
+    glColor3d(1.0, 1.0, 1.0);
+    glDrawArrays(GL_POINTS, 0, v_count_);
+    glLineWidth(10);
+    glColor3d(1.0, 1.0, 1.0);
     glDrawElements(GL_LINES, static_cast<int>(f_array_.size()), GL_UNSIGNED_INT, f_array_.data());
     glDisableClientState(GL_VERTEX_ARRAY);
-//    update();
+    glDisable(GL_POINT_SMOOTH);
 }

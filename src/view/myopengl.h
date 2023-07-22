@@ -16,6 +16,7 @@ class MyOpenGL : public QOpenGLWidget {
 
         void set_f_count(const int &count) noexcept;
         void set_v_count(const int &count) noexcept;
+        void set_max_coord(const double &cord) noexcept;
         void set_v_array(const std::vector<double> &arr) noexcept;
         void set_f_array(const std::vector<unsigned int> &arr) noexcept;
 
@@ -29,6 +30,7 @@ class MyOpenGL : public QOpenGLWidget {
         s21::model mode_;
         int f_count_ = 0;
         int v_count_ = 0;
+        double max_coord_ = 0.0;
         std::vector<double> v_array_;
         std::vector<unsigned int> f_array_;
 };

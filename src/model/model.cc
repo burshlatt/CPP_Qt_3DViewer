@@ -1,11 +1,13 @@
 #include "model.h"
 
-int s21::model::get_count_f() const noexcept { return facet_count_; }
-int s21::model::get_count_v() const noexcept { return vertex_count_; }
-std::vector<double> s21::model::get_vertex() const noexcept { return vertexes_; }
-std::vector<unsigned int> s21::model::get_facet() const noexcept { return facets_; }
+namespace s21 {
+int model::get_count_f() const noexcept { return facet_count_; }
+int model::get_count_v() const noexcept { return vertex_count_; }
+double model::get_max_coord() const noexcept { return max_coord_; }
+std::vector<double> model::get_vertex() const noexcept { return vertexes_; }
+std::vector<unsigned int> model::get_facet() const noexcept { return facets_; }
 
-void s21::model::Parser(std::string filename) noexcept {
+void model::Parser(std::string filename) noexcept {
   std::string line_;
   std::ifstream file_(filename);
   if (file_.is_open()) {
@@ -24,7 +26,7 @@ void s21::model::Parser(std::string filename) noexcept {
   file_.close();
 }
 
-// void s21::model::Parser(std::string filename) noexcept {
+// void model::Parser(std::string filename) noexcept {
 //   FILE* file_ = fopen(filename.c_str(), "r");
 //   if (file_ != NULL) {
 //     char buffer_[1000];
@@ -44,7 +46,7 @@ void s21::model::Parser(std::string filename) noexcept {
 //   fclose(file_);
 // }
 
-// void s21::model::Parser(std::string filename) noexcept {
+// void model::Parser(std::string filename) noexcept {
 //   FILE* file_ = fopen(filename.c_str(), "r");
 //   if (file_ != NULL) {
 //     fseek(file_, 0, SEEK_END);
@@ -77,17 +79,21 @@ void s21::model::Parser(std::string filename) noexcept {
 //   fclose(file_);
 // }
 
-void s21::model::ParseVertex(std::string &line_) noexcept {
+void model::ParseVertex(std::string &line_) noexcept {
   DelSpace(line_);
+  double num_ = 0.0;
   while (!line_.empty()) {
-    vertexes_.push_back(atof(line_.c_str()));
+    num_ = atof(line_.c_str());
+    vertexes_.push_back(num_);
     DelNum(line_);
     DelSpace(line_);
+    if (num_ > max_coord_)
+      max_coord_ = num_;
   }
   vertex_count_++;
 }
 
-void s21::model::ParseFacet(std::string &line_) noexcept {
+void model::ParseFacet(std::string &line_) noexcept {
   std::vector<int> buffer_;
   DelSpace(line_);
   while (!line_.empty()) {
@@ -107,18 +113,18 @@ void s21::model::ParseFacet(std::string &line_) noexcept {
   facet_count_++;
 }
 
-void s21::model::DelSpace(std::string &line_) const noexcept {
+void model::DelSpace(std::string &line_) const noexcept {
   while(!line_.empty() && isspace(line_[0])) {
     line_.erase(line_.begin());
   }
 }
 
-void s21::model::DelNum(std::string &line_) const noexcept {
+void model::DelNum(std::string &line_) const noexcept {
   while(!line_.empty() && !isspace(line_[0])) {
     line_.erase(line_.begin());
   }
 }
-
+}
 // int main() {
 //   s21::model par_;
 //   par_.Parser("/Users/burshlat/Desktop/CPP-Qt_3DViewer/src/obj_files/Lion.obj");

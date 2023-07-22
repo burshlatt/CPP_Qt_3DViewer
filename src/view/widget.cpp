@@ -27,6 +27,7 @@ void Widget::on_openFile_clicked() {
     myogl->set_v_array(model_.get_vertex());
     myogl->set_f_count(model_.get_count_f());
     myogl->set_v_count(model_.get_count_v());
+    myogl->set_max_coord(model_.get_max_coord());
 //    myogl->check(model_.get_facet(), model_.get_vertex());
   }
 }

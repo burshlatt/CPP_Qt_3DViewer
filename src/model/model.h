@@ -17,6 +17,7 @@ namespace s21 {
       
       int get_count_f() const noexcept;
       int get_count_v() const noexcept;
+      double get_max_coord() const noexcept;
       std::vector<double> get_vertex() const noexcept;
       std::vector<unsigned int> get_facet() const noexcept;
 
@@ -29,6 +30,7 @@ namespace s21 {
     private:
       int facet_count_ = 0;
       int vertex_count_ = 0;
+      double max_coord_ = 0.0;
       std::vector<double> vertexes_;
       std::vector<unsigned int> facets_;
   };

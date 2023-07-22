@@ -16,16 +16,6 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <widget class="MyOpenGL" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>600</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QPushButton" name="openFile">
    <property name="geometry">
     <rect>
@@ -1634,12 +1624,22 @@ QPushButton:pressed {
     <string>Screencast</string>
    </property>
   </widget>
+  <widget class="MyOpenGL" name="widget_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>600</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>MyOpenGL</class>
    <extends>QWidget</extends>
-   <header location="global">myopengl.h</header>
+   <header>view/myopengl.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
