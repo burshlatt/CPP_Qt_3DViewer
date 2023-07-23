@@ -1,19 +1,18 @@
-#ifndef SRC_MODEL_MODEL_H_
-#define SRC_MODEL_MODEL_H_
-
-#include <iostream>
+#ifndef SRC_MODEL_PARSER_H_
+#define SRC_MODEL_PARSER_H_
 
 #include <cmath>
 #include <vector>
 #include <string>
 #include <cstring>
 #include <fstream>
+#include <iostream>
 
 namespace s21 {
-  class model {
+  class Parser {
     public:
-      model() {}
-      ~model() {}
+      Parser() {}
+      ~Parser() {}
       
       int get_count_f() const noexcept;
       int get_count_v() const noexcept;
@@ -21,7 +20,7 @@ namespace s21 {
       std::vector<double> get_vertex() const noexcept;
       std::vector<unsigned int> get_facet() const noexcept;
 
-      void Parser(std::string filename) noexcept;
+      void Parse(std::string filename) noexcept;
       void ParseFacet(std::string &line_) noexcept;
       void ParseVertex(std::string &line_) noexcept;
       void DelNum(std::string &line_) const noexcept;
@@ -36,4 +35,4 @@ namespace s21 {
   };
 }
 
-#endif // SRC_MODEL_MODEL_H_
+#endif // SRC_MODEL_PARSER_H_

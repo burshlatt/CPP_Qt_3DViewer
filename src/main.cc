@@ -1,10 +1,9 @@
 #include <QApplication>
-
-#include "view/widget.h"
+#include "view/viewer.h"
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
-  Widget w;
-  w.show();
+  ViewerWin viewer_;
+  viewer_.show();
   return a.exec();
 }

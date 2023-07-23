@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Widget</class>
- <widget class="QWidget" name="Widget">
+ <class>ViewerWin</class>
+ <widget class="QWidget" name="ViewerWin">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <widget class="QPushButton" name="openFile">
+  <widget class="QPushButton" name="File">
    <property name="geometry">
     <rect>
      <x>815</x>
@@ -799,7 +799,7 @@ QPushButton:pressed {
     <string>Проекции:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="show_panel">
+  <widget class="QPushButton" name="Panel">
    <property name="geometry">
     <rect>
      <x>1130</x>
@@ -1624,7 +1624,7 @@ QPushButton:pressed {
     <string>Screencast</string>
    </property>
   </widget>
-  <widget class="MyOpenGL" name="widget_2" native="true">
+  <widget class="OpenGL" name="widget" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -1637,9 +1637,9 @@ QPushButton:pressed {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MyOpenGL</class>
+   <class>OpenGL</class>
    <extends>QWidget</extends>
-   <header>view/myopengl.h</header>
+   <header location="global">view/opengl.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
