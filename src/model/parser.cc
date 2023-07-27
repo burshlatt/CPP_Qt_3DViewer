@@ -10,13 +10,8 @@ Parser::~Parser() {
   data_ = nullptr;
 }
 
-View* Parser::get_view() const noexcept { return data_; }
-
-void Parser::Clear() noexcept {
-  data_->facets_.clear();
-  data_->vertexes_.clear();
-  data_->v_count_ = 0;
-  data_->max_coord_ = 0.0;
+View* Parser::get_view() const noexcept {
+  return data_;
 }
 
 void Parser::Parse(std::string path) noexcept {
@@ -37,6 +32,54 @@ void Parser::Parse(std::string path) noexcept {
     }
   }
   file_.close();
+}
+
+void Parser::Clear() noexcept {
+  data_->facets_.clear();
+  data_->vertexes_.clear();
+  data_->v_count_ = 0;
+  data_->max_coord_ = 0.0;
+}
+
+void Parser::DelSpace(std::string &line_) const noexcept {
+  while(!line_.empty() && isspace(line_[0]))
+    line_.erase(line_.begin());
+}
+
+void Parser::DelNum(std::string &line_) const noexcept {
+  while(!line_.empty() && !isspace(line_[0]))
+    line_.erase(line_.begin());
+}
+
+void Parser::ParseVertex(std::string &line_) noexcept {
+  DelSpace(line_);
+  double num_ = 0.0;
+  while (!line_.empty()) {
+    num_ = atof(line_.c_str());
+    data_->vertexes_.push_back(num_);
+    DelNum(line_);
+    DelSpace(line_);
+    if (fabs(num_) > data_->max_coord_)
+      data_->max_coord_ = num_;
+  }
+  data_->v_count_++;
+}
+
+void Parser::ParseFacet(std::string &line_) noexcept {
+  std::vector<int> buffer_;
+  DelSpace(line_);
+  while (!line_.empty()) {
+    buffer_.push_back(atoi(line_.c_str()) - 1);
+    DelNum(line_);
+    DelSpace(line_);
+  }
+  for (size_t i = 0; i < buffer_.size(); i++) {
+    data_->facets_.push_back(buffer_[i]);
+    if(i != buffer_.size() - 1)
+      data_->facets_.push_back(buffer_[i + 1]);
+    else
+      data_->facets_.push_back(buffer_[0]);
+  }
 }
 
 // void Parser::Parser(std::string path) noexcept {
@@ -71,48 +114,4 @@ void Parser::Parse(std::string path) noexcept {
 //   }
 //   fclose(file_);
 // }
-
-void Parser::ParseVertex(std::string &line_) noexcept {
-  DelSpace(line_);
-  double num_ = 0.0;
-  while (!line_.empty()) {
-    num_ = atof(line_.c_str());
-    data_->vertexes_.push_back(num_);
-    DelNum(line_);
-    DelSpace(line_);
-    if (fabs(num_) > data_->max_coord_)
-      data_->max_coord_ = num_;
-  }
-  data_->v_count_++;
-}
-
-void Parser::ParseFacet(std::string &line_) noexcept {
-  std::vector<int> buffer_;
-  DelSpace(line_);
-  while (!line_.empty()) {
-    buffer_.push_back(atoi(line_.c_str()) - 1);
-    DelNum(line_);
-    DelSpace(line_);
-  }
-  for (size_t i = 0; i < buffer_.size(); i++) {
-    data_->facets_.push_back(buffer_[i]);
-    if(i != buffer_.size() - 1) {
-      data_->facets_.push_back(buffer_[i + 1]);
-    } else {
-      data_->facets_.push_back(buffer_[0]);
-    }
-  }
-}
-
-void Parser::DelSpace(std::string &line_) const noexcept {
-  while(!line_.empty() && isspace(line_[0])) {
-    line_.erase(line_.begin());
-  }
-}
-
-void Parser::DelNum(std::string &line_) const noexcept {
-  while(!line_.empty() && !isspace(line_[0])) {
-    line_.erase(line_.begin());
-  }
-}
 }
