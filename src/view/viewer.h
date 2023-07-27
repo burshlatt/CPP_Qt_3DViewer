@@ -1,32 +1,29 @@
 #ifndef VIEWER_H
 #define VIEWER_H
 
-#include <QWidget>
 #include <QScreen>
 #include <QFileDialog>
+#include <QMainWindow>
 
 #include "opengl.h"
 
-QT_BEGIN_NAMESPACE
 namespace Ui {
-class ViewerWin;
+class Viewer;
 }
-QT_END_NAMESPACE
 
-class ViewerWin : public QWidget {
-  Q_OBJECT
+class Viewer : public QMainWindow {
+    Q_OBJECT
 
     public:
-        ViewerWin(QWidget *parent = nullptr);
-        ~ViewerWin();
+        explicit Viewer(QWidget *parent = nullptr);
+        ~Viewer();
 
     public slots:
-        void ShowPanel() noexcept;
         void OpenFile() const noexcept;
 
     private:
         OpenGL *ogl_;
-        Ui::ViewerWin *ui_;
+        Ui::Viewer *ui_;
 };
 
-#endif  // VIEWER_H
+#endif // VIEWER_H

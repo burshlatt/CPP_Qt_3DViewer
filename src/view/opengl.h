@@ -12,19 +12,23 @@ class OpenGL : public QOpenGLWidget {
 
     public:
         OpenGL(QWidget *parent = nullptr);
+        ~OpenGL();
 
+        void Draw() noexcept;
         void paintGL() override;
+        void Perspective() noexcept;
         void initializeGL() override;
         void resizeGL(int w, int h) override;
         void OpenFile(const std::string &path) noexcept;
 
     private:
-        s21::Parser parser_;
-        int f_count_ = 0;
+        Data *data_;
+        s21::Parser *parser_;
+        int size_ = 0;
         int v_count_ = 0;
+        int *facets_ = nullptr;
         double max_coord_ = 0.0;
-        std::vector<double> v_vec_;
-        std::vector<unsigned int> f_vec_;
+        double *vertexes_ = nullptr;
 };
 
 #endif  // OPENGL_H

@@ -1,15 +1,28 @@
 #include "parser.h"
 
 namespace s21 {
-int Parser::get_count_f() const noexcept { return facet_count_; }
-int Parser::get_count_v() const noexcept { return vertex_count_; }
-double Parser::get_max_coord() const noexcept { return max_coord_; }
-std::vector<double> Parser::get_vertex() const noexcept { return vertexes_; }
-std::vector<unsigned int> Parser::get_facet() const noexcept { return facets_; }
+Parser::Parser() {
+  data_ = new Data;
+}
 
-void Parser::Parse(std::string filename) noexcept {
+Parser::~Parser() {
+  delete data_;
+  data_ = nullptr;
+}
+
+View* Parser::get_view() const noexcept { return data_; }
+
+void Parser::Clear() noexcept {
+  data_->facets_.clear();
+  data_->vertexes_.clear();
+  data_->v_count_ = 0;
+  data_->max_coord_ = 0.0;
+}
+
+void Parser::Parse(std::string path) noexcept {
+  Clear();
   std::string line_;
-  std::ifstream file_(filename);
+  std::ifstream file_(path);
   if (file_.is_open()) {
     while (std::getline(file_, line_)) {
       if (!line_.empty() && isspace(line_[0]))
@@ -26,8 +39,8 @@ void Parser::Parse(std::string filename) noexcept {
   file_.close();
 }
 
-// void Parser::Parser(std::string filename) noexcept {
-//   FILE* file_ = fopen(filename.c_str(), "r");
+// void Parser::Parser(std::string path) noexcept {
+//   FILE* file_ = fopen(path.c_str(), "r");
 //   if (file_ != NULL) {
 //     fseek(file_, 0, SEEK_END);
 //     long int size_ = ftell(file_);
@@ -64,33 +77,31 @@ void Parser::ParseVertex(std::string &line_) noexcept {
   double num_ = 0.0;
   while (!line_.empty()) {
     num_ = atof(line_.c_str());
-    vertexes_.push_back(num_);
+    data_->vertexes_.push_back(num_);
     DelNum(line_);
     DelSpace(line_);
-    if (num_ > max_coord_)
-      max_coord_ = num_;
+    if (fabs(num_) > data_->max_coord_)
+      data_->max_coord_ = num_;
   }
-  vertex_count_++;
+  data_->v_count_++;
 }
 
 void Parser::ParseFacet(std::string &line_) noexcept {
   std::vector<int> buffer_;
   DelSpace(line_);
   while (!line_.empty()) {
-    buffer_.push_back(atoi(line_.c_str()));
+    buffer_.push_back(atoi(line_.c_str()) - 1);
     DelNum(line_);
     DelSpace(line_);
   }
   for (size_t i = 0; i < buffer_.size(); i++) {
+    data_->facets_.push_back(buffer_[i]);
     if(i != buffer_.size() - 1) {
-      facets_.push_back(buffer_[i]);
-      facets_.push_back(buffer_[i + 1]);
+      data_->facets_.push_back(buffer_[i + 1]);
     } else {
-      facets_.push_back(buffer_[i]);
-      facets_.push_back(buffer_[0]);
+      data_->facets_.push_back(buffer_[0]);
     }
   }
-  facet_count_++;
 }
 
 void Parser::DelSpace(std::string &line_) const noexcept {
