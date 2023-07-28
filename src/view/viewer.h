@@ -20,9 +20,9 @@ class Viewer : public QMainWindow {
 
     public slots:
         void OpenFile() const noexcept;
+        void MoveX() noexcept;
 
     private:
-        OpenGL *ogl_;
         Ui::Viewer *ui_;
 };
 

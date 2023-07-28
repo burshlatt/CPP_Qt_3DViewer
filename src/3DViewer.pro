@@ -10,11 +10,13 @@ CONFIG += c++17
 
 SOURCES += \
     main.cc \
+    model/affine.cc \
     model/parser.cc \
     view/opengl.cc \
     view/viewer.cc
 
 HEADERS += \
+    model/affine.h \
     model/parser.h \
     view/opengl.h \
     view/viewer.h

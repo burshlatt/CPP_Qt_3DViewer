@@ -6,13 +6,16 @@
 #include <QOpenGLFunctions>
 
 #include "../model/parser.h"
+#include "../model/affine.h"
 
 class OpenGL : public QOpenGLWidget {
   Q_OBJECT
 
     public:
-        OpenGL(QWidget *parent = nullptr);
-        ~OpenGL();
+        OpenGL(QWidget *parent = nullptr) : QOpenGLWidget(parent) {}
+        ~OpenGL() {}
+
+        void MoveX(const double &value) noexcept;
 
         void Draw() noexcept;
         void paintGL() override;
@@ -22,13 +25,9 @@ class OpenGL : public QOpenGLWidget {
         void OpenFile(const std::string &path) noexcept;
 
     private:
-        Data *data_;
-        s21::Parser *parser_;
-        int size_ = 0;
-        int v_count_ = 0;
-        int *facets_ = nullptr;
-        double max_coord_ = 0.0;
-        double *vertexes_ = nullptr;
+        Data data_;
+        s21::Parser parser_;
+        s21::Affine affine_;
 };
 
 #endif  // OPENGL_H

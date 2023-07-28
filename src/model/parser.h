@@ -18,10 +18,10 @@ typedef struct View {
 namespace s21 {
   class Parser {
     public:
-      Parser();
-      ~Parser();
+      Parser() {}
+      ~Parser() {}
       
-      View* get_view() const noexcept;
+      const Data& get_data() const noexcept;
 
       void Clear() noexcept;
       void Parse(std::string path) noexcept;
@@ -31,7 +31,7 @@ namespace s21 {
       void DelSpace(std::string &line_) const noexcept;
 
     private:
-      Data *data_;
+      Data data_;
   };
 }
 

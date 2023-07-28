@@ -1,16 +1,7 @@
 #include "parser.h"
 
 namespace s21 {
-Parser::Parser() {
-  data_ = new Data;
-}
-
-Parser::~Parser() {
-  delete data_;
-  data_ = nullptr;
-}
-
-View* Parser::get_view() const noexcept {
+const Data& Parser::get_data() const noexcept {
   return data_;
 }
 
@@ -35,10 +26,10 @@ void Parser::Parse(std::string path) noexcept {
 }
 
 void Parser::Clear() noexcept {
-  data_->facets_.clear();
-  data_->vertexes_.clear();
-  data_->v_count_ = 0;
-  data_->max_coord_ = 0.0;
+  data_.facets_.clear();
+  data_.vertexes_.clear();
+  data_.v_count_ = 0;
+  data_.max_coord_ = 0.0;
 }
 
 void Parser::DelSpace(std::string &line_) const noexcept {
@@ -56,13 +47,13 @@ void Parser::ParseVertex(std::string &line_) noexcept {
   double num_ = 0.0;
   while (!line_.empty()) {
     num_ = atof(line_.c_str());
-    data_->vertexes_.push_back(num_);
+    data_.vertexes_.push_back(num_);
     DelNum(line_);
     DelSpace(line_);
-    if (fabs(num_) > data_->max_coord_)
-      data_->max_coord_ = num_;
+    if (fabs(num_) > data_.max_coord_)
+      data_.max_coord_ = num_;
   }
-  data_->v_count_++;
+  data_.v_count_++;
 }
 
 void Parser::ParseFacet(std::string &line_) noexcept {
@@ -74,11 +65,11 @@ void Parser::ParseFacet(std::string &line_) noexcept {
     DelSpace(line_);
   }
   for (size_t i = 0; i < buffer_.size(); i++) {
-    data_->facets_.push_back(buffer_[i]);
+    data_.facets_.push_back(buffer_[i]);
     if(i != buffer_.size() - 1)
-      data_->facets_.push_back(buffer_[i + 1]);
+      data_.facets_.push_back(buffer_[i + 1]);
     else
-      data_->facets_.push_back(buffer_[0]);
+      data_.facets_.push_back(buffer_[0]);
   }
 }
 
