@@ -10,6 +10,7 @@
 
 typedef struct View {
   int v_count_ = 0;
+  int f_count_ = 0;
   double max_coord_ = 0.0;
   std::vector<int> facets_;
   std::vector<double> vertexes_;

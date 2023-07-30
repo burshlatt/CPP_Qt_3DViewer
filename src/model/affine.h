@@ -9,15 +9,10 @@ namespace s21 {
             Affine() {}
             ~Affine() {}
 
-            void MoveX(Data &data, const double &value);
-            void MoveY(Data &data, const double &value);
-            void MoveZ(Data &data, const double &value);
-            void RotateOX(Data &data, const double &value);
-            void RotateOY(Data &data, const double &value);
-            void RotateOZ(Data &data, const double &value);
-
-            // void scale(matrix_t *A, const double &X, const double &Y, const double &Z);
-            // void scale_div(matrix_t *A, const double &X, const double &Y, const double &Z);
+            void ScaleMul(Data &data, const double &value) const noexcept;
+            void ScaleDiv(Data &data, const double &value) const noexcept;
+            void Move(Data &data, const double &value, const int &coord) const noexcept;
+            void Rotate(Data &data, const double &value, const int &coord) const noexcept;
     };
 }
 

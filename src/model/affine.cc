@@ -1,61 +1,43 @@
 #include "affine.h"
 
 namespace s21 {
-void Affine::MoveX(Data &data, const double &value) {
-  for (int i = 0; i < data.facets_.size(); i += 3)
-    data.facets_[i] += value;
-}
-
-void Affine::MoveY(Data &data, const double &value) {
-  for (int i = 1; i < data.facets_.size(); i += 3)
-    data.facets_[i] += value;
-}
-
-void Affine::MoveZ(Data &data, const double &value) {
-  for (int i = 2; i < data.facets_.size(); i += 3)
-    data.facets_[i] += value;
-}
-
-void Affine::RotateOX(Data &data, const double &value) {
-  for (int i = 2; i < data.facets_.size(); i += 3) {
-    double y_ = data.facets_[i - 1];
-    double z_ = data.facets_[i];
-    data.facets_[i - 1] = cos(value) * y_ - sin(value) * z_;
-    data.facets_[i] = sin(value) * y_ + cos(value) * z_;
+void Affine::Move(Data &data, const double &value, const int &coord) const noexcept {
+  for (int i = 0; i < data.v_count_; i++) {
+    data.vertexes_[i * 3 + coord] += value;
   }
 }
 
-void Affine::RotateOY(Data &data, const double &value) {
-  for (int i = 2; i < data.facets_.size(); i += 3) {
-    double x_ = data.facets_[i - 2];
-    double z_ = data.facets_[i];
-    data.facets_[i - 2] = sin(value) * z_ + cos(value) * x_;
-    data.facets_[i] = cos(value) * z_ - sin(value) * x_;
+void Affine::Rotate(Data &data, const double &value, const int &coord) const noexcept {
+  for (int i = 0; i < data.v_count_; i++) {
+    double x_ = data.vertexes_[i * 3];
+    double y_ = data.vertexes_[i * 3 + 1];
+    double z_ = data.vertexes_[i * 3 + 2];
+    if (coord == 0) {
+      data.vertexes_[i * 3 + 1] = cos(value) * y_ - sin(value) * z_;
+      data.vertexes_[i * 3 + 2] = sin(value) * y_ + cos(value) * z_;
+    } else if (coord == 1) {
+      data.vertexes_[i * 3] = sin(value) * z_ + cos(value) * x_;
+      data.vertexes_[i * 3 + 2] = cos(value) * z_ - sin(value) * x_;
+    } else if (coord == 2) {
+      data.vertexes_[i * 3] = cos(value) * x_ - sin(value) * y_;
+      data.vertexes_[i * 3 + 1] = sin(value) * x_ + cos(value) * y_;
+    }
   }
 }
 
-void Affine::RotateOZ(Data &data, const double &value) {
-  for (int i = 1; i < data.facets_.size(); i += 3) {
-    double x_ = data.facets_[i - 1];
-    double y_ = data.facets_[i];
-    data.facets_[i - 1] = cos(value) * x_ - sin(value) * y_;
-    data.facets_[i] = sin(value) * x_ + cos(value) * y_;
+void Affine::ScaleMul(Data &data, const double &value) const noexcept {
+  for (size_t i = 0; i < data.vertexes_.size(); i += 3) {
+    data.vertexes_[i] *= value;
+    data.vertexes_[i + 1] *= value;
+    data.vertexes_[i + 2] *= value;
   }
 }
 
-// void Affine::scale(matrix_t *A, double X, double Y, double Z) {
-//   for (int i = 0; i < A->rows; i++) {
-//     A->matrix[i][0] *= X;
-//     A->matrix[i][1] *= Y;
-//     A->matrix[i][2] *= Z;
-//   }
-// }
-
-// void Affine::scale_div(matrix_t *A, double X, double Y, double Z) {
-//   for (int i = 0; i < A->rows; i++) {
-//     A->matrix[i][0] /= X;
-//     A->matrix[i][1] /= Y;
-//     A->matrix[i][2] /= Z;
-//   }
-// }
+void Affine::ScaleDiv(Data &data, const double &value) const noexcept {
+  for (size_t i = 0; i < data.vertexes_.size(); i += 3) {
+    data.vertexes_[i] /= value;
+    data.vertexes_[i + 1] /= value;
+    data.vertexes_[i + 2] /= value;
+  }
+}
 }

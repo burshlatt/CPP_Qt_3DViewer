@@ -13,10 +13,10 @@ void Parser::Parse(std::string path) noexcept {
     while (std::getline(file_, line_)) {
       if (!line_.empty() && isspace(line_[0]))
         DelSpace(line_);
-      if (line_[0] == 'v') {
+      if (line_[0] == 'v' && isspace(line_[1])) {
         line_.erase(line_.begin());
         ParseVertex(line_);
-      } else if (line_[0] == 'f') {
+      } else if (line_[0] == 'f' && isspace(line_[1])) {
         line_.erase(line_.begin());
         ParseFacet(line_);
       }
@@ -71,6 +71,7 @@ void Parser::ParseFacet(std::string &line_) noexcept {
     else
       data_.facets_.push_back(buffer_[0]);
   }
+  data_.f_count_++;
 }
 
 // void Parser::Parser(std::string path) noexcept {
