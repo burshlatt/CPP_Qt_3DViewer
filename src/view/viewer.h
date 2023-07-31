@@ -3,7 +3,7 @@
 
 #include <QColor>
 #include <QScreen>
-#include <QFileDialog>
+#include <QSettings>
 #include <QMainWindow>
 #include <QColorDialog>
 
@@ -21,36 +21,46 @@ class Viewer : public QMainWindow {
         ~Viewer();
 
     public slots:
+        void CreateGIF() noexcept;
+        void CreateScreenshot() noexcept;
+
         void OpenFile() noexcept;
+        void SaveSettings() noexcept;
+        void LoadSettings() noexcept;
         void MoveXL() noexcept;
         void MoveXR() noexcept;
         void MoveYD() noexcept;
         void MoveYU() noexcept;
         void MoveZC() noexcept;
         void MoveZF() noexcept;
-        void RotateX() noexcept;
-        void RotateY() noexcept;
-        void RotateZ() noexcept;
+        void RotateX(const int &value) noexcept;
+        void RotateY(const int &value) noexcept;
+        void RotateZ(const int &value) noexcept;
         void ScaleMul() noexcept;
         void ScaleDiv() noexcept;
-        void StippleNo() noexcept;
-        void StippleYes() noexcept;
+        void StippleType() noexcept;
         void LineColor() noexcept;
-        void VertexNo() noexcept;
-        void VertexCircle() noexcept;
-        void VertexSquare() noexcept;
+        void MainColor() noexcept;
+        void VertexType() noexcept;
         void VertexColor() noexcept;
         void LWidthPlus() noexcept;
         void LWidthMinus() noexcept;
         void VWidthPlus() noexcept;
         void VWidthMinus() noexcept;
-        void CentralPrj() noexcept;
-        void ParallelPrj() noexcept;
+        void ProjectionType() noexcept;
 
     private:
-        Data data_;
         Ui::Viewer *ui_;
         s21::Parser parser_;
+
+        Data data_;
+        QColor color_main_ = Qt::black;
+        QColor color_line_ = Qt::white;
+        QColor color_vertex_ = Qt::white;
+        QSettings *settings_;
+        int check_x_ = 50;
+        int check_y_ = 50;
+        int check_z_ = 50;
         double l_width_ = 1.0;
         double v_width_ = 1.0;
 };

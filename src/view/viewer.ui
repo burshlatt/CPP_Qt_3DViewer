@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1400</width>
-    <height>590</height>
+    <width>1100</width>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,17 +17,17 @@
    <widget class="OpenGL" name="OGL" native="true">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>0</x>
       <y>0</y>
       <width>800</width>
-      <height>590</height>
+      <height>650</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="OpenFile">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>70</y>
       <width>260</width>
       <height>60</height>
@@ -54,7 +54,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="FileName">
     <property name="geometry">
      <rect>
-      <x>1185</x>
+      <x>885</x>
       <y>10</y>
       <width>195</width>
       <height>20</height>
@@ -67,7 +67,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="FNL">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>10</y>
       <width>65</width>
       <height>20</height>
@@ -80,7 +80,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="VCL">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>40</y>
       <width>45</width>
       <height>20</height>
@@ -93,7 +93,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="VCount">
     <property name="geometry">
      <rect>
-      <x>1165</x>
+      <x>865</x>
       <y>40</y>
       <width>80</width>
       <height>20</height>
@@ -106,7 +106,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="FCount">
     <property name="geometry">
      <rect>
-      <x>1295</x>
+      <x>995</x>
       <y>40</y>
       <width>85</width>
       <height>20</height>
@@ -119,7 +119,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="FCL">
     <property name="geometry">
      <rect>
-      <x>1255</x>
+      <x>955</x>
       <y>40</y>
       <width>40</width>
       <height>20</height>
@@ -132,7 +132,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="XMoveValue">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>890</x>
       <y>140</y>
       <width>85</width>
       <height>25</height>
@@ -145,7 +145,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="MXL">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>140</y>
       <width>65</width>
       <height>25</height>
@@ -163,7 +163,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MXLeft">
     <property name="geometry">
      <rect>
-      <x>1280</x>
+      <x>980</x>
       <y>140</y>
       <width>50</width>
       <height>25</height>
@@ -185,7 +185,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MXRight">
     <property name="geometry">
      <rect>
-      <x>1330</x>
+      <x>1030</x>
       <y>140</y>
       <width>50</width>
       <height>25</height>
@@ -207,7 +207,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MYDown">
     <property name="geometry">
      <rect>
-      <x>1330</x>
+      <x>1030</x>
       <y>175</y>
       <width>50</width>
       <height>25</height>
@@ -234,7 +234,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="YMoveValue">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>890</x>
       <y>175</y>
       <width>85</width>
       <height>25</height>
@@ -247,7 +247,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MYUp">
     <property name="geometry">
      <rect>
-      <x>1280</x>
+      <x>980</x>
       <y>175</y>
       <width>50</width>
       <height>25</height>
@@ -274,7 +274,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="MYL">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>175</y>
       <width>65</width>
       <height>25</height>
@@ -292,7 +292,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="ZMoveValue">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>890</x>
       <y>210</y>
       <width>85</width>
       <height>25</height>
@@ -305,7 +305,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MZClose">
     <property name="geometry">
      <rect>
-      <x>1330</x>
+      <x>1030</x>
       <y>210</y>
       <width>50</width>
       <height>25</height>
@@ -327,7 +327,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="MZL">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>210</y>
       <width>65</width>
       <height>25</height>
@@ -345,7 +345,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MZFar">
     <property name="geometry">
      <rect>
-      <x>1280</x>
+      <x>980</x>
       <y>210</y>
       <width>50</width>
       <height>25</height>
@@ -367,7 +367,7 @@ QPushButton:pressed {
    <widget class="QDial" name="OXRotate">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>275</y>
       <width>80</width>
       <height>80</height>
@@ -389,7 +389,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="RotateXL">
     <property name="geometry">
      <rect>
-      <x>1145</x>
+      <x>845</x>
       <y>245</y>
       <width>30</width>
       <height>25</height>
@@ -407,7 +407,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="RotateYL">
     <property name="geometry">
      <rect>
-      <x>1235</x>
+      <x>935</x>
       <y>245</y>
       <width>30</width>
       <height>25</height>
@@ -425,7 +425,7 @@ QPushButton:pressed {
    <widget class="QDial" name="OYRotate">
     <property name="geometry">
      <rect>
-      <x>1210</x>
+      <x>910</x>
       <y>275</y>
       <width>80</width>
       <height>80</height>
@@ -447,7 +447,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="RotateZL">
     <property name="geometry">
      <rect>
-      <x>1325</x>
+      <x>1025</x>
       <y>245</y>
       <width>30</width>
       <height>25</height>
@@ -465,7 +465,7 @@ QPushButton:pressed {
    <widget class="QDial" name="OZRotate">
     <property name="geometry">
      <rect>
-      <x>1300</x>
+      <x>1000</x>
       <y>275</y>
       <width>80</width>
       <height>80</height>
@@ -487,7 +487,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="ScalePlus">
     <property name="geometry">
      <rect>
-      <x>1280</x>
+      <x>980</x>
       <y>365</y>
       <width>50</width>
       <height>25</height>
@@ -514,7 +514,7 @@ QPushButton:pressed {
    <widget class="QLineEdit" name="ScaleValue">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>890</x>
       <y>365</y>
       <width>85</width>
       <height>25</height>
@@ -527,7 +527,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="ScaleL">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>365</y>
       <width>65</width>
       <height>25</height>
@@ -545,7 +545,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="ScaleMinus">
     <property name="geometry">
      <rect>
-      <x>1330</x>
+      <x>1030</x>
       <y>365</y>
       <width>50</width>
       <height>25</height>
@@ -572,7 +572,7 @@ QPushButton:pressed {
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>400</y>
       <width>261</width>
       <height>31</height>
@@ -626,7 +626,7 @@ QPushButton:pressed {
    <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>430</y>
       <width>261</width>
       <height>31</height>
@@ -680,9 +680,9 @@ QPushButton:pressed {
    <widget class="QPushButton" name="LColor">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>940</x>
       <y>495</y>
-      <width>125</width>
+      <width>70</width>
       <height>25</height>
      </rect>
     </property>
@@ -696,15 +696,15 @@ QPushButton:pressed {
 }</string>
     </property>
     <property name="text">
-     <string>Line color</string>
+     <string>Line</string>
     </property>
    </widget>
    <widget class="QPushButton" name="VColor">
     <property name="geometry">
      <rect>
-      <x>1255</x>
+      <x>1010</x>
       <y>495</y>
-      <width>125</width>
+      <width>70</width>
       <height>25</height>
      </rect>
     </property>
@@ -718,13 +718,13 @@ QPushButton:pressed {
 }</string>
     </property>
     <property name="text">
-     <string>Vertex color</string>
+     <string>Vertex</string>
     </property>
    </widget>
    <widget class="QLabel" name="LWidth">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>525</y>
       <width>80</width>
       <height>25</height>
@@ -742,7 +742,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="LWPlus">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>550</y>
       <width>60</width>
       <height>25</height>
@@ -764,7 +764,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="LWMinus">
     <property name="geometry">
      <rect>
-      <x>1185</x>
+      <x>885</x>
       <y>550</y>
       <width>60</width>
       <height>25</height>
@@ -786,7 +786,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="VWidth">
     <property name="geometry">
      <rect>
-      <x>1255</x>
+      <x>955</x>
       <y>525</y>
       <width>95</width>
       <height>25</height>
@@ -804,7 +804,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="VWMinus">
     <property name="geometry">
      <rect>
-      <x>1320</x>
+      <x>1020</x>
       <y>550</y>
       <width>60</width>
       <height>25</height>
@@ -826,7 +826,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="VWPlus">
     <property name="geometry">
      <rect>
-      <x>1255</x>
+      <x>955</x>
       <y>550</y>
       <width>60</width>
       <height>25</height>
@@ -848,9 +848,9 @@ QPushButton:pressed {
    <widget class="QWidget" name="horizontalLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>1190</x>
+      <x>880</x>
       <y>460</y>
-      <width>195</width>
+      <width>201</width>
       <height>31</height>
      </rect>
     </property>
@@ -897,9 +897,9 @@ QPushButton:pressed {
    <widget class="QLabel" name="VertexLable">
     <property name="geometry">
      <rect>
-      <x>1120</x>
+      <x>820</x>
       <y>460</y>
-      <width>70</width>
+      <width>60</width>
       <height>30</height>
      </rect>
     </property>
@@ -910,6 +910,100 @@ QPushButton:pressed {
     </property>
     <property name="text">
      <string>Vertex:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="VertexLable_2">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>495</y>
+      <width>50</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Color:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MColor">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>495</y>
+      <width>70</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+  border: 1px solid gray;
+}
+
+QPushButton:pressed {
+  background-color: white;
+}</string>
+    </property>
+    <property name="text">
+     <string>Main</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="GIF">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>580</y>
+      <width>125</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+  border: 1px solid gray;
+}
+
+QPushButton:pressed {
+  background-color: white;
+}</string>
+    </property>
+    <property name="text">
+     <string>GIF</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Screen">
+    <property name="geometry">
+     <rect>
+      <x>955</x>
+      <y>580</y>
+      <width>125</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+  border: 1px solid gray;
+}
+
+QPushButton:pressed {
+  background-color: white;
+}</string>
+    </property>
+    <property name="text">
+     <string>Screenshot</string>
     </property>
    </widget>
   </widget>
