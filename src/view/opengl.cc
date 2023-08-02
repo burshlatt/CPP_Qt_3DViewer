@@ -1,15 +1,14 @@
 #include "opengl.h"
 
 OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
-    gifTmr_ = new QTimer(0);
-    connect(gifTmr_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
+    timer_ = new QTimer(0);
+    connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
 }
 
 OpenGL::~OpenGL() {
-    delete gifTmr_;
+    delete timer_;
 }
 
-void OpenGL::Update() noexcept { update(); }
 void OpenGL::set_data(const Data &data) noexcept { data_ = data; }
 void OpenGL::set_main_color(const QColor &color) noexcept { main_color_ = color; }
 void OpenGL::set_line_color(const QColor &color) noexcept { line_color_ = color; }
@@ -17,17 +16,19 @@ void OpenGL::set_line_width(const double &width) noexcept { line_width_ = width;
 void OpenGL::set_vertex_color(const QColor &color) noexcept { vertex_color_ = color; }
 void OpenGL::set_vertex_width(const double &width) noexcept { vertex_width_ = width; }
 void OpenGL::set_stipple(const bool &is_stipple) noexcept { is_stipple_ = is_stipple; }
-void OpenGL::ScaleMul(const double &value) noexcept { affine_.ScaleMul(data_, value); }
-void OpenGL::ScaleDiv(const double &value) noexcept { affine_.ScaleDiv(data_, value); }
 void OpenGL::set_parallel(const bool &is_parallel) noexcept { is_parallel_ = is_parallel; }
-void OpenGL::Move(const double &value, const int &coord) noexcept { affine_.Move(data_, value, coord); }
-void OpenGL::Rotate(const double &value, const int &coord) noexcept { affine_.Rotate(data_, value, coord); }
 
 void OpenGL::set_vertex_type(const bool &no, const bool &circle) noexcept {
     is_no_vertex_ = no;
     is_circle_vertex_ = circle;
     update();
 }
+
+void OpenGL::Update() noexcept { update(); }
+void OpenGL::ScaleMul(const double &value) noexcept { affine_.ScaleMul(data_, value); }
+void OpenGL::ScaleDiv(const double &value) noexcept { affine_.ScaleDiv(data_, value); }
+void OpenGL::Move(const double &value, const int &coord) noexcept { affine_.Move(data_, value, coord); }
+void OpenGL::Rotate(const double &value, const int &coord) noexcept { affine_.Rotate(data_, value, coord); }
 
 void OpenGL::CreateScreenshot() noexcept {
     QString f_name_ = QFileDialog::getSaveFileName(this, "Save screenshot", "", "BMP Image (*.bmp);; JPEG Image (*.jpeg)");
@@ -36,38 +37,25 @@ void OpenGL::CreateScreenshot() noexcept {
 }
 
 void OpenGL::CreateGIF() noexcept {
-    gifFileName_ = QFileDialog::getSaveFileName(this, tr("Save GIF"), ".gif", tr("Gif Files (*.gif)"));
-    if (gifFileName_ != "") {
-        gifImg_ = new QGifImage;
-        gifImg_->setDefaultDelay(10);
-        Timer();
-    } else {
-        ShowMessage("Нет папки");
-    }
-}
-
-void OpenGL::Timer() noexcept {
-  gifTmr_->setInterval(100);
-  gifTmr_->start();
-}
-
-void OpenGL::ShowMessage(QString message) noexcept {
-  QMessageBox messageBox;
-  messageBox.setFixedSize(500, 200);
-  messageBox.information(0, "Info", message);
+  gif_name_ = QFileDialog::getSaveFileName(this, "Save GIF", ".gif", "Gif Files (*.gif)");
+  if (gif_name_ != "") {
+    frame_ = new QGifImage;
+    frame_->setDefaultDelay(10);
+    timer_->setInterval(100);
+    timer_->start();
+  }
 }
 
 void OpenGL::SaveGIF() noexcept {
   QImage image_ = grabFramebuffer();
-  gifImg_->addFrame(image_);
-  if (numberFps_ == 50) {
-    gifTmr_->stop();
-    gifImg_->save(gifFileName_);
-    numberFps_ = 0;
-    ShowMessage("Gif saved.");
-    delete gifImg_;
+  frame_->addFrame(image_);
+  if (frame_count_ == 50) {
+    timer_->stop();
+    frame_->save(gif_name_);
+    frame_count_ = 0;
+    delete frame_;
   }
-  ++numberFps_;
+  frame_count_++;
 }
 
 void OpenGL::initializeGL() { glEnable(GL_DEPTH_TEST); }

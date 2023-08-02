@@ -976,7 +976,7 @@ QPushButton:pressed {
 }</string>
     </property>
     <property name="text">
-     <string>GIF</string>
+     <string>GIF ▶</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Screen">

@@ -3,7 +3,6 @@
 
 #include <QTimer>
 #include <QWidget>
-#include <QMessageBox>
 #include <QFileDialog>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
@@ -29,12 +28,6 @@ class OpenGL : public QOpenGLWidget {
         void set_vertex_width(const double &width) noexcept;
         void set_vertex_type(const bool &no, const bool &circle) noexcept;
 
-        void Timer() noexcept;
-        void SaveGIF() noexcept;
-        void CreateGIF() noexcept;
-        void CreateScreenshot() noexcept;
-        void ShowMessage(QString message) noexcept;
-
         void Draw() noexcept;
         void Update() noexcept;
         void paintGL() override;
@@ -46,11 +39,16 @@ class OpenGL : public QOpenGLWidget {
         void Move(const double &value, const int &coord) noexcept;
         void Rotate(const double &value, const int &coord) noexcept;
 
+    public slots:
+        void SaveGIF() noexcept;
+        void CreateGIF() noexcept;
+        void CreateScreenshot() noexcept;
+
     private:
-        QTimer *gifTmr_;
-        QGifImage *gifImg_;
-        QString gifFileName_;
-        int numberFps_ = 0;
+        QTimer *timer_;
+        QGifImage *frame_;
+        QString gif_name_;
+        int frame_count_ = 0;
 
         Data data_;
         s21::Affine affine_;
