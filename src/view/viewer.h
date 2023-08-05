@@ -21,37 +21,43 @@ class Viewer : public QMainWindow {
         ~Viewer();
 
     public slots:
+        void SaveGIF() noexcept;
         void CreateGIF() noexcept;
         void CreateScreenshot() noexcept;
 
-        void OpenFile() noexcept;
-        void SaveSettings() noexcept;
-        void LoadSettings() noexcept;
         void MoveXL() noexcept;
         void MoveXR() noexcept;
         void MoveYD() noexcept;
         void MoveYU() noexcept;
         void MoveZC() noexcept;
         void MoveZF() noexcept;
-        void RotateX(const int &value) noexcept;
-        void RotateY(const int &value) noexcept;
-        void RotateZ(const int &value) noexcept;
+        void OpenFile() noexcept;
         void ScaleMul() noexcept;
         void ScaleDiv() noexcept;
-        void StippleType() noexcept;
         void LineColor() noexcept;
         void MainColor() noexcept;
         void VertexType() noexcept;
-        void VertexColor() noexcept;
         void LWidthPlus() noexcept;
-        void LWidthMinus() noexcept;
         void VWidthPlus() noexcept;
+        void LWidthMinus() noexcept;
         void VWidthMinus() noexcept;
+        void VertexColor() noexcept;
+        void StippleType() noexcept;
+        void SaveSettings() noexcept;
+        void LoadSettings() noexcept;
         void ProjectionType() noexcept;
+        void RotateX(const int &value) noexcept;
+        void RotateY(const int &value) noexcept;
+        void RotateZ(const int &value) noexcept;
 
     private:
         Ui::Viewer *ui_;
         s21::Parser parser_;
+
+        QTimer *timer_;
+        QGifImage *frame_;
+        QString gif_name_;
+        int frame_count_ = 0;
 
         Data data_;
         QColor color_main_ = Qt::black;

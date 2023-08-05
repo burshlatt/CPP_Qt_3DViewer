@@ -680,9 +680,9 @@ QPushButton:pressed {
    <widget class="QPushButton" name="LColor">
     <property name="geometry">
      <rect>
-      <x>940</x>
+      <x>945</x>
       <y>495</y>
-      <width>70</width>
+      <width>65</width>
       <height>25</height>
      </rect>
     </property>
@@ -702,9 +702,9 @@ QPushButton:pressed {
    <widget class="QPushButton" name="VColor">
     <property name="geometry">
      <rect>
-      <x>1010</x>
+      <x>1015</x>
       <y>495</y>
-      <width>70</width>
+      <width>65</width>
       <height>25</height>
      </rect>
     </property>
@@ -917,7 +917,7 @@ QPushButton:pressed {
      <rect>
       <x>820</x>
       <y>495</y>
-      <width>50</width>
+      <width>55</width>
       <height>25</height>
      </rect>
     </property>
@@ -933,9 +933,9 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MColor">
     <property name="geometry">
      <rect>
-      <x>870</x>
+      <x>875</x>
       <y>495</y>
-      <width>70</width>
+      <width>65</width>
       <height>25</height>
      </rect>
     </property>

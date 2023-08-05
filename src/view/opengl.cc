@@ -4,7 +4,6 @@ OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
     max_ = 0.0;
     far_ = 0.0;
     near_ = 0.0;
-    frame_count_ = 0;
     line_width_ = 0.0;
     vertex_width_ = 0.0;
     is_parallel_ = true;
@@ -14,12 +13,9 @@ OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
     main_color_ = Qt::black;
     line_color_ = Qt::white;
     vertex_color_ = Qt::white;
-
-    timer_ = new QTimer(0);
-    connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
 }
 
-OpenGL::~OpenGL() { delete timer_; }
+OpenGL::~OpenGL() {}
 
 void OpenGL::set_data(const Data &data) noexcept { data_ = data; }
 void OpenGL::set_max(const GLdouble &max) noexcept { max_ = max; }
@@ -41,32 +37,8 @@ void OpenGL::ScaleDiv(const double &value) noexcept { affine_.ScaleDiv(data_, va
 void OpenGL::Move(const double &value, const int &coord) noexcept { affine_.Move(data_, value, coord); }
 void OpenGL::Rotate(const double &value, const int &coord) noexcept { affine_.Rotate(data_, value, coord); }
 
-void OpenGL::CreateScreenshot() noexcept {
-    QString f_name_ = QFileDialog::getSaveFileName(this, "Save screenshot", "", "BMP Image (*.bmp);; JPEG Image (*.jpeg)");
-    QImage img_ = grabFramebuffer();
-    img_.save(f_name_);
-}
-
-void OpenGL::CreateGIF() noexcept {
-  gif_name_ = QFileDialog::getSaveFileName(this, "Save GIF", ".gif", "Gif Files (*.gif)");
-  if (gif_name_ != "") {
-    frame_ = new QGifImage;
-    frame_->setDefaultDelay(10);
-    timer_->setInterval(100);
-    timer_->start();
-  }
-}
-
-void OpenGL::SaveGIF() noexcept {
-  QImage image_ = grabFramebuffer();
-  frame_->addFrame(image_);
-  if (frame_count_ == 50) {
-    timer_->stop();
-    frame_->save(gif_name_);
-    frame_count_ = 0;
-    delete frame_;
-  }
-  frame_count_++;
+QImage OpenGL::GetFrame() noexcept {
+  return grabFramebuffer();
 }
 
 void OpenGL::initializeGL() { glEnable(GL_DEPTH_TEST); }

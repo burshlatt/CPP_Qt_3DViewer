@@ -32,21 +32,19 @@ class OpenGL : public QOpenGLWidget {
         void set_vertex_width(const double &width) noexcept;
         void set_is_circle_vertex(const bool &circle) noexcept;
 
+        QImage GetFrame() noexcept;
+
         void Draw() noexcept;
         void Update() noexcept;
         void paintGL() override;
         void CreateGIF() noexcept;
         void Perspective() noexcept;
         void initializeGL() override;
-        void CreateScreenshot() noexcept;
         void resizeGL(int w, int h) override;
         void ScaleMul(const double &value) noexcept;
         void ScaleDiv(const double &value) noexcept;
         void Move(const double &value, const int &coord) noexcept;
         void Rotate(const double &value, const int &coord) noexcept;
-
-    public slots:
-        void SaveGIF() noexcept;
 
     private:
         Data data_;
@@ -55,11 +53,6 @@ class OpenGL : public QOpenGLWidget {
         GLdouble max_;
         GLdouble far_;
         GLdouble near_;
-
-        QTimer *timer_;
-        QGifImage *frame_;
-        QString gif_name_;
-        int frame_count_;
 
         bool is_stipple_;
         bool is_parallel_;

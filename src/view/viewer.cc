@@ -16,6 +16,9 @@ Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
         LoadSettings();
     }
 
+    timer_ = new QTimer(0);
+    connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
+
     connect(ui_->OpenFile, SIGNAL(clicked()), this, SLOT(OpenFile()));
 
     connect(ui_->MYUp, SIGNAL(clicked()), this, SLOT(MoveYU()));
@@ -58,6 +61,7 @@ Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
 Viewer::~Viewer() {
     SaveSettings();
     delete ui_;
+    delete timer_;
     delete settings_;
 }
 
@@ -313,13 +317,33 @@ void Viewer::VertexType() noexcept {
 }
 
 void Viewer::CreateScreenshot() noexcept {
-  ui_->OGL->CreateScreenshot();
+    QString f_name_ = QFileDialog::getSaveFileName(this, "Save screenshot", "", "BMP Image (*.bmp);; JPEG Image (*.jpeg)");
+    QImage img_ = ui_->OGL->GetFrame();
+    img_.save(f_name_);
 }
 
 void Viewer::CreateGIF() noexcept {
     ui_->GIF->setText("▢");
     ui_->GIF->setDisabled(true);
-    ui_->OGL->CreateGIF();
+    gif_name_ = QFileDialog::getSaveFileName(this, "Save GIF", ".gif", "Gif Files (*.gif)");
+    if (gif_name_ != "") {
+      frame_ = new QGifImage;
+      frame_->setDefaultDelay(10);
+      timer_->setInterval(100);
+      timer_->start();
+    }
+}
+
+void Viewer::SaveGIF() noexcept {
+  QImage img_ = ui_->OGL->GetFrame();
+  frame_->addFrame(img_);
+  if (frame_count_ == 50) {
+    timer_->stop();
+    frame_->save(gif_name_);
+    frame_count_ = 0;
+    delete frame_;
     ui_->GIF->setEnabled(true);
     ui_->GIF->setText("GIF ▶");
+  }
+  frame_count_++;
 }
