@@ -13,6 +13,7 @@ namespace s21 {
             void ScaleDiv(Data &data, const double &value) const noexcept;
             void Move(Data &data, const double &value, const int &coord) const noexcept;
             void Rotate(Data &data, const double &value, const int &coord) const noexcept;
+            void ProcessChunk(Data &data, const double &value, const int &coord, size_t start, size_t end) const noexcept;
     };
 }
 

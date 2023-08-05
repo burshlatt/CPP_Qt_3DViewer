@@ -143,10 +143,15 @@ void Viewer::OpenFile() noexcept {
     if (!path_.isEmpty()) {
         parser_.Parse(path_.toStdString());
         data_ = parser_.get_data();
-        ui_->OGL->set_data(data_);
+
         ui_->FileName->setText(path_);
         ui_->VCount->setText(QString::number(data_.v_count_));
         ui_->FCount->setText(QString::number(data_.f_count_));
+
+        ui_->OGL->set_data(data_);
+        ui_->OGL->set_max(data_.max_coord_ * 1.5);
+        ui_->OGL->set_far((data_.max_coord_ * 1.5 + 10) * 10);
+        ui_->OGL->set_near(data_.max_coord_ * 1.5 / (2 * tan(60.0 * M_PI / 180 / 2)));
         ui_->OGL->Update();
     }
 }
@@ -294,12 +299,16 @@ void Viewer::StippleType() noexcept {
 }
 
 void Viewer::VertexType() noexcept {
-    if (ui_->VertexNo->isChecked())
-        ui_->OGL->set_vertex_type(true, false);
-    else if (ui_->VertexCircle->isChecked())
-        ui_->OGL->set_vertex_type(false, true);
-    else
-        ui_->OGL->set_vertex_type(false, false);
+    if (ui_->VertexNo->isChecked()) {
+        ui_->OGL->set_is_no_vertex(true);
+        ui_->OGL->set_is_circle_vertex(false);
+    } else if (ui_->VertexCircle->isChecked()) {
+        ui_->OGL->set_is_no_vertex(false);
+        ui_->OGL->set_is_circle_vertex(true);
+    } else {
+        ui_->OGL->set_is_no_vertex(false);
+        ui_->OGL->set_is_circle_vertex(false);
+    }
     ui_->OGL->Update();
 }
 

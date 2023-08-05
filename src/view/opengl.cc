@@ -1,15 +1,31 @@
 #include "opengl.h"
 
 OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
+    max_ = 0.0;
+    far_ = 0.0;
+    near_ = 0.0;
+    frame_count_ = 0;
+    line_width_ = 0.0;
+    vertex_width_ = 0.0;
+    is_parallel_ = true;
+    is_stipple_ = false;
+    is_no_vertex_ = false;
+    is_circle_vertex_ = false;
+    main_color_ = Qt::black;
+    line_color_ = Qt::white;
+    vertex_color_ = Qt::white;
+
     timer_ = new QTimer(0);
     connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
 }
 
-OpenGL::~OpenGL() {
-    delete timer_;
-}
+OpenGL::~OpenGL() { delete timer_; }
 
 void OpenGL::set_data(const Data &data) noexcept { data_ = data; }
+void OpenGL::set_max(const GLdouble &max) noexcept { max_ = max; }
+void OpenGL::set_far(const GLdouble &far) noexcept { far_ = far; }
+void OpenGL::set_near(const GLdouble &near) noexcept { near_ = near; }
+void OpenGL::set_is_no_vertex(const bool &no) noexcept { is_no_vertex_ = no; }
 void OpenGL::set_main_color(const QColor &color) noexcept { main_color_ = color; }
 void OpenGL::set_line_color(const QColor &color) noexcept { line_color_ = color; }
 void OpenGL::set_line_width(const double &width) noexcept { line_width_ = width; }
@@ -17,12 +33,7 @@ void OpenGL::set_vertex_color(const QColor &color) noexcept { vertex_color_ = co
 void OpenGL::set_vertex_width(const double &width) noexcept { vertex_width_ = width; }
 void OpenGL::set_stipple(const bool &is_stipple) noexcept { is_stipple_ = is_stipple; }
 void OpenGL::set_parallel(const bool &is_parallel) noexcept { is_parallel_ = is_parallel; }
-
-void OpenGL::set_vertex_type(const bool &no, const bool &circle) noexcept {
-    is_no_vertex_ = no;
-    is_circle_vertex_ = circle;
-    update();
-}
+void OpenGL::set_is_circle_vertex(const bool &circle) noexcept { is_circle_vertex_ = circle; }
 
 void OpenGL::Update() noexcept { update(); }
 void OpenGL::ScaleMul(const double &value) noexcept { affine_.ScaleMul(data_, value); }
@@ -69,15 +80,13 @@ void OpenGL::paintGL() {
 }
 
 void OpenGL::Perspective() noexcept {
-    double max_ = data_.max_coord_ * 1.2;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if (is_parallel_) {
-        glOrtho(-max_, max_, -max_, max_, -((max_ + 10) * 10), (max_ + 10) * 10);
+        glOrtho(-max_, max_, -max_, max_, -far_, far_);
     } else {
-        float heap_height_ = max_ / (2 * tan(60.0 * M_PI / 180 / 2));
-        glFrustum(-max_, max_, -max_, max_, heap_height_, (max_ + 10) * 10);
-        glTranslated(0, 0, -heap_height_ * 3);
+        glFrustum(-max_, max_, -max_, max_, near_, far_);
+        glTranslated(0, 0, -near_ * 3);
     }
 }
 

@@ -19,20 +19,26 @@ class OpenGL : public QOpenGLWidget {
         ~OpenGL();
 
         void set_data(const Data &data) noexcept;
+        void set_max(const GLdouble &max) noexcept;
+        void set_far(const GLdouble &far) noexcept;
+        void set_near(const GLdouble &near) noexcept;
+        void set_is_no_vertex(const bool &no) noexcept;
         void set_stipple(const bool &is_stipple) noexcept;
         void set_main_color(const QColor &color) noexcept;
         void set_line_color(const QColor &color) noexcept;
+        void set_line_width(const double &width) noexcept;
         void set_vertex_color(const QColor &color) noexcept;
         void set_parallel(const bool &is_parallel) noexcept;
-        void set_line_width(const double &width) noexcept;
         void set_vertex_width(const double &width) noexcept;
-        void set_vertex_type(const bool &no, const bool &circle) noexcept;
+        void set_is_circle_vertex(const bool &circle) noexcept;
 
         void Draw() noexcept;
         void Update() noexcept;
         void paintGL() override;
+        void CreateGIF() noexcept;
         void Perspective() noexcept;
         void initializeGL() override;
+        void CreateScreenshot() noexcept;
         void resizeGL(int w, int h) override;
         void ScaleMul(const double &value) noexcept;
         void ScaleDiv(const double &value) noexcept;
@@ -41,26 +47,31 @@ class OpenGL : public QOpenGLWidget {
 
     public slots:
         void SaveGIF() noexcept;
-        void CreateGIF() noexcept;
-        void CreateScreenshot() noexcept;
 
     private:
+        Data data_;
+        s21::Affine affine_;
+
+        GLdouble max_;
+        GLdouble far_;
+        GLdouble near_;
+
         QTimer *timer_;
         QGifImage *frame_;
         QString gif_name_;
-        int frame_count_ = 0;
+        int frame_count_;
 
-        Data data_;
-        s21::Affine affine_;
-        bool is_parallel_ = true;
-        bool is_stipple_ = false;
-        double line_width_ = 0.0;
-        double vertex_width_ = 0.0;
-        bool is_no_vertex_ = false;
-        bool is_circle_vertex_ = false;
-        QColor main_color_ = Qt::black;
-        QColor line_color_ = Qt::white;
-        QColor vertex_color_ = Qt::white;
+        bool is_stipple_;
+        bool is_parallel_;
+        bool is_no_vertex_;
+        bool is_circle_vertex_;
+
+        double line_width_;
+        double vertex_width_;
+
+        QColor main_color_;
+        QColor line_color_;
+        QColor vertex_color_;
 };
 
 #endif  // OPENGL_H

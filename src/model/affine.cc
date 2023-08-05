@@ -8,19 +8,21 @@ void Affine::Move(Data &data, const double &value, const int &coord) const noexc
 }
 
 void Affine::Rotate(Data &data, const double &value, const int &coord) const noexcept {
+  double cos_ = cos(value);
+  double sin_ = sin(value);
   for (int i = 0; i < data.v_count_; i++) {
     double x_ = data.vertexes_[i * 3];
     double y_ = data.vertexes_[i * 3 + 1];
     double z_ = data.vertexes_[i * 3 + 2];
     if (coord == 0) {
-      data.vertexes_[i * 3 + 1] = cos(value) * y_ - sin(value) * z_;
-      data.vertexes_[i * 3 + 2] = sin(value) * y_ + cos(value) * z_;
+      data.vertexes_[i * 3 + 1] = cos_ * y_ - sin_ * z_;
+      data.vertexes_[i * 3 + 2] = sin_ * y_ + cos_ * z_;
     } else if (coord == 1) {
-      data.vertexes_[i * 3] = sin(value) * z_ + cos(value) * x_;
-      data.vertexes_[i * 3 + 2] = cos(value) * z_ - sin(value) * x_;
+      data.vertexes_[i * 3] = sin_ * z_ + cos_ * x_;
+      data.vertexes_[i * 3 + 2] = cos_ * z_ - sin_ * x_;
     } else if (coord == 2) {
-      data.vertexes_[i * 3] = cos(value) * x_ - sin(value) * y_;
-      data.vertexes_[i * 3 + 1] = sin(value) * x_ + cos(value) * y_;
+      data.vertexes_[i * 3] = cos_ * x_ - sin_ * y_;
+      data.vertexes_[i * 3 + 1] = sin_ * x_ + cos_ * y_;
     }
   }
 }
