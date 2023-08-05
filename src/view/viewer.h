@@ -20,17 +20,18 @@ class Viewer : public QMainWindow {
         explicit Viewer(QWidget *parent = nullptr);
         ~Viewer();
 
-    public slots:
-        void SaveGIF() noexcept;
         void CreateGIF() noexcept;
+        void Connections() noexcept;
         void CreateScreenshot() noexcept;
 
+    public slots:
         void MoveXL() noexcept;
         void MoveXR() noexcept;
         void MoveYD() noexcept;
         void MoveYU() noexcept;
         void MoveZC() noexcept;
         void MoveZF() noexcept;
+        void SaveGIF() noexcept;
         void OpenFile() noexcept;
         void ScaleMul() noexcept;
         void ScaleDiv() noexcept;
@@ -51,24 +52,25 @@ class Viewer : public QMainWindow {
         void RotateZ(const int &value) noexcept;
 
     private:
+        Data data_;
         Ui::Viewer *ui_;
         s21::Parser parser_;
 
         QTimer *timer_;
         QGifImage *frame_;
         QString gif_name_;
-        int frame_count_ = 0;
 
-        Data data_;
-        QColor color_main_ = Qt::black;
-        QColor color_line_ = Qt::white;
-        QColor color_vertex_ = Qt::white;
+        int check_x_;
+        int check_y_;
+        int check_z_;
+        double l_width_;
+        double v_width_;
+        int frame_count_;
+
+        QColor color_main_;
+        QColor color_line_;
+        QColor color_vertex_;
         QSettings *settings_;
-        int check_x_ = 50;
-        int check_y_ = 50;
-        int check_z_ = 50;
-        double l_width_ = 1.0;
-        double v_width_ = 1.0;
 };
 
 #endif // VIEWER_H

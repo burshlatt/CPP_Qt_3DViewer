@@ -11,51 +11,20 @@ Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
     int y_ = (screen_geometry_.height() - 650) / 2;
     move(x_, y_);
 
-    settings_ = new QSettings(this);
-    if (settings_->value("saved").toInt() == 1) {
-        LoadSettings();
-    }
-
+    check_x_ = 50;
+    check_y_ = 50;
+    check_z_ = 50;
+    l_width_ = 1.0;
+    v_width_ = 1.0;
+    frame_count_ = 0;
+    color_main_ = Qt::black;
+    color_line_ = Qt::white;
+    color_vertex_ = Qt::white;
     timer_ = new QTimer(0);
-    connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
-
-    connect(ui_->OpenFile, SIGNAL(clicked()), this, SLOT(OpenFile()));
-
-    connect(ui_->MYUp, SIGNAL(clicked()), this, SLOT(MoveYU()));
-    connect(ui_->MZFar, SIGNAL(clicked()), this, SLOT(MoveZF()));
-    connect(ui_->MXLeft, SIGNAL(clicked()), this, SLOT(MoveXL()));
-    connect(ui_->MYDown, SIGNAL(clicked()), this, SLOT(MoveYD()));
-    connect(ui_->MZClose, SIGNAL(clicked()), this, SLOT(MoveZC()));
-    connect(ui_->MXRight, SIGNAL(clicked()), this, SLOT(MoveXR()));
-
-    connect(ui_->MColor, SIGNAL(clicked()), this, SLOT(MainColor()));
-    connect(ui_->LColor, SIGNAL(clicked()), this, SLOT(LineColor()));
-    connect(ui_->VColor, SIGNAL(clicked()), this, SLOT(VertexColor()));
-
-    connect(ui_->ScalePlus, SIGNAL(clicked()), this, SLOT(ScaleMul()));
-    connect(ui_->ScaleMinus, SIGNAL(clicked()), this, SLOT(ScaleDiv()));
-
-    connect(ui_->LWPlus, SIGNAL(clicked()), this, SLOT(LWidthPlus()));
-    connect(ui_->VWPlus, SIGNAL(clicked()), this, SLOT(VWidthPlus()));
-    connect(ui_->LWMinus, SIGNAL(clicked()), this, SLOT(LWidthMinus()));
-    connect(ui_->VWMinus, SIGNAL(clicked()), this, SLOT(VWidthMinus()));
-
-    connect(ui_->StippleNo, SIGNAL(clicked()), this, SLOT(StippleType()));
-    connect(ui_->StippleYes, SIGNAL(clicked()), this, SLOT(StippleType()));
-
-    connect(ui_->VertexNo, SIGNAL(clicked()), this, SLOT(VertexType()));
-    connect(ui_->VertexCircle, SIGNAL(clicked()), this, SLOT(VertexType()));
-    connect(ui_->VertexSquare, SIGNAL(clicked()), this, SLOT(VertexType()));
-
-    connect(ui_->Central, SIGNAL(clicked()), this, SLOT(ProjectionType()));
-    connect(ui_->Parallel, SIGNAL(clicked()), this, SLOT(ProjectionType()));
-
-    connect(ui_->GIF, SIGNAL(clicked()), this, SLOT(CreateGIF()));
-    connect(ui_->Screen, SIGNAL(clicked()), this, SLOT(CreateScreenshot()));
-
-    QObject::connect(ui_->OXRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateX(int)));
-    QObject::connect(ui_->OYRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateY(int)));
-    QObject::connect(ui_->OZRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateZ(int)));
+    settings_ = new QSettings(this);
+    if (settings_->value("saved").toInt() == 1)
+        LoadSettings();
+    Connections();
 }
 
 Viewer::~Viewer() {
@@ -63,6 +32,38 @@ Viewer::~Viewer() {
     delete ui_;
     delete timer_;
     delete settings_;
+}
+
+void Viewer::Connections() noexcept {
+    connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
+    connect(ui_->MYUp, SIGNAL(clicked()), this, SLOT(MoveYU()));
+    connect(ui_->MZFar, SIGNAL(clicked()), this, SLOT(MoveZF()));
+    connect(ui_->MXLeft, SIGNAL(clicked()), this, SLOT(MoveXL()));
+    connect(ui_->MYDown, SIGNAL(clicked()), this, SLOT(MoveYD()));
+    connect(ui_->GIF, SIGNAL(clicked()), this, SLOT(CreateGIF()));
+    connect(ui_->MZClose, SIGNAL(clicked()), this, SLOT(MoveZC()));
+    connect(ui_->MXRight, SIGNAL(clicked()), this, SLOT(MoveXR()));
+    connect(ui_->MColor, SIGNAL(clicked()), this, SLOT(MainColor()));
+    connect(ui_->LColor, SIGNAL(clicked()), this, SLOT(LineColor()));
+    connect(ui_->OpenFile, SIGNAL(clicked()), this, SLOT(OpenFile()));
+    connect(ui_->LWPlus, SIGNAL(clicked()), this, SLOT(LWidthPlus()));
+    connect(ui_->VWPlus, SIGNAL(clicked()), this, SLOT(VWidthPlus()));
+    connect(ui_->VColor, SIGNAL(clicked()), this, SLOT(VertexColor()));
+    connect(ui_->ScalePlus, SIGNAL(clicked()), this, SLOT(ScaleMul()));
+    connect(ui_->ScaleMinus, SIGNAL(clicked()), this, SLOT(ScaleDiv()));
+    connect(ui_->LWMinus, SIGNAL(clicked()), this, SLOT(LWidthMinus()));
+    connect(ui_->VWMinus, SIGNAL(clicked()), this, SLOT(VWidthMinus()));
+    connect(ui_->VertexNo, SIGNAL(clicked()), this, SLOT(VertexType()));
+    connect(ui_->StippleNo, SIGNAL(clicked()), this, SLOT(StippleType()));
+    connect(ui_->StippleYes, SIGNAL(clicked()), this, SLOT(StippleType()));
+    connect(ui_->Central, SIGNAL(clicked()), this, SLOT(ProjectionType()));
+    connect(ui_->VertexCircle, SIGNAL(clicked()), this, SLOT(VertexType()));
+    connect(ui_->VertexSquare, SIGNAL(clicked()), this, SLOT(VertexType()));
+    connect(ui_->Parallel, SIGNAL(clicked()), this, SLOT(ProjectionType()));
+    connect(ui_->Screen, SIGNAL(clicked()), this, SLOT(CreateScreenshot()));
+    connect(ui_->OXRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateX(int)));
+    connect(ui_->OYRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateY(int)));
+    connect(ui_->OZRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateZ(int)));
 }
 
 void Viewer::SaveSettings() noexcept {
@@ -247,27 +248,6 @@ void Viewer::ProjectionType() noexcept {
     ui_->OGL->Update();
 }
 
-void Viewer::LineColor() noexcept {
-    color_line_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
-    if (color_line_.isValid())
-        ui_->OGL->set_line_color(color_line_);
-    ui_->OGL->Update();
-}
-
-void Viewer::VertexColor() noexcept {
-    color_vertex_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
-    if (color_vertex_.isValid())
-        ui_->OGL->set_vertex_color(color_vertex_);
-    ui_->OGL->Update();
-}
-
-void Viewer::MainColor() noexcept {
-    color_main_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
-    if (color_main_.isValid())
-        ui_->OGL->set_main_color(color_main_);
-    ui_->OGL->Update();
-}
-
 void Viewer::LWidthPlus() noexcept {
     l_width_ += 0.5;
     ui_->OGL->set_line_width(l_width_);
@@ -313,6 +293,27 @@ void Viewer::VertexType() noexcept {
         ui_->OGL->set_is_no_vertex(false);
         ui_->OGL->set_is_circle_vertex(false);
     }
+    ui_->OGL->Update();
+}
+
+void Viewer::LineColor() noexcept {
+    color_line_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
+    if (color_line_.isValid())
+        ui_->OGL->set_line_color(color_line_);
+    ui_->OGL->Update();
+}
+
+void Viewer::VertexColor() noexcept {
+    color_vertex_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
+    if (color_vertex_.isValid())
+        ui_->OGL->set_vertex_color(color_vertex_);
+    ui_->OGL->Update();
+}
+
+void Viewer::MainColor() noexcept {
+    color_main_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
+    if (color_main_.isValid())
+        ui_->OGL->set_main_color(color_main_);
     ui_->OGL->Update();
 }
 
