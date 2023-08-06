@@ -3,7 +3,6 @@
 
 #include <QTimer>
 #include <QWidget>
-#include <QFileDialog>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 

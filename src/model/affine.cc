@@ -8,8 +8,8 @@ void Affine::Move(Data &data, const double &value, const int &coord) const noexc
 }
 
 void Affine::Rotate(Data &data, const double &value, const int &coord) const noexcept {
-  double cos_ = cos(value);
-  double sin_ = sin(value);
+  double cos_ = std::cos(value);
+  double sin_ = std::sin(value);
   for (int i = 0; i < data.v_count_; i++) {
     double x_ = data.vertexes_[i * 3];
     double y_ = data.vertexes_[i * 3 + 1];

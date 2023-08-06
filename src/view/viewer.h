@@ -5,6 +5,7 @@
 #include <QScreen>
 #include <QSettings>
 #include <QMainWindow>
+#include <QFileDialog>
 #include <QColorDialog>
 
 #include "opengl.h"
@@ -20,9 +21,7 @@ class Viewer : public QMainWindow {
         explicit Viewer(QWidget *parent = nullptr);
         ~Viewer();
 
-        void CreateGIF() noexcept;
         void Connections() noexcept;
-        void CreateScreenshot() noexcept;
 
     public slots:
         void MoveXL() noexcept;
@@ -37,6 +36,7 @@ class Viewer : public QMainWindow {
         void ScaleDiv() noexcept;
         void LineColor() noexcept;
         void MainColor() noexcept;
+        void CreateGIF() noexcept;
         void VertexType() noexcept;
         void LWidthPlus() noexcept;
         void VWidthPlus() noexcept;
@@ -47,6 +47,7 @@ class Viewer : public QMainWindow {
         void SaveSettings() noexcept;
         void LoadSettings() noexcept;
         void ProjectionType() noexcept;
+        void CreateScreenshot() noexcept;
         void RotateX(const int &value) noexcept;
         void RotateY(const int &value) noexcept;
         void RotateZ(const int &value) noexcept;
