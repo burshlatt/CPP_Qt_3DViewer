@@ -27,19 +27,17 @@ void Affine::Rotate(Data &data, const double &value, const int &coord) const noe
   }
 }
 
-void Affine::ScaleMul(Data &data, const double &value) const noexcept {
+void Affine::Scale(Data &data, const double &value, const bool &div) const noexcept {
   for (size_t i = 0; i < data.vertexes_.size(); i += 3) {
-    data.vertexes_[i] *= value;
-    data.vertexes_[i + 1] *= value;
-    data.vertexes_[i + 2] *= value;
-  }
-}
-
-void Affine::ScaleDiv(Data &data, const double &value) const noexcept {
-  for (size_t i = 0; i < data.vertexes_.size(); i += 3) {
-    data.vertexes_[i] /= value;
-    data.vertexes_[i + 1] /= value;
-    data.vertexes_[i + 2] /= value;
+    if (div) {
+      data.vertexes_[i] /= value;
+      data.vertexes_[i + 1] /= value;
+      data.vertexes_[i + 2] /= value;
+    } else {
+      data.vertexes_[i] *= value;
+      data.vertexes_[i + 1] *= value;
+      data.vertexes_[i + 2] *= value;
+    }
   }
 }
 }

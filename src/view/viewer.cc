@@ -146,97 +146,105 @@ void Viewer::LoadSettings() noexcept {
 void Viewer::OpenFile() noexcept {
     QString path_ = QFileDialog::getOpenFileName(nullptr, "Open File", QString(), "Obj Files (*.obj)");
     if (!path_.isEmpty()) {
-        parser_.Parse(path_.toStdString());
-        data_ = parser_.get_data();
+        controller_.Parse(path_.toStdString());
+        data_ = controller_.get_data();
 
-        ui_->FileName->setText(path_);
+        ui_->FileName->setText(path_.section('/', -1));
         ui_->VCount->setText(QString::number(data_.v_count_));
         ui_->FCount->setText(QString::number(data_.f_count_));
 
         ui_->OGL->set_data(data_);
-        ui_->OGL->set_max(data_.max_coord_ * 1.5);
-        ui_->OGL->set_far((data_.max_coord_ * 1.5 + 10) * 10);
-        ui_->OGL->set_near(data_.max_coord_ * 1.5 / (2 * tan(60.0 * M_PI / 180 / 2)));
         ui_->OGL->Update();
     }
 }
 
 void Viewer::MoveXL() noexcept {
     if (!ui_->XMoveValue->text().isEmpty()) {
-        ui_->OGL->Move(ui_->XMoveValue->text().toDouble() * -1, 0);
+        controller_.Move(data_, ui_->XMoveValue->text().toDouble() * -1, 0);
+        ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
 }
 
 void Viewer::MoveXR() noexcept {
     if (!ui_->XMoveValue->text().isEmpty()) {
-        ui_->OGL->Move(ui_->XMoveValue->text().toDouble(), 0);
+        controller_.Move(data_, ui_->XMoveValue->text().toDouble(), 0);
+        ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
 }
 
 void Viewer::MoveYD() noexcept {
     if (!ui_->YMoveValue->text().isEmpty()) {
-        ui_->OGL->Move(ui_->YMoveValue->text().toDouble() * -1, 1);
+        controller_.Move(data_, ui_->YMoveValue->text().toDouble() * -1, 1);
+        ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
 }
 
 void Viewer::MoveYU() noexcept {
     if (!ui_->YMoveValue->text().isEmpty()) {
-        ui_->OGL->Move(ui_->YMoveValue->text().toDouble(), 1);
+        controller_.Move(data_, ui_->YMoveValue->text().toDouble(), 1);
+        ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
 }
 
 void Viewer::MoveZC() noexcept {
     if (!ui_->ZMoveValue->text().isEmpty()) {
-        ui_->OGL->Move(ui_->ZMoveValue->text().toDouble() * -1, 2);
+        controller_.Move(data_, ui_->ZMoveValue->text().toDouble() * -1, 2);
+        ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
 }
 
 void Viewer::MoveZF() noexcept {
     if (!ui_->ZMoveValue->text().isEmpty()) {
-        ui_->OGL->Move(ui_->ZMoveValue->text().toDouble(), 2);
+        controller_.Move(data_, ui_->ZMoveValue->text().toDouble(), 2);
+        ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
 }
 
 void Viewer::RotateX(const int &value) noexcept {
     if (value > check_x_)
-        ui_->OGL->Rotate(0.1, 0);
+        controller_.Rotate(data_, 0.1, 0);
     else
-        ui_->OGL->Rotate(-0.1, 0);
+        controller_.Rotate(data_, -0.1, 0);
     check_x_ = value;
+    ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 
 void Viewer::RotateY(const int &value) noexcept {
     if (value > check_y_)
-        ui_->OGL->Rotate(0.1, 1);
+        controller_.Rotate(data_, 0.1, 1);
     else
-        ui_->OGL->Rotate(-0.1, 1);
+        controller_.Rotate(data_, -0.1, 1);
     check_y_ = value;
+    ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 
 void Viewer::RotateZ(const int &value) noexcept {
     if (value > check_z_)
-        ui_->OGL->Rotate(-0.1, 2);
+        controller_.Rotate(data_, 0.1, 2);
     else
-        ui_->OGL->Rotate(0.1, 2);
+        controller_.Rotate(data_, -0.1, 2);
     check_z_ = value;
+    ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 
 void Viewer::ScaleMul() noexcept {
-    ui_->OGL->ScaleMul(ui_->ScaleValue->text().toDouble());
+    controller_.Scale(data_, ui_->ScaleValue->text().toDouble(), false);
+    ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 
 void Viewer::ScaleDiv() noexcept {
-    ui_->OGL->ScaleDiv(ui_->ScaleValue->text().toDouble());
+    controller_.Scale(data_, ui_->ScaleValue->text().toDouble(), true);
+    ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 

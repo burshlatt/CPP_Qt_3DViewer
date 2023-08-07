@@ -13,15 +13,20 @@ include(QtGifImage/src/gifimage/qtgifimage.pri)
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    controller/controller.cc \
     main.cc \
-    model/affine.cc \
-    model/parser.cc \
+    model/affine/affine.cc \
+    model/facade/facade.cc \
+    model/parser/parser.cc \
     view/opengl.cc \
     view/viewer.cc
 
 HEADERS += \
-    model/affine.h \
-    model/parser.h \
+    controller/controller.h \
+    model/affine/affine.h \
+    model/facade/facade.h \
+    model/parser/parser.h \
+    model/struct.h \
     view/opengl.h \
     view/viewer.h
 

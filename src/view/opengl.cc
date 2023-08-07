@@ -1,9 +1,6 @@
 #include "opengl.h"
 
 OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
-    max_ = 0.0;
-    far_ = 0.0;
-    near_ = 0.0;
     line_width_ = 0.0;
     vertex_width_ = 0.0;
     is_parallel_ = true;
@@ -18,9 +15,6 @@ OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
 OpenGL::~OpenGL() {}
 
 void OpenGL::set_data(const Data &data) noexcept { data_ = data; }
-void OpenGL::set_max(const GLdouble &max) noexcept { max_ = max; }
-void OpenGL::set_far(const GLdouble &far) noexcept { far_ = far; }
-void OpenGL::set_near(const GLdouble &near) noexcept { near_ = near; }
 void OpenGL::set_is_no_vertex(const bool &no) noexcept { is_no_vertex_ = no; }
 void OpenGL::set_main_color(const QColor &color) noexcept { main_color_ = color; }
 void OpenGL::set_line_color(const QColor &color) noexcept { line_color_ = color; }
@@ -32,14 +26,7 @@ void OpenGL::set_parallel(const bool &is_parallel) noexcept { is_parallel_ = is_
 void OpenGL::set_is_circle_vertex(const bool &circle) noexcept { is_circle_vertex_ = circle; }
 
 void OpenGL::Update() noexcept { update(); }
-void OpenGL::ScaleMul(const double &value) noexcept { affine_.ScaleMul(data_, value); }
-void OpenGL::ScaleDiv(const double &value) noexcept { affine_.ScaleDiv(data_, value); }
-void OpenGL::Move(const double &value, const int &coord) noexcept { affine_.Move(data_, value, coord); }
-void OpenGL::Rotate(const double &value, const int &coord) noexcept { affine_.Rotate(data_, value, coord); }
-
-QImage OpenGL::GetFrame() noexcept {
-  return grabFramebuffer();
-}
+QImage OpenGL::GetFrame() noexcept { return grabFramebuffer(); }
 
 void OpenGL::initializeGL() { glEnable(GL_DEPTH_TEST); }
 void OpenGL::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
@@ -55,10 +42,10 @@ void OpenGL::Perspective() noexcept {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if (is_parallel_) {
-        glOrtho(-max_, max_, -max_, max_, -far_, far_);
+        glOrtho(-(data_.max_coord_), data_.max_coord_, -(data_.max_coord_), data_.max_coord_, -(data_.far_), data_.far_);
     } else {
-        glFrustum(-max_, max_, -max_, max_, near_, far_);
-        glTranslated(0, 0, -near_ * 3);
+        glFrustum(-(data_.max_coord_), data_.max_coord_, -(data_.max_coord_), data_.max_coord_, data_.near_, data_.far_);
+        glTranslated(0, 0, -data_.near_ * 3);
     }
 }
 

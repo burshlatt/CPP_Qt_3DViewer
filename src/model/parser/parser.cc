@@ -4,6 +4,8 @@ namespace s21 {
 Parser::Parser() {
     data_.v_count_ = 0;
     data_.f_count_ = 0;
+    data_.far_ = 0.0;
+    data_.near_ = 0.0;
     data_.max_coord_ = 0.0;
 }
 
@@ -16,6 +18,8 @@ void Parser::Clear() noexcept {
     data_.vertexes_.clear();
     data_.f_count_ = 0;
     data_.v_count_ = 0;
+    data_.far_ = 0.0;
+    data_.near_ = 0.0;
     data_.max_coord_ = 0.0;
 }
 

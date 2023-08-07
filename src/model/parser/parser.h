@@ -1,18 +1,12 @@
-#ifndef SRC_MODEL_PARSER_H_
-#define SRC_MODEL_PARSER_H_
+#ifndef SRC_MODEL_PARSER_PARSER_H_
+#define SRC_MODEL_PARSER_PARSER_H_
 
 #include <cmath>
 #include <vector>
 #include <string>
 #include <iostream>
 
-typedef struct View {
-  int v_count_;
-  int f_count_;
-  double max_coord_;
-  std::vector<int> facets_;
-  std::vector<double> vertexes_;
-} Data;
+#include "../struct.h"
 
 namespace s21 {
   class Parser {
@@ -36,4 +30,4 @@ namespace s21 {
   };
 }
 
-#endif // SRC_MODEL_PARSER_H_
+#endif // SRC_MODEL_PARSER_PARSER_H_
