@@ -134,7 +134,7 @@ QPushButton:pressed {
      <rect>
       <x>890</x>
       <y>140</y>
-      <width>85</width>
+      <width>80</width>
       <height>25</height>
      </rect>
     </property>
@@ -163,7 +163,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MXLeft">
     <property name="geometry">
      <rect>
-      <x>980</x>
+      <x>975</x>
       <y>140</y>
       <width>50</width>
       <height>25</height>
@@ -236,7 +236,7 @@ QPushButton:pressed {
      <rect>
       <x>890</x>
       <y>175</y>
-      <width>85</width>
+      <width>80</width>
       <height>25</height>
      </rect>
     </property>
@@ -247,7 +247,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MYUp">
     <property name="geometry">
      <rect>
-      <x>980</x>
+      <x>975</x>
       <y>175</y>
       <width>50</width>
       <height>25</height>
@@ -294,7 +294,7 @@ QPushButton:pressed {
      <rect>
       <x>890</x>
       <y>210</y>
-      <width>85</width>
+      <width>80</width>
       <height>25</height>
      </rect>
     </property>
@@ -345,7 +345,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="MZFar">
     <property name="geometry">
      <rect>
-      <x>980</x>
+      <x>975</x>
       <y>210</y>
       <width>50</width>
       <height>25</height>
@@ -487,7 +487,7 @@ QPushButton:pressed {
    <widget class="QPushButton" name="ScalePlus">
     <property name="geometry">
      <rect>
-      <x>980</x>
+      <x>975</x>
       <y>365</y>
       <width>50</width>
       <height>25</height>
@@ -516,7 +516,7 @@ QPushButton:pressed {
      <rect>
       <x>890</x>
       <y>365</y>
-      <width>85</width>
+      <width>80</width>
       <height>25</height>
      </rect>
     </property>

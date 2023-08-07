@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <string_view>
 
 #include "../struct.h"
 
@@ -23,7 +24,6 @@ namespace s21 {
       void Parse(const std::string &path) noexcept;
       void DelNum(std::string &line) const noexcept;
       void DelSpace(std::string &line) const noexcept;
-      const long& GetSize(FILE *file) const noexcept;
 
     private:
       Data data_;

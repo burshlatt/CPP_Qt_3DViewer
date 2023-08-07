@@ -1,6 +1,7 @@
 #ifndef SRC_MODEL_FACADE_FACADE_H_
 #define SRC_MODEL_FACADE_FACADE_H_
 
+#include "../struct.h"
 #include "../parser/parser.h"
 #include "../affine/affine.h"
 

@@ -27,29 +27,22 @@ void Parser::Parse(const std::string &path) noexcept {
     Clear();
     FILE* file_ = fopen(path.c_str(), "rb");
     if (file_) {
-        const size_t size_ = GetSize(file_);
-        char *buffer_ = new char[size_]{};
-        size_t line_start_ = 0;
-        size_t read_ = fread(buffer_, 1, size_, file_);
-        for (size_t i = 0; i < read_; i++) {
-            if (buffer_[i] == '\n' || i == read_ - 1) {
-                ProcessLine(std::string(buffer_ + line_start_, buffer_ + i));
-                line_start_ = i + 1;
+        fseek(file_, 0, SEEK_END);
+        const long size_ = ftell(file_);
+        fseek(file_, 0, SEEK_SET);
+        char* buffer_ = new char[size_]{};
+        fread(buffer_, 1, size_, file_);
+        fclose(file_);
+        size_t line_start = 0;
+        for (long i = 0; i < size_; i++) {
+            if (buffer_[i] == '\n' || i == size_ - 1) {
+                ProcessLine(std::string(buffer_ + line_start, buffer_ + i));
+                line_start = i + 1;
             }
         }
         delete[] buffer_;
         buffer_ = nullptr;
-        fclose(file_);
     }
-}
-
-const long& Parser::GetSize(FILE *file) const noexcept {
-    long start_ = ftell(file);
-    fseek(file, 0, SEEK_END);
-    long end_ = ftell(file);
-    fseek(file, start_, SEEK_SET);
-    if (end_ > 0) return end_;
-    else return 0;
 }
 
 void Parser::ProcessLine(std::string line) noexcept {
@@ -64,7 +57,7 @@ void Parser::ProcessLine(std::string line) noexcept {
     }
 }
 
-void Parser::ParseVertex(std::string& line) noexcept {
+void Parser::ParseVertex(std::string &line) noexcept {
     DelSpace(line);
     double num_ = 0.0;
     std::vector<double> buffer_;
@@ -72,7 +65,7 @@ void Parser::ParseVertex(std::string& line) noexcept {
     char *end = nullptr;
     while (!line.empty()) {
         num_ = strtod(line.c_str(), &end);
-        buffer_.push_back(num_);
+        buffer_.emplace_back(num_);
         line = end;
         DelSpace(line);
     }
@@ -82,23 +75,23 @@ void Parser::ParseVertex(std::string& line) noexcept {
     data_.v_count_++;
 }
 
-void Parser::ParseFacet(std::string& line) noexcept {
+void Parser::ParseFacet(std::string &line) noexcept {
     DelSpace(line);
     std::vector<int> buffer_;
     buffer_.reserve(3);
     char* end = nullptr;
     while (!line.empty()) {
-        buffer_.push_back(strtol(line.c_str(), &end, 10) - 1);
+        buffer_.emplace_back(strtol(line.c_str(), &end, 10) - 1);
         line = end;
         DelNum(line);
         DelSpace(line);
     }
     for (size_t i = 0; i < buffer_.size(); i++) {
-        data_.facets_.push_back(buffer_[i]);
+        data_.facets_.emplace_back(buffer_[i]);
         if (i != buffer_.size() - 1)
-            data_.facets_.push_back(buffer_[i + 1]);
+            data_.facets_.emplace_back(buffer_[i + 1]);
         else
-            data_.facets_.push_back(buffer_[0]);
+            data_.facets_.emplace_back(buffer_[0]);
     }
     data_.f_count_++;
 }
@@ -113,3 +106,19 @@ void Parser::DelNum(std::string &line) const noexcept {
     line.erase(line.begin());
 }
 }
+
+// #include <chrono>
+
+// int main() {
+//     auto start = std::chrono::high_resolution_clock::now();
+
+//     s21::Parser pars_;
+//     // pars_.Parse("/Users/burshlat/Desktop/Lion.obj");
+//     pars_.Parse("../../obj_files/car.obj");
+//     Data data_ = pars_.get_data();
+
+//     auto end = std::chrono::high_resolution_clock::now();
+//     auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+//     std::cout << "Time taken: " << duration.count() << " seconds" << std::endl;
+//     return 0;
+// }
