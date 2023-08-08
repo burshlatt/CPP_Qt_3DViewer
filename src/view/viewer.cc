@@ -5,6 +5,8 @@ Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
     ui_->setupUi(this);
     this->setFixedSize(1100, 650);
 
+    controller_ = new s21::Controller(data_);
+
     QScreen *screen_ = QGuiApplication::primaryScreen();
     QRect screen_geometry_ = screen_->geometry();
     int x_ = (screen_geometry_.width() - 1100) / 2;
@@ -32,6 +34,7 @@ Viewer::~Viewer() {
     delete ui_;
     delete timer_;
     delete settings_;
+    delete controller_;
 }
 
 void Viewer::Connections() noexcept {
@@ -146,8 +149,7 @@ void Viewer::LoadSettings() noexcept {
 void Viewer::OpenFile() noexcept {
     QString path_ = QFileDialog::getOpenFileName(nullptr, "Open File", QString(), "Obj Files (*.obj)");
     if (!path_.isEmpty()) {
-        controller_.Parse(path_.toStdString());
-        data_ = controller_.get_data();
+        controller_->Parse(path_.toStdString());
 
         ui_->FileName->setText(path_.section('/', -1));
         ui_->VCount->setText(QString::number(data_.v_count_));
@@ -160,7 +162,7 @@ void Viewer::OpenFile() noexcept {
 
 void Viewer::MoveXL() noexcept {
     if (!ui_->XMoveValue->text().isEmpty()) {
-        controller_.Move(data_, ui_->XMoveValue->text().toDouble() * -1, 0);
+        controller_->Move(-ui_->XMoveValue->text().toDouble(), MoveX);
         ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
@@ -168,7 +170,7 @@ void Viewer::MoveXL() noexcept {
 
 void Viewer::MoveXR() noexcept {
     if (!ui_->XMoveValue->text().isEmpty()) {
-        controller_.Move(data_, ui_->XMoveValue->text().toDouble(), 0);
+        controller_->Move(ui_->XMoveValue->text().toDouble(), MoveX);
         ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
@@ -176,7 +178,7 @@ void Viewer::MoveXR() noexcept {
 
 void Viewer::MoveYD() noexcept {
     if (!ui_->YMoveValue->text().isEmpty()) {
-        controller_.Move(data_, ui_->YMoveValue->text().toDouble() * -1, 1);
+        controller_->Move(-ui_->YMoveValue->text().toDouble(), MoveY);
         ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
@@ -184,7 +186,7 @@ void Viewer::MoveYD() noexcept {
 
 void Viewer::MoveYU() noexcept {
     if (!ui_->YMoveValue->text().isEmpty()) {
-        controller_.Move(data_, ui_->YMoveValue->text().toDouble(), 1);
+        controller_->Move(ui_->YMoveValue->text().toDouble(), MoveY);
         ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
@@ -192,7 +194,7 @@ void Viewer::MoveYU() noexcept {
 
 void Viewer::MoveZC() noexcept {
     if (!ui_->ZMoveValue->text().isEmpty()) {
-        controller_.Move(data_, ui_->ZMoveValue->text().toDouble() * -1, 2);
+        controller_->Move(-ui_->ZMoveValue->text().toDouble(), MoveZ);
         ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
@@ -200,7 +202,7 @@ void Viewer::MoveZC() noexcept {
 
 void Viewer::MoveZF() noexcept {
     if (!ui_->ZMoveValue->text().isEmpty()) {
-        controller_.Move(data_, ui_->ZMoveValue->text().toDouble(), 2);
+        controller_->Move(ui_->ZMoveValue->text().toDouble(), MoveZ);
         ui_->OGL->set_data(data_);
         ui_->OGL->Update();
     }
@@ -208,9 +210,9 @@ void Viewer::MoveZF() noexcept {
 
 void Viewer::RotateX(const int &value) noexcept {
     if (value > check_x_)
-        controller_.Rotate(data_, 0.1, 0);
+        controller_->Rotate(0.1, RotX);
     else
-        controller_.Rotate(data_, -0.1, 0);
+        controller_->Rotate(-0.1, RotX);
     check_x_ = value;
     ui_->OGL->set_data(data_);
     ui_->OGL->Update();
@@ -218,9 +220,9 @@ void Viewer::RotateX(const int &value) noexcept {
 
 void Viewer::RotateY(const int &value) noexcept {
     if (value > check_y_)
-        controller_.Rotate(data_, 0.1, 1);
+        controller_->Rotate(0.1, RotY);
     else
-        controller_.Rotate(data_, -0.1, 1);
+        controller_->Rotate(-0.1, RotY);
     check_y_ = value;
     ui_->OGL->set_data(data_);
     ui_->OGL->Update();
@@ -228,22 +230,22 @@ void Viewer::RotateY(const int &value) noexcept {
 
 void Viewer::RotateZ(const int &value) noexcept {
     if (value > check_z_)
-        controller_.Rotate(data_, 0.1, 2);
+        controller_->Rotate(0.1, RotZ);
     else
-        controller_.Rotate(data_, -0.1, 2);
+        controller_->Rotate(-0.1, RotZ);
     check_z_ = value;
     ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 
 void Viewer::ScaleMul() noexcept {
-    controller_.Scale(data_, ui_->ScaleValue->text().toDouble(), false);
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), false);
     ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 
 void Viewer::ScaleDiv() noexcept {
-    controller_.Scale(data_, ui_->ScaleValue->text().toDouble(), true);
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), true);
     ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }

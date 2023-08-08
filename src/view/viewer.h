@@ -57,7 +57,7 @@ class Viewer : public QMainWindow {
     private:
         Data data_;
         Ui::Viewer *ui_;
-        s21::Controller controller_;
+        s21::Controller *controller_;
 
         int check_x_;
         int check_y_;

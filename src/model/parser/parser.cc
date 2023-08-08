@@ -1,7 +1,7 @@
 #include "parser.h"
 
 namespace s21 {
-Parser::Parser() {
+Parser::Parser(Data &data) : data_(data) {
     data_.v_count_ = 0;
     data_.f_count_ = 0;
     data_.far_ = 0.0;
@@ -10,8 +10,6 @@ Parser::Parser() {
 }
 
 Parser::~Parser() { Clear(); }
-
-const Data& Parser::get_data() const noexcept { return data_; }
 
 void Parser::Clear() noexcept {
     data_.facets_.clear();
@@ -40,6 +38,7 @@ void Parser::Parse(const std::string &path) noexcept {
                 line_start = i + 1;
             }
         }
+        SetPerspectiveData();
         delete[] buffer_;
         buffer_ = nullptr;
     }
@@ -105,20 +104,10 @@ void Parser::DelNum(std::string &line) const noexcept {
   while(!line.empty() && !isspace(line[0]))
     line.erase(line.begin());
 }
+
+void Parser::SetPerspectiveData() noexcept {
+    data_.max_coord_ *= 1.5;
+    data_.far_ = (data_.max_coord_ + 10) * 10;
+    data_.near_ = data_.max_coord_ / (2 * tan(60.0 * M_PI / 180 / 2));
 }
-
-// #include <chrono>
-
-// int main() {
-//     auto start = std::chrono::high_resolution_clock::now();
-
-//     s21::Parser pars_;
-//     // pars_.Parse("/Users/burshlat/Desktop/Lion.obj");
-//     pars_.Parse("../../obj_files/car.obj");
-//     Data data_ = pars_.get_data();
-
-//     auto end = std::chrono::high_resolution_clock::now();
-//     auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);
-//     std::cout << "Time taken: " << duration.count() << " seconds" << std::endl;
-//     return 0;
-// }
+}

@@ -18,6 +18,7 @@ SOURCES += \
     model/affine/affine.cc \
     model/facade/facade.cc \
     model/parser/parser.cc \
+    model/strategy/strategy.cc \
     view/opengl.cc \
     view/viewer.cc
 
@@ -26,6 +27,7 @@ HEADERS += \
     model/affine/affine.h \
     model/facade/facade.h \
     model/parser/parser.h \
+    model/strategy/strategy.h \
     model/struct.h \
     view/opengl.h \
     view/viewer.h

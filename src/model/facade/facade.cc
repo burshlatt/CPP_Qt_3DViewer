@@ -1,21 +1,36 @@
 #include "facade.h"
 
 namespace s21 {
-const Data& Facade::get_data() const noexcept { return parser_.get_data(); }
+Facade::Facade(Data &data) {
+    parser_ = new Parser(data);
+    move_ = new MoveStrategy(data, affine_);
+    scale_ = new ScaleStrategy(data, affine_);
+    rotate_ = new RotateStrategy(data, affine_);
+}
+
+Facade::~Facade() {
+    delete move_;
+    delete scale_;
+    delete rotate_;
+    delete parser_;
+}
 
 void Facade::Parse(const std::string &path) noexcept {
-    parser_.Parse(path);
+    parser_->Parse(path);
 }
 
-void Facade::Scale(Data &data, const double &value, const bool &div) const noexcept {
-    affine_.Scale(data, value, div);
+void Facade::Scale(const double &value, const bool &div) const noexcept {
+    if (!div)
+        scale_->Transform(ScaleP, value);
+    else
+        scale_->Transform(ScaleM, value);
 }
 
-void Facade::Move(Data &data, const double &value, const int &coord) const noexcept {
-    affine_.Move(data, value, coord);
+void Facade::Move(const double &value, const Action &act) const noexcept {
+    move_->Transform(act, value);
 }
 
-void Facade::Rotate(Data &data, const double &value, const int &coord) const noexcept {
-    affine_.Rotate(data, value, coord);
+void Facade::Rotate(const double &value, const Action &act) const noexcept {
+    rotate_->Transform(act, value);
 }
 }

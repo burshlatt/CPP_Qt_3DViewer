@@ -5,19 +5,17 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <string_view>
 
 #include "../struct.h"
 
 namespace s21 {
   class Parser {
     public:
-      Parser();
+      Parser(Data &data);
       ~Parser();
 
-      const Data& get_data() const noexcept;
-
       void Clear() noexcept;
+      void SetPerspectiveData() noexcept;
       void ProcessLine(std::string line) noexcept;
       void ParseFacet(std::string &line) noexcept;
       void ParseVertex(std::string &line) noexcept;
@@ -26,7 +24,7 @@ namespace s21 {
       void DelSpace(std::string &line) const noexcept;
 
     private:
-      Data data_;
+      Data &data_;
   };
 }
 

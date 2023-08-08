@@ -7,19 +7,16 @@
 namespace s21 {
     class Controller {
         public:
-            Controller() {}
-            ~Controller() {}
-
-            const Data& get_data() noexcept;
+            Controller(Data &data);
+            ~Controller();
 
             void Parse(const std::string &path) noexcept;
-            void Scale(Data &data, const double &value, const bool &div) const noexcept;
-            void Move(Data &data, const double &value, const int &coord) const noexcept;
-            void Rotate(Data &data, const double &value, const int &coord) const noexcept;
+            void Scale(const double &value, const bool &div) const noexcept;
+            void Move(const double &value, const Action &act) const noexcept;
+            void Rotate(const double &value, const Action &act) const noexcept;
 
         private:
-            Data data_;
-            Facade facade_;
+            Facade *facade_;
     };
 }
 
