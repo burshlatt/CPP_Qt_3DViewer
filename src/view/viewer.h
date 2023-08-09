@@ -2,6 +2,7 @@
 #define VIEWER_H
 
 #include <QColor>
+#include <QTimer>
 #include <QScreen>
 #include <QSettings>
 #include <QMainWindow>
@@ -59,20 +60,15 @@ class Viewer : public QMainWindow {
         Ui::Viewer *ui_;
         s21::Controller *controller_;
 
-        int check_x_;
-        int check_y_;
-        int check_z_;
-        double l_width_;
-        double v_width_;
         int frame_count_;
+        double l_width_, v_width_;
+        int check_x_, check_y_, check_z_;
 
         QTimer *timer_;
         QGifImage *frame_;
         QString gif_name_;
-        QColor color_main_;
-        QColor color_line_;
-        QColor color_vertex_;
         QSettings *settings_;
+        QColor color_main_, color_line_, color_vertex_;
 };
 
 #endif // VIEWER_H

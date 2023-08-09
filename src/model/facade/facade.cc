@@ -19,11 +19,8 @@ void Facade::Parse(const std::string &path) noexcept {
     parser_->Parse(path);
 }
 
-void Facade::Scale(const double &value, const bool &div) const noexcept {
-    if (!div)
-        scale_->Transform(ScaleP, value);
-    else
-        scale_->Transform(ScaleM, value);
+void Facade::Scale(const double &value, const Action &act) const noexcept {
+    scale_->Transform(act, value);
 }
 
 void Facade::Move(const double &value, const Action &act) const noexcept {

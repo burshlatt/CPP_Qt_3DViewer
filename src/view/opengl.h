@@ -1,7 +1,6 @@
 #ifndef OPENGL_H
 #define OPENGL_H
 
-#include <QTimer>
 #include <QWidget>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
@@ -38,18 +37,9 @@ class OpenGL : public QOpenGLWidget {
 
     private:
         Data data_;
-
-        bool is_stipple_;
-        bool is_parallel_;
-        bool is_no_vertex_;
-        bool is_circle_vertex_;
-
-        double line_width_;
-        double vertex_width_;
-
-        QColor main_color_;
-        QColor line_color_;
-        QColor vertex_color_;
+        double line_width_, vertex_width_;
+        QColor main_color_, line_color_, vertex_color_;
+        bool is_stipple_, is_parallel_, is_no_vertex_, is_circle_vertex_;
 };
 
 #endif  // OPENGL_H

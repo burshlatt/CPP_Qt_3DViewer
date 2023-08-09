@@ -11,8 +11,8 @@ namespace s21 {
             ~Controller();
 
             void Parse(const std::string &path) noexcept;
-            void Scale(const double &value, const bool &div) const noexcept;
             void Move(const double &value, const Action &act) const noexcept;
+            void Scale(const double &value, const Action &act) const noexcept;
             void Rotate(const double &value, const Action &act) const noexcept;
 
         private:

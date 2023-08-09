@@ -1,9 +1,6 @@
 #ifndef SRC_MODEL_STRATEGY_STRATEGY_H_
 #define SRC_MODEL_STRATEGY_STRATEGY_H_
 
-#include <functional>
-#include <unordered_map>
-
 #include "../struct.h"
 #include "../affine/affine.h"
 

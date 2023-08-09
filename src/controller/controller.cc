@@ -13,8 +13,8 @@ void Controller::Parse(const std::string &path) noexcept {
     facade_->Parse(path);
 }
 
-void Controller::Scale(const double &value, const bool &div) const noexcept {
-    facade_->Scale(value, div);
+void Controller::Scale(const double &value, const Action &act) const noexcept {
+    facade_->Scale(value, act);
 }
 
 void Controller::Move(const double &value, const Action &act) const noexcept {

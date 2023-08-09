@@ -239,13 +239,13 @@ void Viewer::RotateZ(const int &value) noexcept {
 }
 
 void Viewer::ScaleMul() noexcept {
-    controller_->Scale(ui_->ScaleValue->text().toDouble(), false);
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleP);
     ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
 
 void Viewer::ScaleDiv() noexcept {
-    controller_->Scale(ui_->ScaleValue->text().toDouble(), true);
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleM);
     ui_->OGL->set_data(data_);
     ui_->OGL->Update();
 }
