@@ -8,11 +8,13 @@
 
 #include "../struct.h"
 
+#include <fstream>
+
 namespace s21 {
   class Parser {
     public:
       Parser(Data &data);
-      ~Parser();
+      ~Parser() {}
 
       void Clear() noexcept;
       void SetPerspectiveData() noexcept;

@@ -6,18 +6,14 @@ ScaleStrategy::ScaleStrategy(Data &data, Affine &affine) : data_(data), affine_(
 
 void ScaleStrategy::Transform(const Action &act, const double &value) {
     value_ = value;
+    Scale(act);
+}
+
+void ScaleStrategy::Scale(const Action &act) {
     if (act == ScaleP)
-        ScalePlus();
+        affine_.Scale(data_, value_, false);
     else if (act == ScaleM)
-        ScaleMinus();
-}
-
-void ScaleStrategy::ScalePlus() {
-    affine_.Scale(data_, value_, false);
-}
-
-void ScaleStrategy::ScaleMinus() {
-    affine_.Scale(data_, value_, true);
+        affine_.Scale(data_, value_, true);
 }
 
 // ======================================== M O V E ======================================== //
@@ -25,24 +21,16 @@ MoveStrategy::MoveStrategy(Data &data, Affine &affine) : data_(data), affine_(af
 
 void MoveStrategy::Transform(const Action &act, const double &value) {
     value_ = value;
+    Move(act);
+}
+
+void MoveStrategy::Move(const Action &act) {
     if (act == MoveX)
-        MoveXCoord();
+        affine_.Move(data_, value_, X);
     else if (act == MoveY)
-        MoveYCoord();
+        affine_.Move(data_, value_, Y);
     else if (act == MoveZ)
-        MoveZCoord();
-}
-
-void MoveStrategy::MoveXCoord() {
-    affine_.Move(data_, value_, X);
-}
-
-void MoveStrategy::MoveYCoord() {
-    affine_.Move(data_, value_, Y);
-}
-
-void MoveStrategy::MoveZCoord() {
-    affine_.Move(data_, value_, Z);
+        affine_.Move(data_, value_, Z);
 }
 
 // ====================================== R O T A T E ====================================== //
@@ -50,23 +38,15 @@ RotateStrategy::RotateStrategy(Data &data, Affine &affine) : data_(data), affine
 
 void RotateStrategy::Transform(const Action &act, const double &value) {
     value_ = value;
+    Rotate(act);
+}
+
+void RotateStrategy::Rotate(const Action &act) {
     if (act == RotX)
-        RotateXCoord();
+        affine_.Rotate(data_, value_, X);
     else if (act == RotY)
-        RotateYCoord();
+        affine_.Rotate(data_, value_, Y);
     else if (act == RotZ)
-        RotateZCoord();
-}
-
-void RotateStrategy::RotateXCoord() {
-    affine_.Rotate(data_, value_, X);
-}
-
-void RotateStrategy::RotateYCoord() {
-    affine_.Rotate(data_, value_, Y);
-}
-
-void RotateStrategy::RotateZCoord() {
-    affine_.Rotate(data_, value_, Z);
+        affine_.Rotate(data_, value_, Z);
 }
 }

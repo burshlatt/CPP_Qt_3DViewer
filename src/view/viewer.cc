@@ -334,10 +334,10 @@ void Viewer::CreateScreenshot() noexcept {
 }
 
 void Viewer::CreateGIF() noexcept {
-    ui_->GIF->setText("▢");
-    ui_->GIF->setDisabled(true);
     gif_name_ = QFileDialog::getSaveFileName(this, "Save GIF", "", "Gif Files (*.gif)");
     if (gif_name_ != "") {
+      ui_->GIF->setText("▢");
+      ui_->GIF->setDisabled(true);
       frame_ = new QGifImage;
       frame_->setDefaultDelay(10);
       timer_->setInterval(100);

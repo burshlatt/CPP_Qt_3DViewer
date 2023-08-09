@@ -24,8 +24,7 @@ class ScaleStrategy : public Strategy {
         Affine &affine_;
         double value_;
 
-        void ScalePlus();
-        void ScaleMinus();
+        void Scale(const Action &act);
 };
 
 class MoveStrategy : public Strategy {
@@ -38,9 +37,7 @@ class MoveStrategy : public Strategy {
         Affine &affine_;
         double value_;
 
-        void MoveXCoord();
-        void MoveYCoord();
-        void MoveZCoord();
+        void Move(const Action &act);
 };
 
 class RotateStrategy : public Strategy {
@@ -53,9 +50,7 @@ class RotateStrategy : public Strategy {
         Affine &affine_;
         double value_;
 
-        void RotateXCoord();
-        void RotateYCoord();
-        void RotateZCoord();
+        void Rotate(const Action &act);
 };
 } // namespace s21
 

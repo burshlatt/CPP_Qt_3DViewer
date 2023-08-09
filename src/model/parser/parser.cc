@@ -9,8 +9,6 @@ Parser::Parser(Data &data) : data_(data) {
     data_.max_coord_ = 0.0;
 }
 
-Parser::~Parser() { Clear(); }
-
 void Parser::Clear() noexcept {
     data_.facets_.clear();
     data_.vertexes_.clear();
@@ -59,16 +57,14 @@ void Parser::ProcessLine(std::string line) noexcept {
 void Parser::ParseVertex(std::string &line) noexcept {
     DelSpace(line);
     double num_ = 0.0;
-    std::vector<double> buffer_;
-    buffer_.reserve(3);
+    data_.vertexes_.reserve(3);
     char *end = nullptr;
     while (!line.empty()) {
         num_ = strtod(line.c_str(), &end);
-        buffer_.emplace_back(num_);
+        data_.vertexes_.emplace_back(num_);
         line = end;
         DelSpace(line);
     }
-    data_.vertexes_.insert(data_.vertexes_.end(), buffer_.begin(), buffer_.begin() + 3);
     if (std::fabs(num_) > data_.max_coord_)
         data_.max_coord_ = std::fabs(num_);
     data_.v_count_++;

@@ -12,7 +12,9 @@ OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
     vertex_color_ = Qt::white;
 }
 
-OpenGL::~OpenGL() {}
+OpenGL::~OpenGL() {
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
 
 void OpenGL::set_data(const Data &data) noexcept { data_ = data; }
 void OpenGL::set_is_no_vertex(const bool &no) noexcept { is_no_vertex_ = no; }
@@ -28,7 +30,11 @@ void OpenGL::set_is_circle_vertex(const bool &circle) noexcept { is_circle_verte
 void OpenGL::Update() noexcept { update(); }
 QImage OpenGL::GetFrame() noexcept { return grabFramebuffer(); }
 
-void OpenGL::initializeGL() { glEnable(GL_DEPTH_TEST); }
+void OpenGL::initializeGL() {
+    glEnable(GL_DEPTH_TEST);
+    glEnableClientState(GL_VERTEX_ARRAY);
+}
+
 void OpenGL::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
 
 void OpenGL::paintGL() {
@@ -53,7 +59,6 @@ void OpenGL::Draw() noexcept {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glVertexPointer(3, GL_DOUBLE, 0, data_.vertexes_.data());
-    glEnableClientState(GL_VERTEX_ARRAY);
     glColor3d(line_color_.redF(), line_color_.greenF(), line_color_.blueF());
     glLineWidth(line_width_);
 
@@ -75,6 +80,4 @@ void OpenGL::Draw() noexcept {
 
     if (is_stipple_)
         glDisable(GL_LINE_STIPPLE);
-
-    glDisableClientState(GL_VERTEX_ARRAY);
 }
