@@ -1,4 +1,5 @@
 #include <QApplication>
+
 #include "view/viewer.h"
 
 int main(int argc, char *argv[]) {

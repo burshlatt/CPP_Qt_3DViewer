@@ -13,17 +13,8 @@ typedef struct View {
   std::vector<double> vertexes_;
 } Data;
 
-enum Action {
-    RotX,
-    RotY,
-    RotZ,
-    MoveX,
-    MoveY,
-    MoveZ,
-    ScaleP,
-    ScaleM
-};
-
 enum Coord { X, Y, Z };
 
-#endif // SRC_MODEL_STRUCT_H_
+enum Action { RotX, RotY, RotZ, MoveX, MoveY, MoveZ, ScaleP, ScaleM };
+
+#endif  // SRC_MODEL_STRUCT_H_

@@ -29,7 +29,6 @@ void Affine::Rotate(Data &data, const double &value, const int &coord) const noe
 
 void Affine::Scale(Data &data, const double &value, const bool &div) const noexcept {
   double scale_factor = div ? 1.0 / value : value;
-  for (double &vertex : data.vertexes_)
-    vertex *= scale_factor;
+  for (double &vertex : data.vertexes_) vertex *= scale_factor;
 }
-} // namespace s21
+}  // namespace s21
