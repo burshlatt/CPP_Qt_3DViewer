@@ -22,6 +22,7 @@ class Parser {
   void ParseVertex(std::string &line) noexcept;
   void Parse(const std::string &path) noexcept;
   void DelNum(std::string &line) const noexcept;
+  void ParseTexture(std::string &line) noexcept;
   void DelSpace(std::string &line) const noexcept;
 
  private:

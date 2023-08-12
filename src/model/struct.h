@@ -6,11 +6,13 @@
 typedef struct View {
   int v_count_;
   int f_count_;
+  int t_count_;
   double far_;
   double near_;
   double max_coord_;
   std::vector<int> facets_;
   std::vector<double> vertexes_;
+  std::vector<double> textures_;
 } Data;
 
 enum Coord { X, Y, Z };
