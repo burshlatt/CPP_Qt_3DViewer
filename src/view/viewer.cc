@@ -1,18 +1,26 @@
 #include "viewer.h"
 #include "ui_viewer.h"
 
+namespace s21 {
 Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
     ui_->setupUi(this);
     this->setFixedSize(1100, 650);
+    controller_ = std::make_unique<Controller>(data_);
+    SetPosition();
+    SetFields();
+    timer_ = new QTimer(0);
+    SetSettings();
+    SetConnections();
+}
 
-    controller_ = new s21::Controller(data_);
+Viewer::~Viewer() {
+    SaveSettings();
+    delete ui_;
+    delete timer_;
+    delete settings_;
+}
 
-    QScreen *screen_ = QGuiApplication::primaryScreen();
-    QRect screen_geometry_ = screen_->geometry();
-    int x_ = (screen_geometry_.width() - 1100) / 2;
-    int y_ = (screen_geometry_.height() - 650) / 2;
-    move(x_, y_);
-
+void Viewer::SetFields() noexcept {
     check_x_ = 50;
     check_y_ = 50;
     check_z_ = 50;
@@ -22,22 +30,23 @@ Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
     color_main_ = Qt::black;
     color_line_ = Qt::white;
     color_vertex_ = Qt::white;
-    timer_ = new QTimer(0);
+}
+
+void Viewer::SetPosition() noexcept {
+    QScreen *screen_ = QGuiApplication::primaryScreen();
+    QRect screen_geometry_ = screen_->geometry();
+    int x_ = (screen_geometry_.width() - 1100) / 2;
+    int y_ = (screen_geometry_.height() - 650) / 2;
+    move(x_, y_);
+}
+
+void Viewer::SetSettings() noexcept {
     settings_ = new QSettings(this);
     if (settings_->value("saved").toInt() == 1)
         LoadSettings();
-    Connections();
 }
 
-Viewer::~Viewer() {
-    SaveSettings();
-    delete ui_;
-    delete timer_;
-    delete settings_;
-    delete controller_;
-}
-
-void Viewer::Connections() noexcept {
+void Viewer::SetConnections() noexcept {
     connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
     connect(ui_->MYUp, SIGNAL(clicked()), this, SLOT(MoveYU()));
     connect(ui_->MZFar, SIGNAL(clicked()), this, SLOT(MoveZF()));
@@ -358,3 +367,4 @@ void Viewer::SaveGIF() noexcept {
   }
   frame_count_++;
 }
+} // namespace s21

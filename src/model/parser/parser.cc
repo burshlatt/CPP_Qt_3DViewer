@@ -106,4 +106,4 @@ void Parser::SetPerspectiveData() noexcept {
     data_.far_ = (data_.max_coord_ + 10) * 10;
     data_.near_ = data_.max_coord_ / (2 * tan(60.0 * M_PI / 180 / 2));
 }
-}
+} // namespace s21

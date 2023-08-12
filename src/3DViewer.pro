@@ -2,6 +2,8 @@ QT       += core gui opengl openglwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QMAKE_CXXFLAGS += -O3
+
 CONFIG += c++17
 
 ICON = icon/3dviewer.png

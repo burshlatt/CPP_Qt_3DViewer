@@ -9,7 +9,7 @@ void ScaleStrategy::Transform(const Action &act, const double &value) {
     Scale(act);
 }
 
-void ScaleStrategy::Scale(const Action &act) {
+void ScaleStrategy::Scale(const Action &act) const noexcept {
     if (act == ScaleP)
         affine_.Scale(data_, value_, false);
     else if (act == ScaleM)
@@ -24,7 +24,7 @@ void MoveStrategy::Transform(const Action &act, const double &value) {
     Move(act);
 }
 
-void MoveStrategy::Move(const Action &act) {
+void MoveStrategy::Move(const Action &act) const noexcept {
     if (act == MoveX)
         affine_.Move(data_, value_, X);
     else if (act == MoveY)
@@ -41,7 +41,7 @@ void RotateStrategy::Transform(const Action &act, const double &value) {
     Rotate(act);
 }
 
-void RotateStrategy::Rotate(const Action &act) {
+void RotateStrategy::Rotate(const Action &act) const noexcept {
     if (act == RotX)
         affine_.Rotate(data_, value_, X);
     else if (act == RotY)
@@ -49,4 +49,4 @@ void RotateStrategy::Rotate(const Action &act) {
     else if (act == RotZ)
         affine_.Rotate(data_, value_, Z);
 }
-}
+} // namespace s21

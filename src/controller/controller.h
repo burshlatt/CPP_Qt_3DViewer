@@ -8,7 +8,7 @@ namespace s21 {
     class Controller {
         public:
             Controller(Data &data);
-            ~Controller();
+            ~Controller() = default;
 
             void Parse(const std::string &path) noexcept;
             void Move(const double &value, const Action &act) const noexcept;
@@ -16,8 +16,8 @@ namespace s21 {
             void Rotate(const double &value, const Action &act) const noexcept;
 
         private:
-            Facade *facade_;
+            Facade &facade_;
     };
-}
+} // namespace s21
 
 #endif // SRC_CONTROLLER_CONTROLLER_H_

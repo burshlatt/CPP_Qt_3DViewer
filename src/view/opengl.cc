@@ -1,5 +1,6 @@
 #include "opengl.h"
 
+namespace s21 {
 OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
     line_width_ = 0.0;
     vertex_width_ = 0.0;
@@ -81,3 +82,4 @@ void OpenGL::Draw() noexcept {
     if (is_stipple_)
         glDisable(GL_LINE_STIPPLE);
 }
+} // namespace s21

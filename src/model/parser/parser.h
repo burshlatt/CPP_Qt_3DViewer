@@ -14,7 +14,7 @@ namespace s21 {
   class Parser {
     public:
       Parser(Data &data);
-      ~Parser() {}
+      ~Parser() = default;
 
       void Clear() noexcept;
       void SetPerspectiveData() noexcept;
@@ -28,6 +28,6 @@ namespace s21 {
     private:
       Data &data_;
   };
-}
+} // namespace s21
 
 #endif // SRC_MODEL_PARSER_PARSER_H_
