@@ -12,7 +12,6 @@ typedef struct View {
   double max_coord_;
   std::vector<int> facets_;
   std::vector<double> vertexes_;
-  std::vector<double> textures_;
 } Data;
 
 enum Coord { X, Y, Z };

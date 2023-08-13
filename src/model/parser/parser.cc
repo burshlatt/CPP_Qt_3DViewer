@@ -50,10 +50,6 @@ void Parser::ProcessLine(std::string line) noexcept {
     } else if (line[0] == 'f' && line[1] == ' ') {
       line.erase(line.begin());
       ParseFacet(line);
-    } else if (line[0] == 'v' && line[1] == 't') {
-      line.erase(line.begin());
-      line.erase(line.begin());
-      ParseTexture(line);
     }
   }
 }
@@ -92,20 +88,6 @@ void Parser::ParseFacet(std::string &line) noexcept {
       data_.facets_.emplace_back(buffer_[0]);
   }
   data_.f_count_++;
-}
-
-void Parser::ParseTexture(std::string &line) noexcept {
-  DelSpace(line);
-  double num_ = 0.0;
-  data_.vertexes_.reserve(2);
-  char *end = nullptr;
-  while (!line.empty()) {
-    num_ = strtod(line.c_str(), &end);
-    data_.textures_.emplace_back(num_);
-    line = end;
-    DelSpace(line);
-  }
-  data_.t_count_++;
 }
 
 void Parser::DelSpace(std::string &line) const noexcept {
