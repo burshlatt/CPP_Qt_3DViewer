@@ -12,8 +12,8 @@ class Affine {
   ~Affine() = default;
 
   void Scale(Data &data, const double &value, const bool &div) const noexcept;
-  void Move(Data &data, const double &value, const int &coord) const noexcept;
-  void Rotate(Data &data, const double &value, const int &coord) const noexcept;
+  void Move(Data &data, const double &value, const Coord &coord) const noexcept;
+  void Rotate(Data &data, const double &value, const Coord &coord) const noexcept;
 };
 }  // namespace s21
 
