@@ -18,7 +18,8 @@ class OpenGL : public QOpenGLWidget {
   OpenGL(QWidget *parent = nullptr);
   ~OpenGL();
 
-  void set_data(const Data &data) noexcept;
+  Data& get_data() noexcept;
+
   void set_is_no_vertex(const bool &no) noexcept;
   void set_stipple(const bool &is_stipple) noexcept;
   void set_main_color(const QColor &color) noexcept;

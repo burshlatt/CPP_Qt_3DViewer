@@ -20,15 +20,15 @@ void Facade::Parse(const std::string& path) const noexcept {
   parser_->Parse(path);
 }
 
-void Facade::Scale(double value, const Action& act) const noexcept {
-  scale_->Transform(act, value);
+void Facade::Scale(const double &value, const Action& act) const noexcept {
+  scale_->Transform(value, act);
 }
 
-void Facade::Move(double value, const Action& act) const noexcept {
-  move_->Transform(act, value);
+void Facade::Move(const double &value, const Action& act) const noexcept {
+  move_->Transform(value, act);
 }
 
-void Facade::Rotate(double value, const Action& act) const noexcept {
-  rotate_->Transform(act, value);
+void Facade::Rotate(const double &value, const Action& act) const noexcept {
+  rotate_->Transform(value, act);
 }
 }  // namespace s21

@@ -2,10 +2,10 @@
 #define SRC_MODEL_PARSER_PARSER_H_
 
 #include <cmath>
-#include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 #include "../struct.h"
 

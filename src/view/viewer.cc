@@ -6,7 +6,7 @@ namespace s21 {
 Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
   ui_->setupUi(this);
   this->setFixedSize(1100, 650);
-  controller_ = std::make_unique<Controller>(data_);
+  controller_ = std::make_unique<Controller>(ui_->OGL->get_data());
   SetPosition();
   SetFields();
   timer_ = new QTimer(0);
@@ -148,99 +148,99 @@ void Viewer::LoadSettings() noexcept {
   ui_->ZMoveValue->setText(settings_->value("move_oz").toString());
 }
 
-void Viewer::Update() noexcept {
-  ui_->OGL->set_data(data_);
-  ui_->OGL->Update();
-}
-
 void Viewer::OpenFile() noexcept {
   QString path_ = QFileDialog::getOpenFileName(nullptr, "Open File", QString(), "Obj Files (*.obj)");
   if (!path_.isEmpty()) {
     controller_->Parse(path_.toStdString());
+    Data &data_ = ui_->OGL->get_data();
     ui_->FileName->setText(path_.section('/', -1));
     ui_->VCount->setText(QString::number(data_.v_count_));
     ui_->FCount->setText(QString::number(data_.f_count_));
-    Update();
+    ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveXL() noexcept {
   if (!ui_->XMoveValue->text().isEmpty()) {
     controller_->Move(-ui_->XMoveValue->text().toDouble(), MoveX);
-    Update();
+    ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveXR() noexcept {
   if (!ui_->XMoveValue->text().isEmpty()) {
     controller_->Move(ui_->XMoveValue->text().toDouble(), MoveX);
-    Update();
+    ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveYD() noexcept {
   if (!ui_->YMoveValue->text().isEmpty()) {
     controller_->Move(-ui_->YMoveValue->text().toDouble(), MoveY);
-    Update();
+    ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveYU() noexcept {
   if (!ui_->YMoveValue->text().isEmpty()) {
     controller_->Move(ui_->YMoveValue->text().toDouble(), MoveY);
-    Update();
+    ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveZC() noexcept {
   if (!ui_->ZMoveValue->text().isEmpty()) {
     controller_->Move(-ui_->ZMoveValue->text().toDouble(), MoveZ);
-    Update();
+    ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveZF() noexcept {
   if (!ui_->ZMoveValue->text().isEmpty()) {
     controller_->Move(ui_->ZMoveValue->text().toDouble(), MoveZ);
-    Update();
+    ui_->OGL->Update();
   }
 }
 
 void Viewer::ScaleMul() noexcept {
-  controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleP);
-  Update();
+  if (!ui_->ScaleValue->text().isEmpty()) {
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleP);
+    ui_->OGL->Update();
+  }
 }
 
 void Viewer::ScaleDiv() noexcept {
-  controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleM);
-  Update();
+  if (!ui_->ScaleValue->text().isEmpty()) {
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleM);
+    ui_->OGL->Update();
+  }
 }
 
 void Viewer::RotateX(const int &value) noexcept {
   if (value > check_x_)
-    controller_->Rotate(0.1, RotX);
+    controller_->Rotate(1.0, RotX);
   else
-    controller_->Rotate(-0.1, RotX);
+    controller_->Rotate(-1.0, RotX);
   check_x_ = value;
-  Update();
+  ui_->OGL->Update();
 }
 
 void Viewer::RotateY(const int &value) noexcept {
   if (value > check_y_)
-    controller_->Rotate(0.1, RotY);
+    controller_->Rotate(1.0, RotY);
   else
-    controller_->Rotate(-0.1, RotY);
+    controller_->Rotate(-1.0, RotY);
   check_y_ = value;
-  Update();
+  ui_->OGL->Update();
 }
 
 void Viewer::RotateZ(const int &value) noexcept {
   if (value > check_z_)
-    controller_->Rotate(0.1, RotZ);
+    controller_->Rotate(-1.0, RotZ);
   else
-    controller_->Rotate(-0.1, RotZ);
+    controller_->Rotate(1.0, RotZ);
   check_z_ = value;
-  Update();
+  ui_->OGL->Update();
 }
 
 void Viewer::ProjectionType() noexcept {

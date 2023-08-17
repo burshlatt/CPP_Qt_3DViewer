@@ -29,11 +29,11 @@ void Parser::Parse(const std::string &path) noexcept {
     char *buffer_ = new char[size_]{};
     fread(buffer_, 1, size_, file_);
     fclose(file_);
-    size_t line_start = 0;
+    size_t line_start_ = 0;
     for (long i = 0; i < size_; i++) {
       if (buffer_[i] == '\n' || i == size_ - 1) {
-        ProcessLine(std::string(buffer_ + line_start, buffer_ + i));
-        line_start = i + 1;
+        ProcessLine(std::string(buffer_ + line_start_, buffer_ + i));
+        line_start_ = i + 1;
       }
     }
     SetPerspectiveData();
@@ -58,11 +58,11 @@ void Parser::ParseVertex(std::string &line) noexcept {
   DelSpace(line);
   double num_ = 0.0;
   data_.vertexes_.reserve(3);
-  char *end = nullptr;
+  char *end_ = nullptr;
   while (!line.empty()) {
-    num_ = strtod(line.c_str(), &end);
+    num_ = strtod(line.c_str(), &end_);
     data_.vertexes_.emplace_back(num_);
-    line = end;
+    line = end_;
     DelSpace(line);
   }
   if (std::fabs(num_) > data_.max_coord_) data_.max_coord_ = std::fabs(num_);
@@ -73,10 +73,10 @@ void Parser::ParseFacet(std::string &line) noexcept {
   DelSpace(line);
   std::vector<int> buffer_;
   buffer_.reserve(3);
-  char *end = nullptr;
+  char *end_ = nullptr;
   while (!line.empty()) {
-    buffer_.emplace_back(strtol(line.c_str(), &end, 10) - 1);
-    line = end;
+    buffer_.emplace_back(strtol(line.c_str(), &end_, 10) - 1);
+    line = end_;
     DelNum(line);
     DelSpace(line);
   }

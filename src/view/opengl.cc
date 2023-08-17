@@ -15,41 +15,16 @@ OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
 
 OpenGL::~OpenGL() { glDisableClientState(GL_VERTEX_ARRAY); }
 
-void OpenGL::set_data(const Data &data) noexcept { data_ = data; }
-
+Data& OpenGL::get_data() noexcept { return data_; }
 void OpenGL::set_is_no_vertex(const bool &no) noexcept { is_no_vertex_ = no; }
-
-void OpenGL::set_main_color(const QColor &color) noexcept {
-  main_color_ = color;
-}
-
-void OpenGL::set_line_color(const QColor &color) noexcept {
-  line_color_ = color;
-}
-
-void OpenGL::set_line_width(const double &width) noexcept {
-  line_width_ = width;
-}
-
-void OpenGL::set_vertex_color(const QColor &color) noexcept {
-  vertex_color_ = color;
-}
-
-void OpenGL::set_vertex_width(const double &width) noexcept {
-  vertex_width_ = width;
-}
-
-void OpenGL::set_stipple(const bool &is_stipple) noexcept {
-  is_stipple_ = is_stipple;
-}
-
-void OpenGL::set_parallel(const bool &is_parallel) noexcept {
-  is_parallel_ = is_parallel;
-}
-
-void OpenGL::set_is_circle_vertex(const bool &circle) noexcept {
-  is_circle_vertex_ = circle;
-}
+void OpenGL::set_main_color(const QColor &color) noexcept { main_color_ = color; }
+void OpenGL::set_line_color(const QColor &color) noexcept { line_color_ = color; }
+void OpenGL::set_line_width(const double &width) noexcept { line_width_ = width; }
+void OpenGL::set_vertex_color(const QColor &color) noexcept { vertex_color_ = color; }
+void OpenGL::set_vertex_width(const double &width) noexcept { vertex_width_ = width; }
+void OpenGL::set_stipple(const bool &is_stipple) noexcept { is_stipple_ = is_stipple; }
+void OpenGL::set_parallel(const bool &is_parallel) noexcept { is_parallel_ = is_parallel; }
+void OpenGL::set_is_circle_vertex(const bool &circle) noexcept { is_circle_vertex_ = circle; }
 
 void OpenGL::Update() noexcept { update(); }
 QImage OpenGL::GetFrame() noexcept { return grabFramebuffer(); }
@@ -59,7 +34,9 @@ void OpenGL::initializeGL() {
   glEnableClientState(GL_VERTEX_ARRAY);
 }
 
-void OpenGL::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
+void OpenGL::resizeGL(int w, int h) {
+  glViewport(0, 0, w, h);
+}
 
 void OpenGL::paintGL() {
   glClearColor(main_color_.redF(), main_color_.greenF(), main_color_.blueF(), main_color_.alphaF());

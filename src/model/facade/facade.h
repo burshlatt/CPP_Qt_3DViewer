@@ -3,10 +3,10 @@
 
 #include <memory>
 
+#include "../struct.h"
 #include "../affine/affine.h"
 #include "../parser/parser.h"
 #include "../strategy/strategy.h"
-#include "../struct.h"
 
 namespace s21 {
 class Facade {
@@ -18,9 +18,9 @@ class Facade {
   static Facade& GetInstance(Data& data) noexcept;
 
   void Parse(const std::string& path) const noexcept;
-  void Move(double value, const Action& act) const noexcept;
-  void Scale(double value, const Action& act) const noexcept;
-  void Rotate(double value, const Action& act) const noexcept;
+  void Move(const double &value, const Action& act) const noexcept;
+  void Scale(const double &value, const Action& act) const noexcept;
+  void Rotate(const double &value, const Action& act) const noexcept;
 
  private:
   Facade(Data& data);

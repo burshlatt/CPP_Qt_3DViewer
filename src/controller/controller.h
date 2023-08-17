@@ -1,8 +1,8 @@
 #ifndef SRC_CONTROLLER_CONTROLLER_H_
 #define SRC_CONTROLLER_CONTROLLER_H_
 
-#include "../model/facade/facade.h"
 #include "../model/struct.h"
+#include "../model/facade/facade.h"
 
 namespace s21 {
 class Controller {

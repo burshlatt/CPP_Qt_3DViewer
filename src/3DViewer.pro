@@ -8,7 +8,7 @@ CONFIG += c++17
 
 ICON = icon/3dviewer.png
 
-include(QtGifImage/src/gifimage/qtgifimage.pri)
+include(third_party/QtGifImage/src/gifimage/qtgifimage.pri)
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

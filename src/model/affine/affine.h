@@ -11,9 +11,13 @@ class Affine {
   Affine() = default;
   ~Affine() = default;
 
-  void Scale(Data &data, const double &value, const bool &div) const noexcept;
   void Move(Data &data, const double &value, const Coord &coord) const noexcept;
+  void Scale(Data &data, const double &value, const bool &is_div) const noexcept;
   void Rotate(Data &data, const double &value, const Coord &coord) const noexcept;
+
+ private:
+  const double cos_ = std::cos(0.1);
+  const double sin_ = std::sin(0.1);
 };
 }  // namespace s21
 

@@ -26,7 +26,6 @@ class Viewer : public QMainWindow {
   explicit Viewer(QWidget *parent = nullptr);
   ~Viewer();
 
-  void Update() noexcept;
   void SetFields() noexcept;
   void SetPosition() noexcept;
   void SetSettings() noexcept;
@@ -62,7 +61,6 @@ class Viewer : public QMainWindow {
   void RotateZ(const int &value) noexcept;
 
  private:
-  Data data_;
   Ui::Viewer *ui_;
   std::unique_ptr<Controller> controller_;
 
