@@ -1,8 +1,8 @@
-#ifndef SRC_CONTROLLER_CONTROLLER_H_
-#define SRC_CONTROLLER_CONTROLLER_H_
+#ifndef CPP_QT_3DVIEWER_CONTROLLER_CONTROLLER_H_
+#define CPP_QT_3DVIEWER_CONTROLLER_CONTROLLER_H_
 
-#include "../model/struct.h"
 #include "../model/facade/facade.h"
+#include "../model/struct.h"
 
 namespace s21 {
 class Controller {
@@ -10,7 +10,7 @@ class Controller {
   Controller(Data &data);
   ~Controller() = default;
 
-  void Parse(const std::string &path) noexcept;
+  void Parse(const std::string &path) const;
   void Move(const double &value, const Action &act) const noexcept;
   void Scale(const double &value, const Action &act) const noexcept;
   void Rotate(const double &value, const Action &act) const noexcept;
@@ -20,4 +20,4 @@ class Controller {
 };
 }  // namespace s21
 
-#endif  // SRC_CONTROLLER_CONTROLLER_H_
+#endif  // CPP_QT_3DVIEWER_CONTROLLER_CONTROLLER_H_

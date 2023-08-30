@@ -1,8 +1,8 @@
-#ifndef SRC_MODEL_STRATEGY_STRATEGY_H_
-#define SRC_MODEL_STRATEGY_STRATEGY_H_
+#ifndef CPP_QT_3DVIEWER_MODEL_STRATEGY_STRATEGY_H_
+#define CPP_QT_3DVIEWER_MODEL_STRATEGY_STRATEGY_H_
 
-#include "../struct.h"
 #include "../affine/affine.h"
+#include "../struct.h"
 
 namespace s21 {
 // ============================== V I R T U A L ==============================
@@ -15,35 +15,32 @@ class Strategy {
 // ================================ S C A L E ================================
 class ScaleStrategy : public Strategy {
  public:
-  ScaleStrategy(Data &data, Affine &affine);
+  ScaleStrategy(std::unique_ptr<Affine> &affine);
   void Transform(const double &value, const Action &act) override;
 
  private:
-  Data &data_;
-  Affine &affine_;
+  std::unique_ptr<Affine> &affine_;
 };
 
 // ================================= M O V E =================================
 class MoveStrategy : public Strategy {
  public:
-  MoveStrategy(Data &data, Affine &affine);
+  MoveStrategy(std::unique_ptr<Affine> &affine);
   void Transform(const double &value, const Action &act) override;
 
  private:
-  Data &data_;
-  Affine &affine_;
+  std::unique_ptr<Affine> &affine_;
 };
 
 // =============================== R O T A T E ===============================
 class RotateStrategy : public Strategy {
  public:
-  RotateStrategy(Data &data, Affine &affine);
+  RotateStrategy(std::unique_ptr<Affine> &affine);
   void Transform(const double &value, const Action &act) override;
 
  private:
-  Data &data_;
-  Affine &affine_;
+  std::unique_ptr<Affine> &affine_;
 };
 }  // namespace s21
 
-#endif  // SRC_MODEL_STRATEGY_STRATEGY_H_
+#endif  // CPP_QT_3DVIEWER_MODEL_STRATEGY_STRATEGY_H_

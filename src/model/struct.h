@@ -1,20 +1,20 @@
-#ifndef SRC_MODEL_STRUCT_H_
-#define SRC_MODEL_STRUCT_H_
+#ifndef CPP_QT_3DVIEWER_MODEL_STRUCT_H_
+#define CPP_QT_3DVIEWER_MODEL_STRUCT_H_
 
 #include <vector>
 
 typedef struct View {
-  int v_count_;
-  int f_count_;
-  double far_;
-  double near_;
-  double max_coord_;
-  std::vector<int> facets_;
-  std::vector<double> vertexes_;
+  double far;
+  double near;
+  int v_count;
+  int e_count;
+  double max_coord;
+  std::vector<int> facets;
+  std::vector<double> vertexes;
 } Data;
 
-enum Coord { X, Y, Z };
+enum Coord { kX, kY, kZ };
 
-enum Action { RotX, RotY, RotZ, MoveX, MoveY, MoveZ, ScaleP, ScaleM };
+enum Action { kRotX, kRotY, kRotZ, kMoveX, kMoveY, kMoveZ, kScaleP, kScaleM };
 
-#endif  // SRC_MODEL_STRUCT_H_
+#endif  // CPP_QT_3DVIEWER_MODEL_STRUCT_H_

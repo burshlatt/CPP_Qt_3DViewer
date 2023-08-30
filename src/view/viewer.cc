@@ -1,5 +1,4 @@
 #include "viewer.h"
-
 #include "ui_viewer.h"
 
 namespace s21 {
@@ -7,11 +6,10 @@ Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
   ui_->setupUi(this);
   this->setFixedSize(1100, 650);
   controller_ = std::make_unique<Controller>(ui_->OGL->get_data());
-  SetPosition();
-  SetFields();
   timer_ = new QTimer(0);
-  SetSettings();
   SetConnections();
+  SetPosition();
+  SetSettings();
 }
 
 Viewer::~Viewer() {
@@ -21,27 +19,15 @@ Viewer::~Viewer() {
   delete settings_;
 }
 
-void Viewer::SetFields() noexcept {
-  check_x_ = 50;
-  check_y_ = 50;
-  check_z_ = 50;
-  l_width_ = 1.0;
-  v_width_ = 1.0;
-  frame_count_ = 0;
-  color_main_ = Qt::black;
-  color_line_ = Qt::white;
-  color_vertex_ = Qt::white;
+void Viewer::SetPosition() {
+  QScreen *screen = QGuiApplication::primaryScreen();
+  QRect screen_geometry = screen->geometry();
+  int x = (screen_geometry.width() - 1100) / 2;
+  int y = (screen_geometry.height() - 650) / 2;
+  move(x, y);
 }
 
-void Viewer::SetPosition() noexcept {
-  QScreen *screen_ = QGuiApplication::primaryScreen();
-  QRect screen_geometry_ = screen_->geometry();
-  int x_ = (screen_geometry_.width() - 1100) / 2;
-  int y_ = (screen_geometry_.height() - 650) / 2;
-  move(x_, y_);
-}
-
-void Viewer::SetSettings() noexcept {
+void Viewer::SetSettings() {
   settings_ = new QSettings(this);
   if (settings_->value("saved").toInt() == 1) LoadSettings();
 }
@@ -106,32 +92,28 @@ void Viewer::SaveSettings() noexcept {
 }
 
 void Viewer::LoadSettings() noexcept {
-  double r_ = settings_->value("color_main_r").toDouble();
-  double g_ = settings_->value("color_main_g").toDouble();
-  double b_ = settings_->value("color_main_b").toDouble();
-  color_main_ = QColor::fromRgbF(r_, g_, b_);
-  r_ = settings_->value("color_line_r").toDouble();
-  g_ = settings_->value("color_line_g").toDouble();
-  b_ = settings_->value("color_line_b").toDouble();
-  color_line_ = QColor::fromRgbF(r_, g_, b_);
-  r_ = settings_->value("color_vertex_r").toDouble();
-  g_ = settings_->value("color_vertex_g").toDouble();
-  b_ = settings_->value("color_vertex_b").toDouble();
-  color_vertex_ = QColor::fromRgbF(r_, g_, b_);
+  double r = settings_->value("color_main_r").toDouble();
+  double g = settings_->value("color_main_g").toDouble();
+  double b = settings_->value("color_main_b").toDouble();
+  color_main_ = QColor::fromRgbF(r, g, b);
+  r = settings_->value("color_line_r").toDouble();
+  g = settings_->value("color_line_g").toDouble();
+  b = settings_->value("color_line_b").toDouble();
+  color_line_ = QColor::fromRgbF(r, g, b);
+  r = settings_->value("color_vertex_r").toDouble();
+  g = settings_->value("color_vertex_g").toDouble();
+  b = settings_->value("color_vertex_b").toDouble();
+  color_vertex_ = QColor::fromRgbF(r, g, b);
 
   l_width_ = settings_->value("line_width").toDouble();
   v_width_ = settings_->value("vertex_width").toDouble();
+  ui_->VertexNo->setChecked(settings_->value("vertex_no", true).toBool());
   ui_->Central->setChecked(settings_->value("central_prj", true).toBool());
   ui_->Parallel->setChecked(settings_->value("parallel_prj", true).toBool());
-  ui_->VertexNo->setChecked(settings_->value("vertex_no", true).toBool());
-  ui_->VertexCircle->setChecked(
-      settings_->value("vertex_circle", true).toBool());
-  ui_->VertexSquare->setChecked(
-      settings_->value("vertex_square", true).toBool());
-  ui_->StippleNo->setChecked(
-      settings_->value("line_stipple_no", true).toBool());
-  ui_->StippleYes->setChecked(
-      settings_->value("line_stipple_yes", true).toBool());
+  ui_->StippleNo->setChecked(settings_->value("line_stipple_no", true).toBool());
+  ui_->VertexCircle->setChecked(settings_->value("vertex_circle", true).toBool());
+  ui_->VertexSquare->setChecked(settings_->value("vertex_square", true).toBool());
+  ui_->StippleYes->setChecked(settings_->value("line_stipple_yes", true).toBool());
 
   ui_->OGL->set_line_width(l_width_);
   ui_->OGL->set_vertex_width(v_width_);
@@ -148,97 +130,115 @@ void Viewer::LoadSettings() noexcept {
   ui_->ZMoveValue->setText(settings_->value("move_oz").toString());
 }
 
-void Viewer::OpenFile() noexcept {
-  QString path_ = QFileDialog::getOpenFileName(nullptr, "Open File", QString(), "Obj Files (*.obj)");
-  if (!path_.isEmpty()) {
-    controller_->Parse(path_.toStdString());
-    Data &data_ = ui_->OGL->get_data();
-    ui_->FileName->setText(path_.section('/', -1));
-    ui_->VCount->setText(QString::number(data_.v_count_));
-    ui_->FCount->setText(QString::number(data_.f_count_));
+void Viewer::OpenFile() {
+  QString path = QFileDialog::getOpenFileName(nullptr, "Open File", QString(), "Obj Files (*.obj)");
+  if (!path.isEmpty()) {
+    ui_->OXRotate->setValue(0);
+    ui_->OYRotate->setValue(0);
+    ui_->OZRotate->setValue(0);
+    ui_->degX->setText("0");
+    ui_->degY->setText("0");
+    ui_->degZ->setText("0");
+    Data &data = ui_->OGL->get_data();
+    controller_->Parse(path.toStdString());
+    ui_->FileName->setText(path.section('/', -1));
+    ui_->VCount->setText(QString::number(data.v_count));
+    ui_->ECount->setText(QString::number(data.e_count));
     ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveXL() noexcept {
   if (!ui_->XMoveValue->text().isEmpty()) {
-    controller_->Move(-ui_->XMoveValue->text().toDouble(), MoveX);
+    controller_->Move(-ui_->XMoveValue->text().toDouble(), kMoveX);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveXR() noexcept {
   if (!ui_->XMoveValue->text().isEmpty()) {
-    controller_->Move(ui_->XMoveValue->text().toDouble(), MoveX);
+    controller_->Move(ui_->XMoveValue->text().toDouble(), kMoveX);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveYD() noexcept {
   if (!ui_->YMoveValue->text().isEmpty()) {
-    controller_->Move(-ui_->YMoveValue->text().toDouble(), MoveY);
+    controller_->Move(-ui_->YMoveValue->text().toDouble(), kMoveY);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveYU() noexcept {
   if (!ui_->YMoveValue->text().isEmpty()) {
-    controller_->Move(ui_->YMoveValue->text().toDouble(), MoveY);
+    controller_->Move(ui_->YMoveValue->text().toDouble(), kMoveY);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveZC() noexcept {
   if (!ui_->ZMoveValue->text().isEmpty()) {
-    controller_->Move(-ui_->ZMoveValue->text().toDouble(), MoveZ);
+    controller_->Move(-ui_->ZMoveValue->text().toDouble(), kMoveZ);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::MoveZF() noexcept {
   if (!ui_->ZMoveValue->text().isEmpty()) {
-    controller_->Move(ui_->ZMoveValue->text().toDouble(), MoveZ);
+    controller_->Move(ui_->ZMoveValue->text().toDouble(), kMoveZ);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::ScaleMul() noexcept {
   if (!ui_->ScaleValue->text().isEmpty()) {
-    controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleP);
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), kScaleP);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::ScaleDiv() noexcept {
   if (!ui_->ScaleValue->text().isEmpty()) {
-    controller_->Scale(ui_->ScaleValue->text().toDouble(), ScaleM);
+    controller_->Scale(ui_->ScaleValue->text().toDouble(), kScaleM);
     ui_->OGL->Update();
   }
 }
 
 void Viewer::RotateX(const int &value) noexcept {
-  if (value > check_x_)
-    controller_->Rotate(1.0, RotX);
-  else
-    controller_->Rotate(-1.0, RotX);
+  if (value > check_x_) {
+    controller_->Rotate(1, kRotX);
+    deg_x_++;
+  } else {
+    controller_->Rotate(-1, kRotX);
+    deg_x_--;
+  }
+  ui_->degX->setText(QString::number(deg_x_));
   check_x_ = value;
   ui_->OGL->Update();
 }
 
 void Viewer::RotateY(const int &value) noexcept {
-  if (value > check_y_)
-    controller_->Rotate(1.0, RotY);
-  else
-    controller_->Rotate(-1.0, RotY);
+  if (value > check_y_) {
+    controller_->Rotate(1, kRotY);
+    deg_y_++;
+  } else {
+    controller_->Rotate(-1, kRotY);
+    deg_y_--;
+  }
+  ui_->degY->setText(QString::number(deg_y_));
   check_y_ = value;
   ui_->OGL->Update();
 }
 
 void Viewer::RotateZ(const int &value) noexcept {
-  if (value > check_z_)
-    controller_->Rotate(-1.0, RotZ);
-  else
-    controller_->Rotate(1.0, RotZ);
+  if (value > check_z_) {
+    controller_->Rotate(-1, kRotZ);
+    deg_z_++;
+  } else {
+    controller_->Rotate(1, kRotZ);
+    deg_z_--;
+  }
+  ui_->degZ->setText(QString::number(deg_z_));
   check_z_ = value;
   ui_->OGL->Update();
 }
@@ -316,12 +316,12 @@ void Viewer::MainColor() noexcept {
 }
 
 void Viewer::CreateScreenshot() noexcept {
-  QString f_name_ = QFileDialog::getSaveFileName(this, "Save screenshot", "", "BMP Image (*.bmp);; JPEG Image (*.jpeg)");
-  QImage img_ = ui_->OGL->GetFrame();
-  img_.save(f_name_);
+  QString f_name = QFileDialog::getSaveFileName(this, "Save screenshot", "", "BMP Image (*.bmp);; JPEG Image (*.jpeg)");
+  QImage img = ui_->OGL->GetFrame();
+  img.save(f_name);
 }
 
-void Viewer::CreateGIF() noexcept {
+void Viewer::CreateGIF() {
   gif_name_ = QFileDialog::getSaveFileName(this, "Save GIF", "", "Gif Files (*.gif)");
   if (gif_name_ != "") {
     ui_->GIF->setText("▢");
@@ -333,9 +333,9 @@ void Viewer::CreateGIF() noexcept {
   }
 }
 
-void Viewer::SaveGIF() noexcept {
-  QImage img_ = ui_->OGL->GetFrame();
-  frame_->addFrame(img_);
+void Viewer::SaveGIF() {
+  QImage img = ui_->OGL->GetFrame();
+  frame_->addFrame(img);
   if (frame_count_ == 50) {
     timer_->stop();
     frame_->save(gif_name_);
@@ -346,4 +346,5 @@ void Viewer::SaveGIF() noexcept {
   }
   frame_count_++;
 }
+
 }  // namespace s21

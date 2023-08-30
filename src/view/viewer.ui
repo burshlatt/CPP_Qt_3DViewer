@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>3DViewer</string>
+   <string>3DViewer (by Burshlat)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="OpenFile">
@@ -93,12 +93,12 @@ QPushButton:pressed {
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="FCount">
+   <widget class="QLineEdit" name="ECount">
     <property name="geometry">
      <rect>
-      <x>995</x>
+      <x>1000</x>
       <y>40</y>
-      <width>85</width>
+      <width>80</width>
       <height>20</height>
      </rect>
     </property>
@@ -111,12 +111,12 @@ QPushButton:pressed {
      <rect>
       <x>955</x>
       <y>40</y>
-      <width>40</width>
+      <width>45</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Facet:</string>
+     <string>Edges:</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="XMoveValue">
@@ -358,7 +358,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>275</y>
+      <y>255</y>
       <width>80</width>
       <height>80</height>
      </rect>
@@ -370,17 +370,17 @@ QPushButton:pressed {
      <number>1</number>
     </property>
     <property name="value">
-     <number>50</number>
+     <number>0</number>
     </property>
     <property name="sliderPosition">
-     <number>50</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="QLabel" name="RotateXL">
     <property name="geometry">
      <rect>
-      <x>845</x>
-      <y>245</y>
+      <x>850</x>
+      <y>240</y>
       <width>30</width>
       <height>25</height>
      </rect>
@@ -397,8 +397,8 @@ QPushButton:pressed {
    <widget class="QLabel" name="RotateYL">
     <property name="geometry">
      <rect>
-      <x>935</x>
-      <y>245</y>
+      <x>940</x>
+      <y>240</y>
       <width>30</width>
       <height>25</height>
      </rect>
@@ -416,7 +416,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>910</x>
-      <y>275</y>
+      <y>255</y>
       <width>80</width>
       <height>80</height>
      </rect>
@@ -428,17 +428,17 @@ QPushButton:pressed {
      <number>1</number>
     </property>
     <property name="value">
-     <number>50</number>
+     <number>0</number>
     </property>
     <property name="sliderPosition">
-     <number>50</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="QLabel" name="RotateZL">
     <property name="geometry">
      <rect>
-      <x>1025</x>
-      <y>245</y>
+      <x>1030</x>
+      <y>240</y>
       <width>30</width>
       <height>25</height>
      </rect>
@@ -456,7 +456,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>1000</x>
-      <y>275</y>
+      <y>255</y>
       <width>80</width>
       <height>80</height>
      </rect>
@@ -468,10 +468,10 @@ QPushButton:pressed {
      <number>1</number>
     </property>
     <property name="value">
-     <number>50</number>
+     <number>0</number>
     </property>
     <property name="sliderPosition">
-     <number>50</number>
+     <number>0</number>
     </property>
    </widget>
    <widget class="QPushButton" name="ScalePlus">
@@ -1004,6 +1004,54 @@ QPushButton:pressed {
       <width>800</width>
       <height>650</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="degX">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>340</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="degY">
+    <property name="geometry">
+     <rect>
+      <x>910</x>
+      <y>340</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="degZ">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>340</y>
+      <width>80</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

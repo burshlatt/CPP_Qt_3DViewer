@@ -1,33 +1,26 @@
 #include "opengl.h"
 
 namespace s21 {
-OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {
-  line_width_ = 0.0;
-  vertex_width_ = 0.0;
-  is_parallel_ = true;
-  is_stipple_ = false;
-  is_no_vertex_ = false;
-  is_circle_vertex_ = false;
-  main_color_ = Qt::black;
-  line_color_ = Qt::white;
-  vertex_color_ = Qt::white;
+OpenGL::OpenGL(QWidget *parent) : QOpenGLWidget(parent) {}
+
+OpenGL::~OpenGL() {
+  glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-OpenGL::~OpenGL() { glDisableClientState(GL_VERTEX_ARRAY); }
+void OpenGL::Update() noexcept { update(); }
 
-Data& OpenGL::get_data() noexcept { return data_; }
-void OpenGL::set_is_no_vertex(const bool &no) noexcept { is_no_vertex_ = no; }
+Data &OpenGL::get_data() noexcept { return data_; }
+QImage OpenGL::GetFrame() noexcept { return grabFramebuffer(); }
+
 void OpenGL::set_main_color(const QColor &color) noexcept { main_color_ = color; }
 void OpenGL::set_line_color(const QColor &color) noexcept { line_color_ = color; }
 void OpenGL::set_line_width(const double &width) noexcept { line_width_ = width; }
+void OpenGL::set_is_no_vertex(const bool &is_no) noexcept { is_no_vertex_ = is_no; }
 void OpenGL::set_vertex_color(const QColor &color) noexcept { vertex_color_ = color; }
 void OpenGL::set_vertex_width(const double &width) noexcept { vertex_width_ = width; }
 void OpenGL::set_stipple(const bool &is_stipple) noexcept { is_stipple_ = is_stipple; }
 void OpenGL::set_parallel(const bool &is_parallel) noexcept { is_parallel_ = is_parallel; }
 void OpenGL::set_is_circle_vertex(const bool &circle) noexcept { is_circle_vertex_ = circle; }
-
-void OpenGL::Update() noexcept { update(); }
-QImage OpenGL::GetFrame() noexcept { return grabFramebuffer(); }
 
 void OpenGL::initializeGL() {
   glEnable(GL_DEPTH_TEST);
@@ -45,21 +38,21 @@ void OpenGL::paintGL() {
   Draw();
 }
 
-void OpenGL::Perspective() noexcept {
+void OpenGL::Perspective() {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   if (is_parallel_) {
-    glOrtho(-(data_.max_coord_), data_.max_coord_, -(data_.max_coord_), data_.max_coord_, -(data_.far_), data_.far_);
+    glOrtho(-(data_.max_coord), data_.max_coord, -(data_.max_coord), data_.max_coord, -(data_.far), data_.far);
   } else {
-    glFrustum(-(data_.max_coord_), data_.max_coord_, -(data_.max_coord_), data_.max_coord_, data_.near_, data_.far_);
-    glTranslated(0, 0, -data_.near_ * 3);
+    glFrustum(-(data_.max_coord), data_.max_coord, -(data_.max_coord), data_.max_coord, data_.near, data_.far);
+    glTranslated(0, 0, -data_.near * 3);
   }
 }
 
-void OpenGL::Draw() noexcept {
+void OpenGL::Draw() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  glVertexPointer(3, GL_DOUBLE, 0, data_.vertexes_.data());
+  glVertexPointer(3, GL_DOUBLE, 0, data_.vertexes.data());
   glColor3d(line_color_.redF(), line_color_.greenF(), line_color_.blueF());
   glLineWidth(line_width_);
 
@@ -68,12 +61,12 @@ void OpenGL::Draw() noexcept {
     glEnable(GL_LINE_STIPPLE);
   }
 
-  glDrawElements(GL_LINES, data_.facets_.size(), GL_UNSIGNED_INT, data_.facets_.data());
+  glDrawElements(GL_LINES, data_.facets.size(), GL_UNSIGNED_INT, data_.facets.data());
   glColor3d(vertex_color_.redF(), vertex_color_.greenF(), vertex_color_.blueF());
   glPointSize(vertex_width_);
 
   if (is_circle_vertex_) glEnable(GL_POINT_SMOOTH);
-  if (!is_no_vertex_) glDrawArrays(GL_POINTS, 0, data_.v_count_);
+  if (!is_no_vertex_) glDrawArrays(GL_POINTS, 0, data_.v_count);
   if (is_circle_vertex_) glDisable(GL_POINT_SMOOTH);
   if (is_stipple_) glDisable(GL_LINE_STIPPLE);
 }

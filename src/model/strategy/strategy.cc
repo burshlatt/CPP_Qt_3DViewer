@@ -2,39 +2,39 @@
 
 namespace s21 {
 // ================================ S C A L E ================================
-ScaleStrategy::ScaleStrategy(Data &data, Affine &affine)
-    : data_(data), affine_(affine) {}
+ScaleStrategy::ScaleStrategy(std::unique_ptr<Affine> &affine)
+    : affine_(affine) {}
 
 void ScaleStrategy::Transform(const double &value, const Action &act) {
-  if (act == ScaleP)
-    affine_.Scale(data_, value, false);
-  else if (act == ScaleM)
-    affine_.Scale(data_, value, true);
+  if (act == kScaleP)
+    affine_->Scale(value, false);
+  else if (act == kScaleM)
+    affine_->Scale(value, true);
 }
 
 // ================================= M O V E =================================
-MoveStrategy::MoveStrategy(Data &data, Affine &affine)
-    : data_(data), affine_(affine) {}
+MoveStrategy::MoveStrategy(std::unique_ptr<Affine> &affine)
+    : affine_(affine) {}
 
 void MoveStrategy::Transform(const double &value, const Action &act) {
-  if (act == MoveX)
-    affine_.Move(data_, value, X);
-  else if (act == MoveY)
-    affine_.Move(data_, value, Y);
-  else if (act == MoveZ)
-    affine_.Move(data_, value, Z);
+  if (act == kMoveX)
+    affine_->Move(value, kX);
+  else if (act == kMoveY)
+    affine_->Move(value, kY);
+  else if (act == kMoveZ)
+    affine_->Move(value, kZ);
 }
 
 // =============================== R O T A T E ===============================
-RotateStrategy::RotateStrategy(Data &data, Affine &affine)
-    : data_(data), affine_(affine) {}
+RotateStrategy::RotateStrategy(std::unique_ptr<Affine> &affine)
+    : affine_(affine) {}
 
 void RotateStrategy::Transform(const double &value, const Action &act) {
-  if (act == RotX)
-    affine_.Rotate(data_, value, X);
-  else if (act == RotY)
-    affine_.Rotate(data_, value, Y);
-  else if (act == RotZ)
-    affine_.Rotate(data_, value, Z);
+  if (act == kRotX)
+    affine_->Rotate(value, kX);
+  else if (act == kRotY)
+    affine_->Rotate(value, kY);
+  else if (act == kRotZ)
+    affine_->Rotate(value, kZ);
 }
 }  // namespace s21
