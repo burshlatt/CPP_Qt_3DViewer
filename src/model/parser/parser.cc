@@ -83,7 +83,7 @@ void Parser::ParseFacet(std::string &line) {
     DelNum(line);
     DelSpace(line);
   }
-  int buffer_size = buffer.size();
+  size_t buffer_size = buffer.size();
   for (size_t i = 0; i < buffer_size; i++) {
     data_.facets.emplace_back(buffer[i]);
     if (i != buffer_size - 1)
