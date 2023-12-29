@@ -6,12 +6,10 @@
 #include <QFileDialog>
 #include <QMainWindow>
 #include <QScreen>
-#include <QSettings>
+#include <QPixmap>
 #include <QTimer>
-#include <memory>
+#include <QLabel>
 
-#include "../controller/controller.h"
-#include "../model/struct.h"
 #include "opengl.h"
 
 namespace Ui {
@@ -24,17 +22,16 @@ class Viewer : public QMainWindow {
 
  public:
   explicit Viewer(QWidget *parent = nullptr);
+  Viewer(Viewer &&view) = delete;
+  Viewer(const Viewer &view) = delete;
   ~Viewer();
 
-  void SetPosition();
-  void SetSettings();
-  void SaveSettings() noexcept;
-  void SetConnections() noexcept;
+  void LoadMaterial();
+  void SetEnableComponent(bool is_enable) noexcept;
+  void SetInfo(const QString& name, const QString& info);
+  void SetImg(const Mtl& mtl, const QString& img_path, MapType map_type, int idx);
 
- public slots:
-  void SaveGIF();
   void OpenFile();
-  void CreateGIF();
   void MoveXL() noexcept;
   void MoveXR() noexcept;
   void MoveYD() noexcept;
@@ -43,36 +40,30 @@ class Viewer : public QMainWindow {
   void MoveZF() noexcept;
   void ScaleMul() noexcept;
   void ScaleDiv() noexcept;
-  void LineColor() noexcept;
-  void MainColor() noexcept;
-  void VertexType() noexcept;
-  void LWidthPlus() noexcept;
-  void VWidthPlus() noexcept;
-  void LWidthMinus() noexcept;
-  void VWidthMinus() noexcept;
-  void VertexColor() noexcept;
-  void StippleType() noexcept;
-  void LoadSettings() noexcept;
-  void ProjectionType() noexcept;
+  void SetModelType() noexcept;
+  void SetLineWidth() noexcept;
+  void SetLineColor() noexcept;
+  void SetMainColor() noexcept;
+  void SetVertexType() noexcept;
+  void ResetSettings() noexcept;
+  void SetVertexColor() noexcept;
+  void SetVertexWidth() noexcept;
+  void SetShadingType() noexcept;
+  void ShowModelPanel() noexcept;
   void CreateScreenshot() noexcept;
-  void RotateX(const int &value) noexcept;
-  void RotateY(const int &value) noexcept;
-  void RotateZ(const int &value) noexcept;
+  void RotateX(int value) noexcept;
+  void RotateY(int value) noexcept;
+  void RotateZ(int value) noexcept;
+  void SetProjectionType() noexcept;
 
  private:
   Ui::Viewer *ui_;
-  std::unique_ptr<Controller> controller_;
 
   int frame_count_{};
   int deg_x_{}, deg_y_{}, deg_z_{};
-  double l_width_{1.0}, v_width_{1.0};
   int check_x_{}, check_y_{}, check_z_{};
 
-  QTimer *timer_;
-  QGifImage *frame_;
-  QString gif_name_;
-  QSettings *settings_;
-  QColor color_main_{Qt::black}, color_line_{Qt::white}, color_vertex_{Qt::white};
+  OpenGL *ogl_;
 };
 }  // namespace s21
 

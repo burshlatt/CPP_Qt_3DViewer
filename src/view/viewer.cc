@@ -4,347 +4,406 @@
 namespace s21 {
 Viewer::Viewer(QWidget *parent) : QMainWindow(parent), ui_(new Ui::Viewer) {
   ui_->setupUi(this);
-  this->setFixedSize(1100, 650);
-  controller_ = std::make_unique<Controller>(ui_->OGL->get_data());
-  timer_ = new QTimer(0);
-  SetConnections();
-  SetPosition();
-  SetSettings();
+  setFixedSize(310, 685);
+  ogl_ = new OpenGL;
+  ogl_->resize(900, 900);
+
+  connect(ui_->MYUp, &QPushButton::clicked, this, &Viewer::MoveYU);
+  connect(ui_->MZFar, &QPushButton::clicked, this, &Viewer::MoveZF);
+  connect(ui_->MXLeft, &QPushButton::clicked, this, &Viewer::MoveXL);
+  connect(ui_->MYDown, &QPushButton::clicked, this, &Viewer::MoveYD);
+  connect(ui_->MZClose, &QPushButton::clicked, this, &Viewer::MoveZC);
+  connect(ui_->MXRight, &QPushButton::clicked, this, &Viewer::MoveXR);
+  connect(ui_->OpenFile, &QPushButton::clicked, this, &Viewer::OpenFile);
+  connect(ui_->ScalePlus, &QPushButton::clicked, this, &Viewer::ScaleMul);
+  connect(ui_->ScaleMinus, &QPushButton::clicked, this, &Viewer::ScaleDiv);
+  connect(ui_->MColor, &QPushButton::clicked, this, &Viewer::SetMainColor);
+  connect(ui_->LColor, &QPushButton::clicked, this, &Viewer::SetLineColor);
+  connect(ui_->VColor, &QPushButton::clicked, this, &Viewer::SetVertexColor);
+  connect(ui_->btnReset, &QPushButton::clicked, this, &Viewer::ResetSettings);
+  connect(ui_->btnShowModel, &QPushButton::clicked, this, &Viewer::ShowModelPanel);
+  connect(ui_->OXRotate, &QDial::valueChanged, this, &Viewer::RotateX);
+  connect(ui_->OYRotate, &QDial::valueChanged, this, &Viewer::RotateY);
+  connect(ui_->OZRotate, &QDial::valueChanged, this, &Viewer::RotateZ);
+  connect(ui_->LineSize, &QSpinBox::valueChanged, this, &Viewer::SetLineWidth);
+  connect(ui_->VertexSize, &QSpinBox::valueChanged, this, &Viewer::SetVertexWidth);
+  connect(ui_->cbModelType, &QComboBox::currentTextChanged, this, &Viewer::SetModelType);
+  connect(ui_->cbShading, &QComboBox::currentTextChanged, this, &Viewer::SetShadingType);
+  connect(ui_->cbVertexType, &QComboBox::currentTextChanged, this, &Viewer::SetVertexType);
+  connect(ui_->cbProjection, &QComboBox::currentTextChanged, this, &Viewer::SetProjectionType);
+
+  QScreen *screen = QGuiApplication::primaryScreen();
+  QRect screen_geometry = screen->geometry();
+  int x = (screen_geometry.width() - 275) / 1.2;
+  int y = (screen_geometry.height() - 685) / 2;
+  move(x, y);
+
+  SetEnableComponent(false);
 }
 
 Viewer::~Viewer() {
-  SaveSettings();
+  ogl_->close();
   delete ui_;
-  delete timer_;
-  delete settings_;
-}
-
-void Viewer::SetPosition() {
-  QScreen *screen = QGuiApplication::primaryScreen();
-  QRect screen_geometry = screen->geometry();
-  int x = (screen_geometry.width() - 1100) / 2;
-  int y = (screen_geometry.height() - 650) / 2;
-  move(x, y);
-}
-
-void Viewer::SetSettings() {
-  settings_ = new QSettings(this);
-  if (settings_->value("saved").toInt() == 1) LoadSettings();
-}
-
-void Viewer::SetConnections() noexcept {
-  connect(timer_, SIGNAL(timeout()), this, SLOT(SaveGIF()));
-  connect(ui_->MYUp, SIGNAL(clicked()), this, SLOT(MoveYU()));
-  connect(ui_->MZFar, SIGNAL(clicked()), this, SLOT(MoveZF()));
-  connect(ui_->MXLeft, SIGNAL(clicked()), this, SLOT(MoveXL()));
-  connect(ui_->MYDown, SIGNAL(clicked()), this, SLOT(MoveYD()));
-  connect(ui_->GIF, SIGNAL(clicked()), this, SLOT(CreateGIF()));
-  connect(ui_->MZClose, SIGNAL(clicked()), this, SLOT(MoveZC()));
-  connect(ui_->MXRight, SIGNAL(clicked()), this, SLOT(MoveXR()));
-  connect(ui_->MColor, SIGNAL(clicked()), this, SLOT(MainColor()));
-  connect(ui_->LColor, SIGNAL(clicked()), this, SLOT(LineColor()));
-  connect(ui_->OpenFile, SIGNAL(clicked()), this, SLOT(OpenFile()));
-  connect(ui_->LWPlus, SIGNAL(clicked()), this, SLOT(LWidthPlus()));
-  connect(ui_->VWPlus, SIGNAL(clicked()), this, SLOT(VWidthPlus()));
-  connect(ui_->VColor, SIGNAL(clicked()), this, SLOT(VertexColor()));
-  connect(ui_->ScalePlus, SIGNAL(clicked()), this, SLOT(ScaleMul()));
-  connect(ui_->ScaleMinus, SIGNAL(clicked()), this, SLOT(ScaleDiv()));
-  connect(ui_->LWMinus, SIGNAL(clicked()), this, SLOT(LWidthMinus()));
-  connect(ui_->VWMinus, SIGNAL(clicked()), this, SLOT(VWidthMinus()));
-  connect(ui_->VertexNo, SIGNAL(clicked()), this, SLOT(VertexType()));
-  connect(ui_->StippleNo, SIGNAL(clicked()), this, SLOT(StippleType()));
-  connect(ui_->StippleYes, SIGNAL(clicked()), this, SLOT(StippleType()));
-  connect(ui_->Central, SIGNAL(clicked()), this, SLOT(ProjectionType()));
-  connect(ui_->VertexCircle, SIGNAL(clicked()), this, SLOT(VertexType()));
-  connect(ui_->VertexSquare, SIGNAL(clicked()), this, SLOT(VertexType()));
-  connect(ui_->Parallel, SIGNAL(clicked()), this, SLOT(ProjectionType()));
-  connect(ui_->Screen, SIGNAL(clicked()), this, SLOT(CreateScreenshot()));
-  connect(ui_->OXRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateX(int)));
-  connect(ui_->OYRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateY(int)));
-  connect(ui_->OZRotate, SIGNAL(valueChanged(int)), this, SLOT(RotateZ(int)));
-}
-
-void Viewer::SaveSettings() noexcept {
-  settings_->setValue("saved", 1);
-  settings_->setValue("line_width", l_width_);
-  settings_->setValue("vertex_width", v_width_);
-  settings_->setValue("scale", ui_->ScaleValue->text());
-  settings_->setValue("move_ox", ui_->XMoveValue->text());
-  settings_->setValue("move_oy", ui_->YMoveValue->text());
-  settings_->setValue("move_oz", ui_->ZMoveValue->text());
-  settings_->setValue("color_line_r", color_line_.redF());
-  settings_->setValue("color_line_g", color_line_.greenF());
-  settings_->setValue("color_line_b", color_line_.blueF());
-  settings_->setValue("color_main_r", color_main_.redF());
-  settings_->setValue("color_main_g", color_main_.greenF());
-  settings_->setValue("color_main_b", color_main_.blueF());
-  settings_->setValue("color_main_a", color_main_.alphaF());
-  settings_->setValue("color_vertex_r", color_vertex_.redF());
-  settings_->setValue("color_vertex_g", color_vertex_.greenF());
-  settings_->setValue("color_vertex_b", color_vertex_.blueF());
-  settings_->setValue("central_prj", ui_->Central->isChecked());
-  settings_->setValue("parallel_prj", ui_->Parallel->isChecked());
-  settings_->setValue("vertex_no", ui_->VertexNo->isChecked());
-  settings_->setValue("vertex_circle", ui_->VertexCircle->isChecked());
-  settings_->setValue("vertex_square", ui_->VertexSquare->isChecked());
-  settings_->setValue("line_stipple_no", ui_->StippleNo->isChecked());
-  settings_->setValue("line_stipple_yes", ui_->StippleYes->isChecked());
-}
-
-void Viewer::LoadSettings() noexcept {
-  double r = settings_->value("color_main_r").toDouble();
-  double g = settings_->value("color_main_g").toDouble();
-  double b = settings_->value("color_main_b").toDouble();
-  color_main_ = QColor::fromRgbF(r, g, b);
-  r = settings_->value("color_line_r").toDouble();
-  g = settings_->value("color_line_g").toDouble();
-  b = settings_->value("color_line_b").toDouble();
-  color_line_ = QColor::fromRgbF(r, g, b);
-  r = settings_->value("color_vertex_r").toDouble();
-  g = settings_->value("color_vertex_g").toDouble();
-  b = settings_->value("color_vertex_b").toDouble();
-  color_vertex_ = QColor::fromRgbF(r, g, b);
-
-  l_width_ = settings_->value("line_width").toDouble();
-  v_width_ = settings_->value("vertex_width").toDouble();
-  ui_->VertexNo->setChecked(settings_->value("vertex_no", true).toBool());
-  ui_->Central->setChecked(settings_->value("central_prj", true).toBool());
-  ui_->Parallel->setChecked(settings_->value("parallel_prj", true).toBool());
-  ui_->StippleNo->setChecked(settings_->value("line_stipple_no", true).toBool());
-  ui_->VertexCircle->setChecked(settings_->value("vertex_circle", true).toBool());
-  ui_->VertexSquare->setChecked(settings_->value("vertex_square", true).toBool());
-  ui_->StippleYes->setChecked(settings_->value("line_stipple_yes", true).toBool());
-
-  ui_->OGL->set_line_width(l_width_);
-  ui_->OGL->set_vertex_width(v_width_);
-  ui_->OGL->set_main_color(color_main_);
-  ui_->OGL->set_line_color(color_line_);
-  ui_->OGL->set_vertex_color(color_vertex_);
-  VertexType();
-  StippleType();
-  ProjectionType();
-
-  ui_->ScaleValue->setText(settings_->value("scale").toString());
-  ui_->XMoveValue->setText(settings_->value("move_ox").toString());
-  ui_->YMoveValue->setText(settings_->value("move_oy").toString());
-  ui_->ZMoveValue->setText(settings_->value("move_oz").toString());
+  delete ogl_;
 }
 
 void Viewer::OpenFile() {
-  QString path = QFileDialog::getOpenFileName(nullptr, "Open File", QString(), "Obj Files (*.obj)");
-  if (!path.isEmpty()) {
-    ui_->OXRotate->setValue(0);
-    ui_->OYRotate->setValue(0);
-    ui_->OZRotate->setValue(0);
-    ui_->degX->setText("0");
-    ui_->degY->setText("0");
-    ui_->degZ->setText("0");
-    Data &data = ui_->OGL->get_data();
-    controller_->Parse(path.toStdString());
-    ui_->FileName->setText(path.section('/', -1));
-    ui_->VCount->setText(QString::number(data.v_count));
-    ui_->ECount->setText(QString::number(data.e_count));
-    ui_->OGL->Update();
+    QString path = QFileDialog::getOpenFileName(nullptr, "Open File", QString(), "Obj Files (*.obj)");
+    if (!path.isEmpty()) {
+        ui_->degX->setText("0");
+        ui_->degY->setText("0");
+        ui_->degZ->setText("0");
+        ui_->OXRotate->setValue(0);
+        ui_->OYRotate->setValue(0);
+        ui_->OZRotate->setValue(0);
+
+        SetEnableComponent(true);
+        ShowModelPanel();
+        ogl_->Open(path.toStdString());
+        const Data &data = ogl_->get_data();
+
+        ui_->FileName->setText(path.section('/', -1));
+        ui_->VCount->setText(QString::number(data.vertexes_v.size() / 3));
+        ui_->ECount->setText(QString::number(data.edges.size() / 2));
+        ui_->FCount->setText(QString::number(data.f_count));
+
+        QLayoutItem *item{nullptr};
+        while ((item = ui_->grid_layout_material->takeAt(0)) != nullptr) {
+            QWidget *widget = item->widget();
+            if (widget != nullptr)
+                delete widget;
+            delete item;
+        }
+
+        LoadMaterial();
+    }
+}
+
+void Viewer::SetEnableComponent(bool is_enable) noexcept {
+  ui_->MYUp->setEnabled(is_enable);
+  ui_->MZFar->setEnabled(is_enable);
+  ui_->MXLeft->setEnabled(is_enable);
+  ui_->MYDown->setEnabled(is_enable);
+  ui_->MColor->setEnabled(is_enable);
+  ui_->LColor->setEnabled(is_enable);
+  ui_->VColor->setEnabled(is_enable);
+  ui_->MXRight->setEnabled(is_enable);
+  ui_->MZClose->setEnabled(is_enable);
+  ui_->OXRotate->setEnabled(is_enable);
+  ui_->OYRotate->setEnabled(is_enable);
+  ui_->OZRotate->setEnabled(is_enable);
+  ui_->LineSize->setEnabled(is_enable);
+  ui_->btnReset->setEnabled(is_enable);
+  ui_->cbShading->setEnabled(is_enable);
+  ui_->ScalePlus->setEnabled(is_enable);
+  ui_->VertexSize->setEnabled(is_enable);
+  ui_->ScaleValue->setEnabled(is_enable);
+  ui_->ScaleMinus->setEnabled(is_enable);
+  ui_->XMoveValue->setEnabled(is_enable);
+  ui_->YMoveValue->setEnabled(is_enable);
+  ui_->ZMoveValue->setEnabled(is_enable);
+  ui_->cbModelType->setEnabled(is_enable);
+  ui_->cbProjection->setEnabled(is_enable);
+  ui_->cbVertexType->setEnabled(is_enable);
+  ui_->btnShowModel->setEnabled(is_enable);
+}
+
+void Viewer::ShowModelPanel() noexcept {
+  if (!ui_->FileName->text().isEmpty()) {
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screen_geometry = screen->geometry();
+    int x = (screen_geometry.width() - 275) / 1.2 - 950;
+    int y = (screen_geometry.height() - 900) / 2;
+    ogl_->show();
+    ogl_->move(x, y);
   }
+}
+
+void Viewer::ResetSettings() noexcept {
+  ui_->LineSize->setValue(0);
+  ui_->VertexSize->setValue(0);
+  ui_->cbShading->setCurrentText("Smooth");
+  ui_->cbModelType->setCurrentText("Frame");
+  ui_->cbVertexType->setCurrentText("None");
+  ui_->cbProjection->setCurrentText("Parallel");
+
+  ogl_->set_line_size(1.0f);
+  ogl_->set_vertex_size(1.0f);
+  ogl_->set_model_type(kFrame);
+  ogl_->set_vertex_type(kNone);
+  ogl_->set_shading_type(kSmooth);
+  ogl_->set_projection(kParallel);
+  ogl_->set_main_color("#686868");
+  ogl_->set_line_color({ 1.0f, 1.0f, 1.0f });
+  ogl_->set_vertex_color({ 1.0f, 1.0f, 1.0f });
 }
 
 void Viewer::MoveXL() noexcept {
-  if (!ui_->XMoveValue->text().isEmpty()) {
-    controller_->Move(-ui_->XMoveValue->text().toDouble(), kMoveX);
-    ui_->OGL->Update();
-  }
+  if (!ui_->XMoveValue->text().isEmpty())
+    ogl_->Move(-ui_->XMoveValue->text().replace(",", ".").toDouble(), kX);
 }
 
 void Viewer::MoveXR() noexcept {
-  if (!ui_->XMoveValue->text().isEmpty()) {
-    controller_->Move(ui_->XMoveValue->text().toDouble(), kMoveX);
-    ui_->OGL->Update();
-  }
+  if (!ui_->XMoveValue->text().isEmpty())
+    ogl_->Move(ui_->XMoveValue->text().replace(",", ".").toDouble(), kX);
 }
 
 void Viewer::MoveYD() noexcept {
-  if (!ui_->YMoveValue->text().isEmpty()) {
-    controller_->Move(-ui_->YMoveValue->text().toDouble(), kMoveY);
-    ui_->OGL->Update();
-  }
+  if (!ui_->YMoveValue->text().isEmpty())
+    ogl_->Move(-ui_->YMoveValue->text().replace(",", ".").toDouble(), kY);
 }
 
 void Viewer::MoveYU() noexcept {
-  if (!ui_->YMoveValue->text().isEmpty()) {
-    controller_->Move(ui_->YMoveValue->text().toDouble(), kMoveY);
-    ui_->OGL->Update();
-  }
+  if (!ui_->YMoveValue->text().isEmpty())
+    ogl_->Move(ui_->YMoveValue->text().replace(",", ".").toDouble(), kY);
 }
 
 void Viewer::MoveZC() noexcept {
-  if (!ui_->ZMoveValue->text().isEmpty()) {
-    controller_->Move(-ui_->ZMoveValue->text().toDouble(), kMoveZ);
-    ui_->OGL->Update();
-  }
+  if (!ui_->ZMoveValue->text().isEmpty())
+    ogl_->Move(-ui_->ZMoveValue->text().replace(",", ".").toDouble(), kZ);
 }
 
 void Viewer::MoveZF() noexcept {
-  if (!ui_->ZMoveValue->text().isEmpty()) {
-    controller_->Move(ui_->ZMoveValue->text().toDouble(), kMoveZ);
-    ui_->OGL->Update();
-  }
+  if (!ui_->ZMoveValue->text().isEmpty())
+    ogl_->Move(ui_->ZMoveValue->text().replace(",", ".").toDouble(), kZ);
 }
 
 void Viewer::ScaleMul() noexcept {
-  if (!ui_->ScaleValue->text().isEmpty()) {
-    controller_->Scale(ui_->ScaleValue->text().toDouble(), kScaleP);
-    ui_->OGL->Update();
-  }
+  if (!ui_->ScaleValue->text().isEmpty())
+    ogl_->Scale(ui_->ScaleValue->text().replace(",", ".").toDouble(), kScaleMul);
 }
 
 void Viewer::ScaleDiv() noexcept {
-  if (!ui_->ScaleValue->text().isEmpty()) {
-    controller_->Scale(ui_->ScaleValue->text().toDouble(), kScaleM);
-    ui_->OGL->Update();
-  }
+  if (!ui_->ScaleValue->text().isEmpty())
+    ogl_->Scale(ui_->ScaleValue->text().replace(",", ".").toDouble(), kScaleDiv);
 }
 
-void Viewer::RotateX(const int &value) noexcept {
+void Viewer::RotateX(int value) noexcept {
   if (value > check_x_) {
-    controller_->Rotate(1, kRotX);
+    ogl_->Rotate(1.0, kX);
     deg_x_++;
   } else {
-    controller_->Rotate(-1, kRotX);
+    ogl_->Rotate(-1.0, kX);
     deg_x_--;
   }
   ui_->degX->setText(QString::number(deg_x_));
   check_x_ = value;
-  ui_->OGL->Update();
 }
 
-void Viewer::RotateY(const int &value) noexcept {
+void Viewer::RotateY(int value) noexcept {
   if (value > check_y_) {
-    controller_->Rotate(1, kRotY);
+    ogl_->Rotate(1.0, kY);
     deg_y_++;
   } else {
-    controller_->Rotate(-1, kRotY);
+    ogl_->Rotate(-1.0, kY);
     deg_y_--;
   }
   ui_->degY->setText(QString::number(deg_y_));
   check_y_ = value;
-  ui_->OGL->Update();
 }
 
-void Viewer::RotateZ(const int &value) noexcept {
+void Viewer::RotateZ(int value) noexcept {
   if (value > check_z_) {
-    controller_->Rotate(-1, kRotZ);
+    ogl_->Rotate(-1.0, kZ);
     deg_z_++;
   } else {
-    controller_->Rotate(1, kRotZ);
+    ogl_->Rotate(1.0, kZ);
     deg_z_--;
   }
   ui_->degZ->setText(QString::number(deg_z_));
   check_z_ = value;
-  ui_->OGL->Update();
 }
 
-void Viewer::ProjectionType() noexcept {
-  if (ui_->Parallel->isChecked())
-    ui_->OGL->set_parallel(true);
-  else
-    ui_->OGL->set_parallel(false);
-  ui_->OGL->Update();
+void Viewer::SetProjectionType() noexcept {
+  if (ui_->cbProjection->currentText() == "Parallel")
+    ogl_->set_projection(kParallel);
+  else if (ui_->cbProjection->currentText() == "Central")
+    ogl_->set_projection(kCentral);
 }
 
-void Viewer::LWidthPlus() noexcept {
-  l_width_ += 0.5;
-  ui_->OGL->set_line_width(l_width_);
-  ui_->OGL->Update();
+void Viewer::SetVertexWidth() noexcept {
+  ogl_->set_vertex_size(ui_->VertexSize->text().toDouble());
 }
 
-void Viewer::LWidthMinus() noexcept {
-  if (l_width_ > 1) l_width_ -= 0.5;
-  ui_->OGL->set_line_width(l_width_);
-  ui_->OGL->Update();
+void Viewer::SetLineWidth() noexcept {
+  ogl_->set_line_size(ui_->LineSize->text().toDouble());
 }
 
-void Viewer::VWidthPlus() noexcept {
-  v_width_ += 0.5;
-  ui_->OGL->set_vertex_width(v_width_);
-  ui_->OGL->Update();
+void Viewer::SetModelType() noexcept {
+  if (ui_->cbModelType->currentText() == "Frame")
+    ogl_->set_model_type(kFrame);
+  else if (ui_->cbModelType->currentText() == "Dashed")
+    ogl_->set_model_type(kDashed);
+  else if (ui_->cbModelType->currentText() == "Solid")
+    ogl_->set_model_type(kSolid);
+  else if (ui_->cbModelType->currentText() == "Textured")
+    ogl_->set_model_type(kTextured);
 }
 
-void Viewer::VWidthMinus() noexcept {
-  if (v_width_ > 1) v_width_ -= 0.5;
-  ui_->OGL->set_vertex_width(v_width_);
-  ui_->OGL->Update();
+void Viewer::SetVertexType() noexcept {
+  if (ui_->cbVertexType->currentText() == "None")
+    ogl_->set_vertex_type(kNone);
+  else if (ui_->cbVertexType->currentText() == "Quad")
+    ogl_->set_vertex_type(kSquare);
+  else if (ui_->cbVertexType->currentText() == "Circle")
+    ogl_->set_vertex_type(kCircle);
 }
 
-void Viewer::StippleType() noexcept {
-  if (ui_->StippleYes->isChecked())
-    ui_->OGL->set_stipple(true);
-  else
-    ui_->OGL->set_stipple(false);
-  ui_->OGL->Update();
+void Viewer::SetShadingType() noexcept {
+  if (ui_->cbShading->currentText() == "Smooth")
+    ogl_->set_shading_type(kSmooth);
+  else if (ui_->cbShading->currentText() == "Flat")
+    ogl_->set_shading_type(kFlat);
 }
 
-void Viewer::VertexType() noexcept {
-  if (ui_->VertexNo->isChecked()) {
-    ui_->OGL->set_is_no_vertex(true);
-    ui_->OGL->set_is_circle_vertex(false);
-  } else if (ui_->VertexCircle->isChecked()) {
-    ui_->OGL->set_is_no_vertex(false);
-    ui_->OGL->set_is_circle_vertex(true);
-  } else {
-    ui_->OGL->set_is_no_vertex(false);
-    ui_->OGL->set_is_circle_vertex(false);
-  }
-  ui_->OGL->Update();
-}
-
-void Viewer::LineColor() noexcept {
-  color_line_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
-  if (color_line_.isValid()) ui_->OGL->set_line_color(color_line_);
-  ui_->OGL->Update();
-}
-
-void Viewer::VertexColor() noexcept {
-  color_vertex_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
-  if (color_vertex_.isValid()) ui_->OGL->set_vertex_color(color_vertex_);
-  ui_->OGL->Update();
-}
-
-void Viewer::MainColor() noexcept {
-  color_main_ = QColorDialog::getColor(Qt::white, this, "Choose Color");
-  if (color_main_.isValid()) ui_->OGL->set_main_color(color_main_);
-  ui_->OGL->Update();
-}
-
-void Viewer::CreateScreenshot() noexcept {
-  QString f_name = QFileDialog::getSaveFileName(this, "Save screenshot", "", "BMP Image (*.bmp);; JPEG Image (*.jpeg)");
-  QImage img = ui_->OGL->GetFrame();
-  img.save(f_name);
-}
-
-void Viewer::CreateGIF() {
-  gif_name_ = QFileDialog::getSaveFileName(this, "Save GIF", "", "Gif Files (*.gif)");
-  if (gif_name_ != "") {
-    ui_->GIF->setText("▢");
-    ui_->GIF->setDisabled(true);
-    frame_ = new QGifImage;
-    frame_->setDefaultDelay(10);
-    timer_->setInterval(100);
-    timer_->start();
+void Viewer::SetLineColor() noexcept {
+  QColor color_line = QColorDialog::getColor(Qt::white, this, "Choose Color");
+  if (color_line.isValid()) {
+    QVector3D color = { color_line.redF(), color_line.greenF(), color_line.blueF() };
+    ogl_->set_line_color(color);
   }
 }
 
-void Viewer::SaveGIF() {
-  QImage img = ui_->OGL->GetFrame();
-  frame_->addFrame(img);
-  if (frame_count_ == 50) {
-    timer_->stop();
-    frame_->save(gif_name_);
-    frame_count_ = 0;
-    delete frame_;
-    ui_->GIF->setEnabled(true);
-    ui_->GIF->setText("GIF ▶");
+void Viewer::SetVertexColor() noexcept {
+  QColor color_vertex = QColorDialog::getColor(Qt::white, this, "Choose Color");
+  if (color_vertex.isValid()) {
+    QVector3D color = { color_vertex.redF(), color_vertex.greenF(), color_vertex.blueF() };
+    ogl_->set_vertex_color(color);
   }
-  frame_count_++;
 }
 
+void Viewer::SetMainColor() noexcept {
+  QColor color_main = QColorDialog::getColor(Qt::white, this, "Choose Color");
+  if (color_main.isValid()) {
+    ogl_->set_main_color(color_main);
+  }
+}
+
+void Viewer::SetInfo(const QString& name, const QString& info) {
+  QLabel *new_label = new QLabel(ui_->scroll_area_maps->widget());
+  new_label->setText(name + info);
+  new_label->setWordWrap(true);
+  new_label->setAlignment(Qt::AlignCenter);
+  new_label->setStyleSheet("QLabel { color: white; }");
+  ui_->grid_layout_material->addWidget(new_label);
+}
+
+void Viewer::SetImg(const Mtl& mtl, const QString& img_path, MapType map_type, int idx) {
+    SetInfo("========================", "");
+    SetInfo("Name:\n", QString::fromStdString(mtl.name) + "\n");
+
+    if (map_type == kAmbient) {
+        QString ka = "";
+        for (int i = 0; i < 3; i++)
+            ka += QString::number(mtl.Ka[i]) + " ";
+        SetInfo("Ambient: ", ka);
+    } else if (map_type == kDiffuse) {
+        QString kd = "";
+        for (int i = 0; i < 3; i++)
+            kd += QString::number(mtl.Kd[i]) + " ";
+        SetInfo("Diffuse: ", kd);
+    } else if (map_type == kSpecular) {
+        QString ks = "";
+        for (int i = 0; i < 3; i++)
+            ks += QString::number(mtl.Ks[i]) + " ";
+        SetInfo("Diffuse: ", ks);
+    }
+    QString ke = "";
+    for (int i = 0; i < 3; i++)
+        ke += QString::number(mtl.Ke[i]) + " ";
+
+    SetInfo("Emmission: ", ke);
+    SetInfo("Opacity: ", QString::number(mtl.d));
+    SetInfo("Shiness: ", QString::number(mtl.Ns));
+    SetInfo("\nTexture:", "");
+
+    QPushButton *show_img = new QPushButton();
+    QPushButton *btn_save = new QPushButton();
+    QPushButton *btn_load = new QPushButton();
+    QPushButton *btn_unload = new QPushButton();
+    show_img->setText("Show img");
+    btn_save->setText("Save UV");
+    btn_load->setText("Load texture");
+    btn_unload->setText("Unload texture");
+    show_img->setStyleSheet("QPushButton {background-color: #8F8F8F; border-radius: 2px; border: 2px solid gray; color: white;} QPushButton:hover {border: 2px solid #69A1E4;} QPushButton:pressed {background-color: white;}");
+    btn_save->setStyleSheet("QPushButton {background-color: #8F8F8F; border-radius: 2px; border: 2px solid gray; color: white;} QPushButton:hover {border: 2px solid #69A1E4;} QPushButton:pressed {background-color: white;}");
+    btn_load->setStyleSheet("QPushButton {background-color: #8F8F8F; border-radius: 2px; border: 2px solid gray; color: white;} QPushButton:hover {border: 2px solid #69A1E4;} QPushButton:pressed {background-color: white;}");
+    btn_unload->setStyleSheet("QPushButton {background-color: #8F8F8F; border-radius: 2px; border: 2px solid gray; color: white;} QPushButton:hover {border: 2px solid #69A1E4;} QPushButton:pressed {background-color: white;}");
+    ui_->grid_layout_material->addWidget(show_img);
+    ui_->grid_layout_material->addWidget(btn_save);
+    ui_->grid_layout_material->addWidget(btn_load);
+    ui_->grid_layout_material->addWidget(btn_unload);
+
+    connect(show_img, &QPushButton::clicked, this, [this, img_path]() {
+        QDialog *img_dialog = new QDialog(this);
+        img_dialog->setWindowTitle("Image Viewer");
+        QLabel *img_label = new QLabel(img_dialog);
+        QPixmap img_pixmap(img_path);
+        img_label->setPixmap(img_pixmap);
+        img_label->setScaledContents(true);
+        QVBoxLayout *layout = new QVBoxLayout(img_dialog);
+        layout->addWidget(img_label);
+        img_dialog->exec();
+    });
+
+    connect(btn_save, &QPushButton::clicked, this, [this, idx, img_path]() {
+        QString save_path = QFileDialog::getSaveFileName(
+        this, tr("Save UV-map"), QDir::homePath(), tr("PNG files (*.png)"));
+        if (!save_path.isEmpty())
+        ogl_->SaveUvMap(idx, img_path.toStdString(), save_path);
+    });
+
+    connect(btn_load, &QPushButton::clicked, this, [this, btn_unload, btn_save, show_img, map_type, idx]() {
+        QString file_path = QFileDialog::getOpenFileName(this, tr("Load texture"), QDir::homePath(), tr("PNG files (*.png)"));
+        if (!file_path.isEmpty()) {
+            ogl_->ResetTexture(idx, map_type, file_path);
+            show_img->setEnabled(true);
+            btn_save->setEnabled(true);
+            btn_unload->setEnabled(true);
+
+            show_img->disconnect();
+            connect(show_img, &QPushButton::clicked, this, [this, file_path]() {
+                QDialog *img_dialog = new QDialog(this);
+                img_dialog->setWindowTitle("Image Viewer");
+                QLabel *img_label = new QLabel(img_dialog);
+                QPixmap img_pixmap(file_path);
+                img_label->setPixmap(img_pixmap);
+                img_label->setScaledContents(true);
+                QVBoxLayout *layout = new QVBoxLayout(img_dialog);
+                layout->addWidget(img_label);
+                img_dialog->exec();
+            });
+
+            btn_save->disconnect();
+            connect(btn_save, &QPushButton::clicked, this, [this, idx, file_path]() {
+                QString save_path = QFileDialog::getSaveFileName(this, tr("Save UV-map"), QDir::homePath(), tr("PNG files (*.png)"));
+                ogl_->SaveUvMap(idx, file_path.toStdString(), save_path);
+            });
+        }
+    });
+
+    connect(btn_unload, &QPushButton::clicked, this, [this, btn_unload, btn_save, show_img, map_type, idx]() {
+        ogl_->ResetTexture(idx, map_type);
+        show_img->setEnabled(false);
+        btn_save->setEnabled(false);
+        btn_unload->setEnabled(false);
+    });
+}
+
+void Viewer::LoadMaterial() {
+    const Data &data = ogl_->get_data();
+    if (!data.mtl.empty()) {
+        int index = 0;
+        for (const auto& it : data.mtl) {
+            if (!it.map_ka.empty())
+                SetImg(it, QString::fromStdString(it.map_ka), kAmbient, index);
+            if (!it.map_kd.empty())
+                SetImg(it, QString::fromStdString(it.map_kd), kDiffuse, index);
+            if (!it.map_ks.empty())
+                SetImg(it, QString::fromStdString(it.map_ks), kSpecular, index);
+
+            index++;
+        }
+    }
+}
 }  // namespace s21

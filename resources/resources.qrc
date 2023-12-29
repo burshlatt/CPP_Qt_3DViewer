@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../images/3dviewer.png</file>
+	<file>../images/down_arrow.png</file>
+	<file>../images/left_arrow.png</file>
+        <file>../images/right_arrow.png</file>
+        <file>../shaders/wireframe_fragment.glsl</file>
+        <file>../shaders/wireframe_vertex.glsl</file>
+        <file>../shaders/wireframe_dashed_fragment.glsl</file>
+        <file>../shaders/wireframe_dashed_vertex.glsl</file>
+	<file>../shaders/solid_flat_fragment.glsl</file>
+        <file>../shaders/solid_fragment.glsl</file>
+        <file>../shaders/solid_vertex.glsl</file>
+        <file>../shaders/texture_no_normals_fragment.glsl</file>
+        <file>../shaders/texture_no_normals_vertex.glsl</file>
+	<file>../shaders/texture_flat_fragment.glsl</file>
+        <file>../shaders/texture_fragment.glsl</file>
+        <file>../shaders/texture_vertex.glsl</file>
+    </qresource>
+</RCC>
