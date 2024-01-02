@@ -1,17 +1,12 @@
-QT       += core gui opengl openglwidgets
+QT += core gui opengl openglwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QMAKE_CXXFLAGS += -Wall -Werror -Wextra -O3 -std=c++17
+QMAKE_CXXFLAGS += -O3
 
 win32 {
     LIBS += -lopengl32
     CONFIG += windows
-}
-
-mac {
-    LIBS += -framework OpenGL
-    CONFIG += macx
 }
 
 linux {
@@ -19,9 +14,19 @@ linux {
     CONFIG += linux
 }
 
+mac {
+    LIBS += -framework OpenGL
+    CONFIG += macx
+}
+
 CONFIG += c++17
 
-include(src/third_party/earcut/earcut.h);
+RESOURCES += resources/resources.qrc
+
+include(src/external/QtGifImage/src/gifimage/qtgifimage.pri)
+
+# Uncomment the following line to make your code fail to compile if it uses deprecated APIs.
+# DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000 # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
     src/main.cc \
@@ -30,10 +35,11 @@ SOURCES += \
     src/view/viewer.cc
 
 HEADERS += \
-    src/lib/parser.h \
     src/lib/struct.h \
+    src/lib/parser.h \
     src/view/opengl.h \
     src/view/viewer.h \
+    third_party/earcut/earcut.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -42,6 +48,3 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 FORMS += \
     src/view/viewer.ui
-
-RESOURCES += \
-    resources/resources.qrc

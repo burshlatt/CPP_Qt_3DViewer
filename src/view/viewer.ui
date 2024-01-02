@@ -66,8 +66,29 @@
       </property>
       <item row="0" column="0">
        <layout class="QGridLayout" name="tab_general_grid_layout">
-        <item row="8" column="1" rowspan="2" colspan="4">
-         <widget class="QFrame" name="frame_color">
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_scale_2">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+	color: white;
+}</string>
+          </property>
+          <property name="text">
+           <string>V</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="1" colspan="4">
+         <widget class="QFrame" name="frame_reset">
           <property name="autoFillBackground">
            <bool>false</bool>
           </property>
@@ -82,7 +103,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QGridLayout" name="gridLayout_14">
+          <layout class="QGridLayout" name="gridLayout_21">
            <property name="leftMargin">
             <number>7</number>
            </property>
@@ -95,45 +116,8 @@
            <property name="bottomMargin">
             <number>7</number>
            </property>
-           <item row="2" column="0">
-            <widget class="QPushButton" name="VColor">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: #8F8F8F;
-	border-radius: 2px;
-	border: 2px solid gray;
-	color: white;
-}
-
-QPushButton:hover {
-    border: 2px solid #69A1E4;
-}
-
-QPushButton:pressed {
-  background-color: white;
-}</string>
-             </property>
-             <property name="text">
-              <string>Vertex</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QPushButton" name="LColor">
+           <item row="1" column="0" colspan="2">
+            <widget class="QPushButton" name="btnReset">
              <property name="enabled">
               <bool>true</bool>
              </property>
@@ -159,32 +143,12 @@ QPushButton:pressed {
 }</string>
              </property>
              <property name="text">
-              <string>Line</string>
+              <string>Reset</string>
              </property>
             </widget>
            </item>
            <item row="0" column="0" colspan="2">
-            <widget class="QLabel" name="label_color">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QLabel {
-	color: white;
-}</string>
-             </property>
-             <property name="text">
-              <string>Color</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QPushButton" name="MColor">
+            <widget class="QPushButton" name="btnShowModel">
              <property name="enabled">
               <bool>true</bool>
              </property>
@@ -210,12 +174,28 @@ QPushButton:pressed {
 }</string>
              </property>
              <property name="text">
-              <string>Main</string>
+              <string>Show model</string>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
+        </item>
+        <item row="4" column="5" rowspan="14">
+         <spacer name="horizontal_spacer_general_right">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>6</width>
+            <height>6</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item row="0" column="4">
          <widget class="QLabel" name="label_scale_5">
@@ -238,7 +218,416 @@ QPushButton:pressed {
           </property>
          </widget>
         </item>
-        <item row="6" column="1" rowspan="2" colspan="4">
+        <item row="0" column="3">
+         <widget class="QLabel" name="label_scale_4">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+	color: white;
+}</string>
+          </property>
+          <property name="text">
+           <string>E</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" rowspan="14">
+         <spacer name="horizontal_spacer_general_left">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>4</width>
+            <height>4</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="10" column="1" colspan="4">
+         <widget class="QFrame" name="frame_view_type">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame {
+	background-color: #2E2E2E;
+}</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_11">
+           <property name="leftMargin">
+            <number>7</number>
+           </property>
+           <property name="topMargin">
+            <number>7</number>
+           </property>
+           <property name="rightMargin">
+            <number>7</number>
+           </property>
+           <property name="bottomMargin">
+            <number>7</number>
+           </property>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="cbModelType">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox {
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 1px 18px 1px 3px;
+	min-width: 6em;
+	color: white;
+}
+
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 16px;
+
+	border-left-width: 1px;
+	border-left-color: darkgray;
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+	subcontrol-origin: margin;
+	subcontrol-position: center right;
+	image: url(:/images/down_arrow.png);
+	right: 3px;
+	height: 22px;
+	width: 10px;
+}</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Frame</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Dashed</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Solid</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Textured</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_view_type">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	color: white;
+}</string>
+             </property>
+             <property name="text">
+              <string>Model Type</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="9" column="1" colspan="4">
+         <widget class="QFrame" name="frame_projection">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame {
+	background-color: #2E2E2E;
+}</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_15">
+           <property name="leftMargin">
+            <number>7</number>
+           </property>
+           <property name="topMargin">
+            <number>7</number>
+           </property>
+           <property name="rightMargin">
+            <number>7</number>
+           </property>
+           <property name="bottomMargin">
+            <number>7</number>
+           </property>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="cbProjection">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox {
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 1px 18px 1px 3px;
+	min-width: 6em;
+	color: white;
+}
+
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 16px;
+
+	border-left-width: 1px;
+	border-left-color: darkgray;
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+	subcontrol-origin: margin;
+	subcontrol-position: center right;
+	image: url(:/images/down_arrow.png);
+	right: 3px;
+	height: 22px;
+	width: 10px;
+}</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Parallel</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Central</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_projection">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	color: white;
+}</string>
+             </property>
+             <property name="text">
+              <string>Projection</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_scale_3">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+	color: white;
+}</string>
+          </property>
+          <property name="text">
+           <string>I</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="1" colspan="4">
+         <spacer name="vertical_spacer_general_down">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="1" colspan="4">
+         <widget class="QPushButton" name="OpenFile">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+	background-color: #8F8F8F;
+	border-radius: 2px;
+	border: 2px solid gray;
+	color: white;
+}
+
+QPushButton:hover {
+    border: 2px solid #69A1E4;
+}
+
+QPushButton:pressed {
+  background-color: white;
+}</string>
+          </property>
+          <property name="text">
+           <string>Open file (.obj)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1" colspan="4">
+         <widget class="QFrame" name="frame">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame {
+	background-color: #2E2E2E;
+}</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="1" column="1">
+            <widget class="QComboBox" name="cbShading">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QComboBox {
+	border: 1px solid gray;
+	border-radius: 5px;
+	padding: 1px 18px 1px 3px;
+	min-width: 6em;
+	color: white;
+}
+
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 16px;
+
+	border-left-width: 1px;
+	border-left-color: darkgray;
+	border-left-style: solid;
+	border-top-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+	subcontrol-origin: margin;
+	subcontrol-position: center right;
+	image: url(:/images/down_arrow.png);
+	right: 3px;
+	height: 22px;
+	width: 10px;
+}</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Smooth</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Flat</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_shading">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	color: white;
+}</string>
+             </property>
+             <property name="text">
+              <string>Shading</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="12" column="1" rowspan="2" colspan="4">
          <widget class="QFrame" name="frame_vertex">
           <property name="autoFillBackground">
            <bool>false</bool>
@@ -507,28 +896,158 @@ QSpinBox::up-button  {
           </layout>
          </widget>
         </item>
-        <item row="0" column="3">
-         <widget class="QLabel" name="label_scale_4">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-            <bold>true</bold>
-           </font>
+        <item row="14" column="1" rowspan="2" colspan="4">
+         <widget class="QFrame" name="frame_color">
+          <property name="autoFillBackground">
+           <bool>false</bool>
           </property>
           <property name="styleSheet">
-           <string notr="true">QLabel {
-	color: white;
+           <string notr="true">QFrame {
+	background-color: #2E2E2E;
 }</string>
           </property>
-          <property name="text">
-           <string>E</string>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
           </property>
+          <layout class="QGridLayout" name="gridLayout_14">
+           <property name="leftMargin">
+            <number>7</number>
+           </property>
+           <property name="topMargin">
+            <number>7</number>
+           </property>
+           <property name="rightMargin">
+            <number>7</number>
+           </property>
+           <property name="bottomMargin">
+            <number>7</number>
+           </property>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="VColor">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	background-color: #8F8F8F;
+	border-radius: 2px;
+	border: 2px solid gray;
+	color: white;
+}
+
+QPushButton:hover {
+    border: 2px solid #69A1E4;
+}
+
+QPushButton:pressed {
+  background-color: white;
+}</string>
+             </property>
+             <property name="text">
+              <string>Vertex</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QPushButton" name="LColor">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	background-color: #8F8F8F;
+	border-radius: 2px;
+	border: 2px solid gray;
+	color: white;
+}
+
+QPushButton:hover {
+    border: 2px solid #69A1E4;
+}
+
+QPushButton:pressed {
+  background-color: white;
+}</string>
+             </property>
+             <property name="text">
+              <string>Line</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QLabel" name="label_color">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	color: white;
+}</string>
+             </property>
+             <property name="text">
+              <string>Color</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QPushButton" name="MColor">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	background-color: #8F8F8F;
+	border-radius: 2px;
+	border: 2px solid gray;
+	color: white;
+}
+
+QPushButton:hover {
+    border: 2px solid #69A1E4;
+}
+
+QPushButton:pressed {
+  background-color: white;
+}</string>
+             </property>
+             <property name="text">
+              <string>Main</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
-        <item row="2" column="1" colspan="4">
+        <item row="5" column="1" rowspan="4" colspan="4">
          <widget class="QFrame" name="frame_info">
           <property name="autoFillBackground">
            <bool>false</bool>
@@ -744,478 +1263,14 @@ QSpinBox::up-button  {
           </layout>
          </widget>
         </item>
-        <item row="5" column="1" colspan="4">
-         <widget class="QFrame" name="frame">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QFrame {
-	background-color: #2E2E2E;
-}</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="1" column="1">
-            <widget class="QComboBox" name="cbShading">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QComboBox {
-	border: 1px solid gray;
-	border-radius: 5px;
-	padding: 1px 18px 1px 3px;
-	min-width: 6em;
-	color: white;
-}
-
-QComboBox::drop-down {
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 16px;
-
-	border-left-width: 1px;
-	border-left-color: darkgray;
-	border-left-style: solid;
-	border-top-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	subcontrol-origin: margin;
-	subcontrol-position: center right;
-	image: url(:/images/down_arrow.png);
-	right: 3px;
-	height: 22px;
-	width: 10px;
-}</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>Smooth</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Flat</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_shading">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QLabel {
-	color: white;
-}</string>
-             </property>
-             <property name="text">
-              <string>Shading</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="5" rowspan="11">
-         <spacer name="horizontal_spacer_general_right">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+        <item row="4" column="1" colspan="2">
+         <widget class="QPushButton" name="GIF">
+          <property name="maximumSize">
            <size>
-            <width>6</width>
-            <height>6</height>
+            <width>16777215</width>
+            <height>16777215</height>
            </size>
           </property>
-         </spacer>
-        </item>
-        <item row="10" column="1" colspan="4">
-         <widget class="QFrame" name="frame_reset">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QFrame {
-	background-color: #2E2E2E;
-}</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_21">
-           <property name="leftMargin">
-            <number>7</number>
-           </property>
-           <property name="topMargin">
-            <number>7</number>
-           </property>
-           <property name="rightMargin">
-            <number>7</number>
-           </property>
-           <property name="bottomMargin">
-            <number>7</number>
-           </property>
-           <item row="1" column="0" colspan="2">
-            <widget class="QPushButton" name="btnReset">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: #8F8F8F;
-	border-radius: 2px;
-	border: 2px solid gray;
-	color: white;
-}
-
-QPushButton:hover {
-    border: 2px solid #69A1E4;
-}
-
-QPushButton:pressed {
-  background-color: white;
-}</string>
-             </property>
-             <property name="text">
-              <string>Reset</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" colspan="2">
-            <widget class="QPushButton" name="btnShowModel">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-	background-color: #8F8F8F;
-	border-radius: 2px;
-	border: 2px solid gray;
-	color: white;
-}
-
-QPushButton:hover {
-    border: 2px solid #69A1E4;
-}
-
-QPushButton:pressed {
-  background-color: white;
-}</string>
-             </property>
-             <property name="text">
-              <string>Show model</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_scale_3">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLabel {
-	color: white;
-}</string>
-          </property>
-          <property name="text">
-           <string>I</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1" colspan="4">
-         <widget class="QFrame" name="frame_projection">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QFrame {
-	background-color: #2E2E2E;
-}</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_15">
-           <property name="leftMargin">
-            <number>7</number>
-           </property>
-           <property name="topMargin">
-            <number>7</number>
-           </property>
-           <property name="rightMargin">
-            <number>7</number>
-           </property>
-           <property name="bottomMargin">
-            <number>7</number>
-           </property>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="cbProjection">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QComboBox {
-	border: 1px solid gray;
-	border-radius: 5px;
-	padding: 1px 18px 1px 3px;
-	min-width: 6em;
-	color: white;
-}
-
-QComboBox::drop-down {
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 16px;
-
-	border-left-width: 1px;
-	border-left-color: darkgray;
-	border-left-style: solid;
-	border-top-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	subcontrol-origin: margin;
-	subcontrol-position: center right;
-	image: url(:/images/down_arrow.png);
-	right: 3px;
-	height: 22px;
-	width: 10px;
-}</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>Parallel</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Central</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_projection">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QLabel {
-	color: white;
-}</string>
-             </property>
-             <property name="text">
-              <string>Projection</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="0" rowspan="11">
-         <spacer name="horizontal_spacer_general_left">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>4</width>
-            <height>4</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="11" column="1" colspan="4">
-         <spacer name="vertical_spacer_general_down">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="4" column="1" colspan="4">
-         <widget class="QFrame" name="frame_view_type">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QFrame {
-	background-color: #2E2E2E;
-}</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_11">
-           <property name="leftMargin">
-            <number>7</number>
-           </property>
-           <property name="topMargin">
-            <number>7</number>
-           </property>
-           <property name="rightMargin">
-            <number>7</number>
-           </property>
-           <property name="bottomMargin">
-            <number>7</number>
-           </property>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="cbModelType">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QComboBox {
-	border: 1px solid gray;
-	border-radius: 5px;
-	padding: 1px 18px 1px 3px;
-	min-width: 6em;
-	color: white;
-}
-
-QComboBox::drop-down {
-	subcontrol-origin: padding;
-	subcontrol-position: top right;
-	width: 16px;
-
-	border-left-width: 1px;
-	border-left-color: darkgray;
-	border-left-style: solid;
-	border-top-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	subcontrol-origin: margin;
-	subcontrol-position: center right;
-	image: url(:/images/down_arrow.png);
-	right: 3px;
-	height: 22px;
-	width: 10px;
-}</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>Frame</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Dashed</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Solid</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Textured</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_view_type">
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QLabel {
-	color: white;
-}</string>
-             </property>
-             <property name="text">
-              <string>Model Type</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="1" colspan="4">
-         <widget class="QPushButton" name="OpenFile">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -1238,28 +1293,41 @@ QPushButton:pressed {
 }</string>
           </property>
           <property name="text">
-           <string>Open file (.obj)</string>
+           <string>GIF ▶</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_scale_2">
+        <item row="4" column="3" colspan="2">
+         <widget class="QPushButton" name="Screen">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="font">
            <font>
             <pointsize>10</pointsize>
-            <bold>true</bold>
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">QLabel {
+           <string notr="true">QPushButton {
+	background-color: #8F8F8F;
+	border-radius: 2px;
+	border: 2px solid gray;
 	color: white;
+}
+
+QPushButton:hover {
+    border: 2px solid #69A1E4;
+}
+
+QPushButton:pressed {
+  background-color: white;
 }</string>
           </property>
           <property name="text">
-           <string>V</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <string>Screenshot</string>
           </property>
          </widget>
         </item>
@@ -2281,6 +2349,9 @@ QDoubleSpinBox::up-button  {
              </property>
              <property name="decimals">
               <number>1</number>
+             </property>
+             <property name="minimum">
+              <double>1.100000000000000</double>
              </property>
              <property name="maximum">
               <double>1000000.000000000000000</double>

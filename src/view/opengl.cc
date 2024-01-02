@@ -3,13 +3,10 @@
 #include <iostream>
 
 namespace s21 {
-OpenGL::OpenGL(QWidget *parent) :
-            QOpenGLWidget(parent),
-            vbo_(QOpenGLBuffer::VertexBuffer),
-            ebo_(QOpenGLBuffer::IndexBuffer) {
-
-    parser_ = std::make_unique<Parser>(data_);
-
+OpenGL::OpenGL(QWidget* parent)
+    : QOpenGLWidget(parent),
+      vbo_(QOpenGLBuffer::VertexBuffer),
+      ebo_(QOpenGLBuffer::IndexBuffer) {
     opt_.line_size = 1.0f;
     opt_.scale_value = 1.0;
     opt_.vertex_size = 1.0f;
@@ -18,8 +15,8 @@ OpenGL::OpenGL(QWidget *parent) :
     opt_.shading_type = kSmooth;
     opt_.main_color = "#686868";
     opt_.projection_type = kParallel;
-    opt_.line_color = { 1.0f, 1.0f, 1.0f };
-    opt_.vertex_color = { 1.0f, 1.0f, 1.0f };
+    opt_.line_color = {1.0f, 1.0f, 1.0f};
+    opt_.vertex_color = {1.0f, 1.0f, 1.0f};
 }
 
 OpenGL::~OpenGL() {
@@ -27,49 +24,53 @@ OpenGL::~OpenGL() {
     ClearTransformations();
 }
 
-const Data& OpenGL::get_data() const noexcept { return data_; }
+Data& OpenGL::get_data() noexcept { return data_; }
+Options& OpenGL::get_opt() noexcept { return opt_; }
+QImage OpenGL::get_frame() noexcept { return grabFramebuffer(); }
 
-OpenGL::Maps::Maps() :
-        ambient(QOpenGLTexture::Target2D),
-        diffuse(QOpenGLTexture::Target2D),
-        specular(QOpenGLTexture::Target2D) {}
+OpenGL::Maps::Maps()
+    : ambient(QOpenGLTexture::Target2D),
+      diffuse(QOpenGLTexture::Target2D),
+      specular(QOpenGLTexture::Target2D) {}
 
-void OpenGL::set_main_color(QColor color) noexcept {
+void OpenGL::set_main_color(QColor color) {
     opt_.main_color = color;
     update();
 }
 
-void OpenGL::set_line_color(QVector3D color) noexcept {
+void OpenGL::set_line_color(QVector3D color) {
     opt_.line_color = color;
     update();
 }
 
-void OpenGL::set_vertex_color(QVector3D color) noexcept {
+void OpenGL::set_vertex_color(QVector3D color) {
     opt_.vertex_color = color;
     update();
 }
 
-void OpenGL::set_vertex_type(VType type) noexcept {
+void OpenGL::set_vertex_type(VType type) {
     opt_.vertex_type = type;
     update();
 }
 
-void OpenGL::set_line_size(GLfloat size) noexcept {
+void OpenGL::set_line_size(GLfloat size) {
     opt_.line_size = size;
     update();
 }
 
-void OpenGL::set_vertex_size(GLfloat size) noexcept {
+void OpenGL::set_vertex_size(GLfloat size) {
     opt_.vertex_size = size;
     update();
 }
 
-void OpenGL::set_shading_type(SType type) noexcept {
+void OpenGL::set_shading_type(SType type) {
     opt_.shading_type = type;
-    ClearBuff();
-    ProgramCreate();
-    resizeGL(width(), height());
-    update();
+    if (opt_.model_type != kFrame && opt_.model_type != kDashed) {
+        ClearBuff();
+        ProgramCreate();
+        resizeGL(width(), height());
+        update();
+    }
 }
 
 void OpenGL::set_projection(Projection prj) {
@@ -86,12 +87,24 @@ void OpenGL::set_model_type(ModelType type) {
     update();
 }
 
+void OpenGL::ApplySettings() {
+    ClearBuff();
+    ProgramCreate();
+    resizeGL(width(), height());
+    update();
+}
+
 void OpenGL::ClearBuff() {
     makeCurrent();
     vao_.destroy();
     vbo_.destroy();
     ebo_.destroy();
-    program_->deleteLater();
+    if (program_) {
+        program_->release();
+        program_->removeAllShaders();
+        program_->deleteLater();
+        program_ = nullptr;
+    }
 }
 
 void OpenGL::ClearTransformations() {
@@ -103,11 +116,9 @@ void OpenGL::ClearTransformations() {
     rotate_mat_.setToIdentity();
 }
 
-void OpenGL::Open(std::string_view path) noexcept {
+void OpenGL::Start() {
     ClearBuff();
     ClearTransformations();
-    parser_->Parse(path);
-//    data_ = parser_->get_data();
     ProgramCreate();
     SetTextures();
     resizeGL(width(), height());
@@ -117,9 +128,9 @@ void OpenGL::Open(std::string_view path) noexcept {
 void OpenGL::LoadTexture(QOpenGLTexture& texture, std::string_view path) {
     texture.destroy();
     QImage tex_image;
-    if (!path.empty())
+    if (!path.empty()) {
         tex_image.load(path.data());
-
+    }
     if (tex_image.isNull()) {
         QImage image(1, 1, QImage::Format_RGB32);
         image.fill(QColor::fromRgbF(0.7f, 0.7f, 0.7f));
@@ -238,7 +249,9 @@ void OpenGL::ProgramCreate() {
 
     AddShaders();
 
-    program_->link();
+    if (!program_->link())
+        close();
+
     program_->bind();
 
     uniforms_[kMvU] = program_->uniformLocation("u_mv");
@@ -355,22 +368,19 @@ void OpenGL::paintGL() {
         }
     } else if ((opt_.model_type == kSolid || opt_.model_type == kTextured) && (data_.is_normals || data_.is_texture)) {
         size_t prev_offset = 0;
-        for (auto &usemtl : data_.usemtl) {
+        for (auto& usemtl : data_.usemtl) {
             program_->setUniformValue(uniforms_[kAmbientU], &data_.mtl[usemtl.index].Ka);
             program_->setUniformValue(uniforms_[kDiffuseU], &data_.mtl[usemtl.index].Kd);
             program_->setUniformValue(uniforms_[kSpecularU], &data_.mtl[usemtl.index].Ks);
             program_->setUniformValue(uniforms_[kEmissionU], &data_.mtl[usemtl.index].Ke);
             program_->setUniformValue(uniforms_[kShinessU], data_.mtl[usemtl.index].Ns);
             program_->setUniformValue(uniforms_[kOpacityU], data_.mtl[usemtl.index].d);
-
             if (opt_.model_type == kTextured) {
                 maps_[usemtl.index].ambient.bind(0);
                 maps_[usemtl.index].diffuse.bind(1);
                 maps_[usemtl.index].specular.bind(2);
             }
-
             glDrawElements(GL_TRIANGLES, usemtl.offset_fv - prev_offset, GL_UNSIGNED_INT, (void*)(prev_offset * sizeof(GLuint)));
-
             prev_offset = usemtl.offset_fv;
             if (opt_.model_type == kTextured) {
                 maps_[usemtl.index].ambient.release(0);
@@ -384,7 +394,7 @@ void OpenGL::paintGL() {
     program_->release();
 }
 
-void OpenGL::keyPressEvent(QKeyEvent *event) {
+void OpenGL::keyPressEvent(QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left:
             Move(-1.0f, kX);
@@ -403,20 +413,17 @@ void OpenGL::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void OpenGL::wheelEvent(QWheelEvent *event) {
+void OpenGL::wheelEvent(QWheelEvent* event) {
     int delta = event->angleDelta().y();
-    if (delta > 0)
-        Scale(1.1f, kScaleMul);
-    else
-        Scale(1.1f, kScaleDiv);
+    delta > 0 ? Scale(1.1f, kScaleMul) : Scale(1.1f, kScaleDiv);
 }
 
-void OpenGL::mousePressEvent(QMouseEvent *event) {
+void OpenGL::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton)
         last_mouse_pos_ = event->pos();
 }
 
-void OpenGL::mouseMoveEvent(QMouseEvent *event) {
+void OpenGL::mouseMoveEvent(QMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
         int delta_x = event->pos().x() - last_mouse_pos_.x();
         int delta_y = event->pos().y() - last_mouse_pos_.y();

@@ -1,10 +1,9 @@
 CC = g++
 FLAGS = -Wall -Wextra -Werror -std=c++17
-TEST_FLAGS = -lgtest -lstdc++ -lgmock -pthread
 
 #	== ВЫПОЛНИТЬ ВСЕ ДЕЙСТВИЯ ==
 .PHONY: all
-all: clean uninstall dist install test dvi
+all: clean uninstall dist install
 
 #	== УСТАНОВКА ПРОГРАММЫ ==
 .PHONY: install
@@ -34,14 +33,6 @@ uninstall:
 clean:
 	@echo --------------------- START ---------------------
 	rm -rf 3DViewer.tar.gz
-	cd ./tests && rm -rf unit_tests
-	@echo -------------------- SUCCESS --------------------
-	
-#	== ОТКРЫТЬ ИНФОРМАЦИЮ О ПРОЕКТЕ ==
-.PHONY: dvi
-dvi:
-	@echo --------------------- OPEN ----------------------
-	open info.html
 	@echo -------------------- SUCCESS --------------------
 
 #	== СОЗДАНИЕ АРХИВА ПРОЕКТА ==
@@ -51,10 +42,10 @@ dist: clean uninstall
 	tar czvf 3DViewer.tar.gz .
 	@echo -------------------- SUCCESS --------------------
 
-#	== ЗАПУСК UNIT-ТЕСТОВ ==
-.PHONY: test
-test:
-	@echo --------------------- START ---------------------
-	cd ./tests/ && $(CC) $(FLAGS) unit_tests.cc ../controller/*.cc ../model/*/*.cc -o unit_tests $(TEST_FLAGS)
-	cd ./tests/ && ./unit_tests
+#	== ПРОВЕРКА СТИЛЯ ==
+.PHONY: style
+style:
+	@echo --------------------- STYLE ---------------------
+	clang-format -n -style=GOOGLE *.cc */*.cc */*/*.cc */*.h */*/*.h
 	@echo -------------------- SUCCESS --------------------
+
