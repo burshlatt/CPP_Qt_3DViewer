@@ -1,5 +1,5 @@
-#ifndef CPP5_3DVIEWER_V2_1_1_MODEL_PARSER_PARSER_H_
-#define CPP5_3DVIEWER_V2_1_1_MODEL_PARSER_PARSER_H_
+#ifndef CPP_QT_3DVIEWER_LIB_PARSER_H_
+#define CPP_QT_3DVIEWER_LIB_PARSER_H_
 
 #include <cmath>
 #include <filesystem>
@@ -47,4 +47,4 @@ class Parser {
 };
 }  // namespace s21
 
-#endif  // CPP5_3DVIEWER_V2_1_1_MODEL_PARSER_PARSER_H_
+#endif  // CPP_QT_3DVIEWER_LIB_PARSER_H_

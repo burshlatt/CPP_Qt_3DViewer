@@ -1,5 +1,5 @@
-#ifndef CPP5_3DVIEWER_V2_1_1_VIEW_OPENGL_H
-#define CPP5_3DVIEWER_V2_1_1_VIEW_OPENGL_H
+#ifndef CPP_QT_3DVIEWER_VIEW_OPENGL_H
+#define CPP_QT_3DVIEWER_VIEW_OPENGL_H
 
 #include <QImage>
 #include <QMouseEvent>
@@ -104,4 +104,4 @@ class OpenGL : public QOpenGLWidget, protected QOpenGLFunctions {
 };
 }  // namespace s21
 
-#endif  // CPP5_3DVIEWER_V2_1_1_VIEW_OPENGL_H
+#endif  // CPP_QT_3DVIEWER_VIEW_OPENGL_H

@@ -1,5 +1,5 @@
-#ifndef CPP5_3DVIEWER_V2_1_1_VIEW_VIEWER_H
-#define CPP5_3DVIEWER_V2_1_1_VIEW_VIEWER_H
+#ifndef CPP_QT_3DVIEWER_VIEW_VIEWER_H
+#define CPP_QT_3DVIEWER_VIEW_VIEWER_H
 
 #include <QColor>
 #include <QColorDialog>
@@ -72,4 +72,4 @@ class Viewer : public QMainWindow {
 };
 }  // namespace s21
 
-#endif  // CPP5_3DVIEWER_V2_1_1_VIEW_VIEWER_H
+#endif  // CPP_QT_3DVIEWER_VIEW_VIEWER_H
