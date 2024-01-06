@@ -46,6 +46,6 @@ dist: clean uninstall
 .PHONY: style
 style:
 	@echo --------------------- STYLE ---------------------
-	clang-format -n -style=GOOGLE *.cc */*.cc */*/*.cc */*.h */*/*.h
+	clang-format -n -style=GOOGLE src/*.cc src/*/*.cc src/*/*.h
 	@echo -------------------- SUCCESS --------------------
 
