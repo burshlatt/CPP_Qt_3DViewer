@@ -1,19 +1,10 @@
 #ifndef CPP_QT_3DVIEWER_LIB_PARSER_H_
 #define CPP_QT_3DVIEWER_LIB_PARSER_H_
 
-#include <cmath>
-#include <filesystem>
-#include <fstream>
-#include <future>
-#include <iostream>
-#include <map>
-#include <set>
-#include <sstream>
+#include <vector>
 #include <string>
 #include <string_view>
-#include <vector>
 
-#include "src/external/earcut/earcut.h"
 #include "src/lib/struct.h"
 
 namespace s21 {
