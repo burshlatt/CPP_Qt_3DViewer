@@ -1,4 +1,13 @@
+#include <map>
+#include <set>
+#include <future>
+#include <sstream>
+#include <fstream>
+#include <filesystem>
+#include <functional>
+
 #include "parser.h"
+#include "src/external/earcut/earcut.h"
 
 namespace s21 {
 Parser::Parser(Data& data) : data_(data) {
